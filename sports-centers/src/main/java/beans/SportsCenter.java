@@ -1,6 +1,6 @@
 package beans;
 
-public class SportsCenter {
+public class SportsCenter{
 	private String centerId;
 	private String centerTitle;
 	private CenterTypes type;
