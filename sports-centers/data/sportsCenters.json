@@ -1,0 +1,24 @@
+{
+  "yrWkh9tv": {
+    "centerId": "yrWkh9tv",
+    "centerTitle": "Draganova teretana",
+    "type": "GYM",
+    "status": "CLOSED",
+    "location": {
+      "latitude": 69.42,
+      "longitude": 420.69,
+      "address": {
+        "street": "draganova",
+        "streetNumber": "6B",
+        "city": "NewNow",
+        "zipCode": "21000"
+      }
+    },
+    "logoPath": "",
+    "grade": 0.0,
+    "workHours": [
+      8,
+      20
+    ]
+  }
+}

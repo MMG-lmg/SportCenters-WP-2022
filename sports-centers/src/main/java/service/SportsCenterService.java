@@ -54,8 +54,11 @@ public class SportsCenterService implements InterfaceBase<SportsCenter> {
 
 	@Override
 	public boolean isIdUnique(String id) {
-		HashMap<String,SportsCenter> map = (HashMap<String, SportsCenter>) repo.getAll();
-		if(map.containsKey(id)) return false;
-		return true;
+		boolean retVal = true;
+		if(repo.getAll() != null) {
+			
+			if(repo.getAllKeys().contains(id)) retVal = false;
+		}
+		return retVal;
 	}
 }
