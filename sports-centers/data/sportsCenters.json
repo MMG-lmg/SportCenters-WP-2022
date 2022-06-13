@@ -1,6 +1,28 @@
 {
-  "yrWkh9tv": {
-    "centerId": "yrWkh9tv",
+  "Sq9mM5d5": {
+    "centerId": "Sq9mM5d5",
+    "centerTitle": "CoolPool",
+    "type": "POOL",
+    "status": "CLOSED",
+    "location": {
+      "latitude": 94.54,
+      "longitude": 65.1,
+      "address": {
+        "street": "Cirpanova",
+        "streetNumber": "6",
+        "city": "Cenej",
+        "zipCode": "21000?"
+      }
+    },
+    "logoPath": "",
+    "grade": 0.0,
+    "workHours": [
+      7,
+      23
+    ]
+  },
+  "xxZhYKoS": {
+    "centerId": "xxZhYKoS",
     "centerTitle": "Draganova teretana",
     "type": "GYM",
     "status": "CLOSED",
@@ -19,6 +41,28 @@
     "workHours": [
       8,
       20
+    ]
+  },
+  "zY8H5AGy": {
+    "centerId": "zY8H5AGy",
+    "centerTitle": "Just Dance",
+    "type": "DANCE_STUDIO",
+    "status": "OPEN",
+    "location": {
+      "latitude": 93.54,
+      "longitude": 62.1,
+      "address": {
+        "street": "Wall street",
+        "streetNumber": "6",
+        "city": "Backo Dobro polje",
+        "zipCode": "797979"
+      }
+    },
+    "logoPath": "",
+    "grade": 0.0,
+    "workHours": [
+      0,
+      24
     ]
   }
 }

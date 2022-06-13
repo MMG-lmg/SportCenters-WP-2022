@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.google.gson.Gson;
@@ -58,7 +59,8 @@ public class SportsCenterRepository implements RepositoryBase<SportsCenter> {
 			File file = new File(this.path + "/sportsCenters.json");
 			System.out.println(file.getCanonicalPath());
 			in = new BufferedReader(new FileReader(file));
-			gson.fromJson(in, SportsCenter.class);
+			this.centersList = gson.fromJson(in, HashMap.class);
+
 		} 
 		catch(Exception e) {
 			e.printStackTrace();
