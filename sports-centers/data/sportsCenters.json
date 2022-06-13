@@ -1,6 +1,6 @@
 {
-  "Sq9mM5d5": {
-    "centerId": "Sq9mM5d5",
+    "Ig0ZRzmo": {
+    "centerId": "Ig0ZRzmo",
     "centerTitle": "CoolPool",
     "type": "POOL",
     "status": "CLOSED",
@@ -14,37 +14,15 @@
         "zipCode": "21000?"
       }
     },
-    "logoPath": "",
+    "logoPath": "E:\\ftp_home\\fax data fillezilla\\treca\\web\\SportCenters-WP-2022\\sports-centers\\data\\img\\gym.png",
     "grade": 0.0,
     "workHours": [
-      7,
-      23
+      7.0,
+      23.0
     ]
   },
-  "xxZhYKoS": {
-    "centerId": "xxZhYKoS",
-    "centerTitle": "Draganova teretana",
-    "type": "GYM",
-    "status": "CLOSED",
-    "location": {
-      "latitude": 69.42,
-      "longitude": 420.69,
-      "address": {
-        "street": "draganova",
-        "streetNumber": "6B",
-        "city": "NewNow",
-        "zipCode": "21000"
-      }
-    },
-    "logoPath": "",
-    "grade": 0.0,
-    "workHours": [
-      8,
-      20
-    ]
-  },
-  "zY8H5AGy": {
-    "centerId": "zY8H5AGy",
+  "PhduqsxF": {
+    "centerId": "PhduqsxF",
     "centerTitle": "Just Dance",
     "type": "DANCE_STUDIO",
     "status": "OPEN",
@@ -58,7 +36,7 @@
         "zipCode": "797979"
       }
     },
-    "logoPath": "",
+    "logoPath": "E:\\ftp_home\\fax data fillezilla\\treca\\web\\SportCenters-WP-2022\\sports-centers\\data\\img\\gym.png",
     "grade": 0.0,
     "workHours": [
       0,

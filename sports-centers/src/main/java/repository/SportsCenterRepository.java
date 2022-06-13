@@ -1,20 +1,27 @@
 package repository;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonWriter;
 
 import beans.SportsCenter;
@@ -59,7 +66,13 @@ public class SportsCenterRepository implements RepositoryBase<SportsCenter> {
 			File file = new File(this.path + "/sportsCenters.json");
 			System.out.println(file.getCanonicalPath());
 			in = new BufferedReader(new FileReader(file));
-			this.centersList = gson.fromJson(in, HashMap.class);
+			StringBuilder data = new StringBuilder();
+			String line;
+			while((line = in.readLine())!=null) {
+				data.append(line);
+			}
+			HashMap<String,SportsCenter> fromJson = gson.fromJson(data.toString(), new TypeToken<HashMap<String, SportsCenter>>(){}.getType());
+			this.centersList = fromJson;
 
 		} 
 		catch(Exception e) {

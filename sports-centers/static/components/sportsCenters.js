@@ -12,6 +12,7 @@ Vue.component("centers",{
 		<h3> Sportski centri </h3>
 		<table border = "1">
 			<tr>
+				<th>Logo</th>
     			<th><a v-on:click=sortByName>Naziv</a><input type="text" v-model="nameSearch" v-on:keyup="searchByName"></input></th>
     			<th>Tip</th>
     			<th>Status</th>
@@ -20,6 +21,7 @@ Vue.component("centers",{
 	    	</tr>
 	    	
 	    	<tr v-for="(sc, index) in filteredCenters">
+	    		<td><img v-bind:src="'data:image/png;base64,' + sc.logoPath" width="50" height="60"/></td>
 	    		<td>{{sc.centerTitle}}</td>
 	    		<td>{{typeToString(sc)}}</td>
 	    		<td>{{statusToString(sc)}}</td>
