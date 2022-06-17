@@ -5,7 +5,8 @@ Vue.component("centers",{
 			filteredCenters:null,
 			sortName:0,
 			nameSearch:"",
-			statusSerach:""
+			statusSerach:"",
+			gradeSearch:"",
 		}
 	},
 	template:`
@@ -19,14 +20,23 @@ Vue.component("centers",{
     			<th>Tip</th>
     			<th>
 	    			<p>Status</p> 
-	    			<select ref="statusCombo" v-model="statusSerach" @change="searchByGrade">
+	    			<select ref="statusCombo" v-model="statusSerach" @change="searchByStatus">
 	    				<option disabled value="">Svi</option>
 						<option value="open">Otvoreno</option>
 						<option value="closed">Zatvoreno</option>
 					</select>
 				</th>
     			<th>Adresa</th>
-    			<th>Prosecna ocena</th>
+    			<th>
+    				<p>ProsecnaOcena</p> 
+	    			<select ref="gradeCombo" v-model="gradeSearch" @change="searchByGrade">
+	    				<option disabled value="">Svi</option>
+						<option value="1">1+</option>
+						<option value="2">2+</option>
+						<option value="3">3+</option>
+						<option value="4">4+</option>
+					</select>
+				</th>
 	    	</tr>
 	    	
 	    	<tr v-for="(sc, index) in filteredCenters">
@@ -99,8 +109,10 @@ Vue.component("centers",{
 		resetSearch: function(){
 			this.$refs.statusCombo.value = "";
 			this.$refs.titleField.value=null;
+			this.$refs.gradeCombo.value="";
 			this.nameSearch="";
 			this.statusSerach="";
+			this.gradeSearch="";
 			this.filteredCenters = this.centers;
 			
 		},
@@ -111,13 +123,17 @@ Vue.component("centers",{
 				);
 			}
 		},
-		searchByGrade: function(){
+		searchByStatus: function(){
 			if(this.statusSerach === "open"){
 				this.filteredCenters = this.centers.filter(item => item.status === "OPEN");
 			}
 			else if(this.statusSerach === "closed"){
 				this.filteredCenters = this.centers.filter(item => item.status === "CLOSED");
 			}
+		},
+		searchByGrade: function(){
+			console.log(Number(this.gradeSearch));
+			this.filteredCenters = this.centers.filter(item => item.grade >= Number(this.gradeSearch));
 		}
 	}
 });
