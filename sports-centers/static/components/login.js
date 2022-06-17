@@ -1,8 +1,7 @@
 Vue.component("login",{
     data: function(){
         return {
-            username:"",
-            password:"",
+            credentials: {username:"",password:""},
             error:""
         }
     },
@@ -11,9 +10,9 @@ Vue.component("login",{
             <h3>Prijava</h3>
             <form>
                 <label for="username">Korisnicko ime:</label><br>
-                <input type="text" v-model="username" name="username"><br>
+                <input type="text" v-model="credentials.username" name="username"><br>
                 <label for="password">Lozinka:</label><br>
-                <input type="password" v-model="password" name="password">
+                <input type="password" v-model="credentials.password" name="password">
                 <button v-on:click="login">Prijava</button>
             </form>
             <p>{{error}}</p>
@@ -25,9 +24,9 @@ Vue.component("login",{
     methods:{
         login: function(event){
             event.preventDefault();
-            console.log("aaaa");
-            if(this.username.trim() != "" && this.password.trim() != ""){
-                axios.post("rest/login", {username: this.username,password: this.password})
+            console.log(this.credentials.username +","+ this.credentials.password);
+            if(this.credentials.username.trim() != "" && this.credentials.password.trim() != ""){
+                axios.post("rest/login", this.credentials)
                 .then(res => {
                     console.log(res.data);
                 });
