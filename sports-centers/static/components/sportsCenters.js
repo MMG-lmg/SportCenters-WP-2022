@@ -8,6 +8,7 @@ Vue.component("centers",{
 			statusSerach:"",
 			gradeSearch:"",
 			typeSearch:"",
+			addressSearch:"",
 		}
 	},
 	template:`
@@ -17,7 +18,10 @@ Vue.component("centers",{
 		<table border = "1">
 			<tr>
 				<th>Logo</th>
-    			<th><a v-on:click=sortByName>Naziv</a><input ref="titleField" type="text" v-model="nameSearch" v-on:keyup="searchByName"></input></th>
+				<th>
+				<a v-on:click=sortByName>Naziv</a>
+				<input ref="titleField" type="text" v-model="nameSearch" v-on:keyup="searchByName"></input>
+				</th>
 				<th>
 					<p>Tip</p> 
 	    			<select ref="typeCombo" v-model="typeSearch" @change="searchByType">
@@ -36,7 +40,10 @@ Vue.component("centers",{
 						<option value="closed">Zatvoreno</option>
 					</select>
 				</th>
-    			<th>Adresa</th>
+				<th>
+					<p>Adresa</p> 
+					<input ref="addressField" type="text" v-model="addressSearch" v-on:keyup="searchByAddress"></input>
+				</th>
     			<th>
     				<p>ProsecnaOcena</p> 
 	    			<select ref="gradeCombo" v-model="gradeSearch" @change="searchByGrade">
@@ -70,7 +77,8 @@ Vue.component("centers",{
 	methods:{
 		locationToString: function(sc){
 			return sc.location.latitude +","+ sc.location.longitude +"\n"
-			+sc.location.address.street +","+ sc.location.address.streetNumber
+			+sc.location.address.street +","+ sc.location.address.streetNumber +"\n"
+			+sc.location.address.city
 		},
 		typeToString: function(sc){
 			var retVal;
@@ -123,6 +131,7 @@ Vue.component("centers",{
 			this.$refs.typeCombo.value="";
 			this.typeSearch="";
 			this.nameSearch="";
+			this.addressSearch="";
 			this.statusSerach="";
 			this.gradeSearch="";
 			this.filteredCenters = this.centers;
@@ -132,6 +141,13 @@ Vue.component("centers",{
 			if(this.nameSearch!==''){
 				this.filteredCenters = this.centers.filter(item =>
 				item.centerTitle.toLowerCase().includes(this.nameSearch.toLowerCase())
+				);
+			}
+		},
+		searchByAddress: function(){
+			if(this.addressSearch!==''){
+				this.filteredCenters = this.centers.filter(item =>
+				item.location.address.city.toLowerCase().includes(this.addressSearch.toLowerCase())
 				);
 			}
 		},
