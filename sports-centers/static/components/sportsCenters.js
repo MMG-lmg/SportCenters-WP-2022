@@ -5,17 +5,26 @@ Vue.component("centers",{
 			filteredCenters:null,
 			sortName:0,
 			nameSearch:"",
+			statusSerach:""
 		}
 	},
 	template:`
 	<div>
 		<h3> Sportski centri </h3>
+		<button v-on:click=resetSearch>Ponisti pretragu</button>
 		<table border = "1">
 			<tr>
 				<th>Logo</th>
-    			<th><a v-on:click=sortByName>Naziv</a><input type="text" v-model="nameSearch" v-on:keyup="searchByName"></input></th>
+    			<th><a v-on:click=sortByName>Naziv</a><input ref="titleField" type="text" v-model="nameSearch" v-on:keyup="searchByName"></input></th>
     			<th>Tip</th>
-    			<th>Status</th>
+    			<th>
+	    			<p>Status</p> 
+	    			<select ref="statusCombo" v-model="statusSerach" @change="searchByGrade">
+	    				<option disabled value="">Svi</option>
+						<option value="open">Otvoreno</option>
+						<option value="closed">Zatvoreno</option>
+					</select>
+				</th>
     			<th>Adresa</th>
     			<th>Prosecna ocena</th>
 	    	</tr>
@@ -87,14 +96,27 @@ Vue.component("centers",{
 			}
 			return this.filteredCenters.sort(compare);
 		},
+		resetSearch: function(){
+			this.$refs.statusCombo.value = "";
+			this.$refs.titleField.value=null;
+			this.nameSearch="";
+			this.statusSerach="";
+			this.filteredCenters = this.centers;
+			
+		},
 		searchByName: function(){
 			if(this.nameSearch!==''){
 				this.filteredCenters = this.centers.filter(item =>
 				item.centerTitle.toLowerCase().includes(this.nameSearch.toLowerCase())
-				)
+				);
 			}
-			else{
-				this.filteredCenters = this.centers;
+		},
+		searchByGrade: function(){
+			if(this.statusSerach === "open"){
+				this.filteredCenters = this.centers.filter(item => item.status === "OPEN");
+			}
+			else if(this.statusSerach === "closed"){
+				this.filteredCenters = this.centers.filter(item => item.status === "CLOSED");
 			}
 		}
 	}

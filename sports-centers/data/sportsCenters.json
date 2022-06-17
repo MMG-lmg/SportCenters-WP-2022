@@ -42,5 +42,27 @@
       0,
       24
     ]
+  },
+  "PhdugsxF": {
+    "centerId": "PhdugsxF",
+    "centerTitle": "Draganov djim",
+    "type": "GYM",
+    "status": "CLOSED",
+    "location": {
+      "latitude": 97.54,
+      "longitude": 61.1,
+      "address": {
+        "street": "Draganova",
+        "streetNumber": "6B",
+        "city": "New Dork",
+        "zipCode": "787979"
+      }
+    },
+    "logoPath": "E:\\ftp_home\\fax data fillezilla\\treca\\web\\SportCenters-WP-2022\\sports-centers\\data\\img\\gym.png",
+    "grade": 3.0,
+    "workHours": [
+      0,
+      24
+    ]
   }
 }
