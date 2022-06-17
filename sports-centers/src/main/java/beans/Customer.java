@@ -1,5 +1,7 @@
 package beans;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -8,7 +10,7 @@ public class Customer extends User{
 	public Customer() {
 		super();
 	}
-	public Customer(String userName, String password, String name, Gender gender, Date dateOfBirth, UserRole role,
+	public Customer(String userName, String password, String name, Gender gender, LocalDate dateOfBirth, UserRole role,
 			double membershipCost, List<SportsCenter> visitedCenters, double loyalityPoints, CustomerType type) {
 		super(userName, password, name, gender, dateOfBirth, role);
 		this.membershipCost = membershipCost;

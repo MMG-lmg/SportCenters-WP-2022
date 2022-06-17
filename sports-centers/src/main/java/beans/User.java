@@ -1,5 +1,7 @@
 package beans;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class User {
@@ -7,7 +9,7 @@ public class User {
 		super();
 	}
 
-	public User(String userName, String password, String name, Gender gender, Date dateOfBirth, UserRole role) {
+	public User(String userName, String password, String name, Gender gender, LocalDate dateOfBirth, UserRole role) {
 		super();
 		this.userName = userName;
 		this.password = password;
@@ -21,7 +23,7 @@ public class User {
 	private String password;
 	private String name;
 	private Gender gender;
-	private Date dateOfBirth;
+	private LocalDate dateOfBirth;
 	
 	private UserRole role;
 
@@ -57,11 +59,11 @@ public class User {
 		this.gender = gender;
 	}
 
-	public Date getDateOfBirth() {
+	public LocalDate getDateOfBirth() {
 		return dateOfBirth;
 	}
 
-	public void setDateOfBirth(Date dateOfBirth) {
+	public void setDateOfBirth(LocalDate dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 

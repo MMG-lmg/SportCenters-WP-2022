@@ -1,5 +1,7 @@
 package beans;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -8,7 +10,7 @@ public class Coach extends User{
 		super();
 	}
 
-	public Coach(String userName, String password, String name, Gender gender, Date dateOfBirth, UserRole role,
+	public Coach(String userName, String password, String name, Gender gender, LocalDate dateOfBirth, UserRole role,
 			List<Training> pastTrainings) {
 		super(userName, password, name, gender, dateOfBirth, role);
 		this.pastTrainings = pastTrainings;

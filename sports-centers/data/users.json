@@ -1,0 +1,26 @@
+{
+  "zoki": {
+    "userName": "zoki",
+    "password": "lozinka",
+    "name": "Zoran",
+    "gender": "MALE",
+    "dateOfBirth": "1987-03-30",
+    "role": "CUSTOMER"
+  },
+  "dragan123": {
+    "userName": "dragan123",
+    "password": "1234",
+    "name": "Dragan",
+    "gender": "MALE",
+    "dateOfBirth": "1975-12-25",
+    "role": "CUSTOMER"
+  },
+  "milky": {
+    "userName": "milky",
+    "password": "password",
+    "name": "Milkica",
+    "gender": "FEMALE",
+    "dateOfBirth": "2001-06-12",
+    "role": "CUSTOMER"
+  }
+}

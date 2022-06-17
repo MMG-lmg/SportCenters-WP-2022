@@ -1,6 +1,7 @@
 package beans;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Manager extends User{
 	private SportsCenter center;
@@ -13,7 +14,7 @@ public class Manager extends User{
 		return center;
 	}
 
-	public Manager(String userName, String password, String name, Gender gender, Date dateOfBirth, UserRole role,
+	public Manager(String userName, String password, String name, Gender gender, LocalDate dateOfBirth, UserRole role,
 			SportsCenter center) {
 		super(userName, password, name, gender, dateOfBirth, role);
 		this.center = center;
