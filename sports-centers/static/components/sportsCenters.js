@@ -71,8 +71,7 @@ Vue.component("centers",{
 		axios.get('rest/centers/')
 			.then(response=>{this.centers = response.data
 				this.filteredCenters = this.centers;
-			})
-		
+		});
 	},
 	methods:{
 		locationToString: function(sc){
@@ -178,3 +177,4 @@ Vue.component("centers",{
 		}
 	}
 });
+

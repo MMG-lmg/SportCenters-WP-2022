@@ -1,13 +1,15 @@
-const Centers = { template: '<centers></centers>' }
+const Centers = {template: '<centers></centers>' }
+const Login = {template: '<login></login>'}
 
 const router = new VueRouter({
 	mode: 'hash',
 	  routes: [
-		{ path: '/', name: 'home', component: Centers}
+		{ path: '/', component: Centers},
+		{ path: '/log', component:Login},
 	  ]
 });
 
 var app = new Vue({
 	router,
-	el: '#centers'
+	el: '#app'
 });
