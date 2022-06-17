@@ -7,6 +7,7 @@ Vue.component("centers",{
 			nameSearch:"",
 			statusSerach:"",
 			gradeSearch:"",
+			typeSearch:"",
 		}
 	},
 	template:`
@@ -17,7 +18,16 @@ Vue.component("centers",{
 			<tr>
 				<th>Logo</th>
     			<th><a v-on:click=sortByName>Naziv</a><input ref="titleField" type="text" v-model="nameSearch" v-on:keyup="searchByName"></input></th>
-    			<th>Tip</th>
+				<th>
+					<p>Tip</p> 
+	    			<select ref="typeCombo" v-model="typeSearch" @change="searchByType">
+	    				<option disabled value="">Svi</option>
+						<option value="center">Sportski centar</option>
+						<option value="gym">Teretana</option>
+						<option value="pool">Bazen</option>
+						<option value="dance">Plesni studio</option>
+					</select>
+				</th>
     			<th>
 	    			<p>Status</p> 
 	    			<select ref="statusCombo" v-model="statusSerach" @change="searchByStatus">
@@ -110,6 +120,8 @@ Vue.component("centers",{
 			this.$refs.statusCombo.value = "";
 			this.$refs.titleField.value=null;
 			this.$refs.gradeCombo.value="";
+			this.$refs.typeCombo.value="";
+			this.typeSearch="";
 			this.nameSearch="";
 			this.statusSerach="";
 			this.gradeSearch="";
@@ -132,8 +144,21 @@ Vue.component("centers",{
 			}
 		},
 		searchByGrade: function(){
-			console.log(Number(this.gradeSearch));
 			this.filteredCenters = this.centers.filter(item => item.grade >= Number(this.gradeSearch));
+		},
+		searchByType: function(){
+			if(this.typeSearch === "center"){
+				this.filteredCenters = this.centers.filter(item => item.type === "SPORTS_CENTER");
+			}
+			else if(this.typeSearch === "gym"){
+				this.filteredCenters = this.centers.filter(item => item.type === "GYM");
+			}
+			else if(this.typeSearch === "pool"){
+				this.filteredCenters = this.centers.filter(item => item.type === "POOL");
+			}
+			else if(this.typeSearch === "dance"){
+				this.filteredCenters = this.centers.filter(item => item.type === "DANCE_STUDIO");
+			}
 		}
 	}
 });
