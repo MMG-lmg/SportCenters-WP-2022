@@ -18,6 +18,7 @@ import beans.Location;
 import beans.SportsCenter;
 import beans.UserRole;
 import controller.SportsCenterController;
+import controller.UserController;
 import repository.CustomerRepository;
 import repository.UserRepository;
 import service.SportsCenterService;
@@ -31,7 +32,7 @@ public class Main {
     	staticFiles.externalLocation(new File("./static").getCanonicalPath());
     	
     	SportsCenterController.getAllCenters();
-    	
+    	UserController.login();
 
     }
 }
