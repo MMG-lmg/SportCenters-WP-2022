@@ -9,6 +9,9 @@ Vue.component("centers",{
 			gradeSearch:"",
 			typeSearch:"",
 			addressSearch:"",
+			loggedUserType:"",
+			loggedUserName:"",
+			userLogedIn: false
 		}
 	},
 	template:`
@@ -65,6 +68,13 @@ Vue.component("centers",{
 	    		<td>{{sc.grade}}</td>
 	    	</tr>
 		</table>
+		<div>
+			<button v-if="!userLogedIn" v-on:click="routeToLogin"> Prijava </button>
+			<p v-if="userLogedIn">
+				Dobrodosli, {{loggedUserName}}, {{loggedUserType}}
+			</p>
+			<button v-if="userLogedIn" v-on:click="logout"> Odjava </button>
+		</div>
 	</div>
 	`,
 	mounted(){
@@ -72,8 +82,24 @@ Vue.component("centers",{
 			.then(response=>{this.centers = response.data
 				this.filteredCenters = this.centers;
 		});
+		this.checkLogin();
 	},
 	methods:{
+		checkLogin(){
+			if(this.$router.app.login !="" && this.$router.app.username !=""){
+				this.loggedUserType = this.$router.app.login;
+				this.loggedUserName = this.$router.app.username;
+				this.userLogedIn = true;
+			}
+		},
+		routeToLogin(){
+			router.push(`/log`);
+		},
+		logout(){
+			this.loggedUserType = "";
+			this.loggedUserName ="";
+			this.userLogedIn = false;
+		},
 		locationToString: function(sc){
 			return sc.location.latitude +","+ sc.location.longitude +"\n"
 			+sc.location.address.street +","+ sc.location.address.streetNumber +"\n"

@@ -28,13 +28,23 @@ Vue.component("login",{
             if(this.credentials.username.trim() != "" && this.credentials.password.trim() != ""){
                 axios.post("rest/login", this.credentials)
                 .then(res => {
-                    console.log(res.data);
+                    if(res.data ==="FAILIURE"){
+                        this.error ="Korisnicko ime ili lozinka nisu ispravni.";
+                    }
+                    else{
+                        this.storeData(userType = res.data.split(",")[1]);
+                        router.push(`/`);
+                    }
                 });
             }
             else{
-                this.error ="ne moze biti prazno";
+                this.error ="Potrebno je popuniti oba polja";
             }
             
         },
+        storeData: function(userType){
+            this.$router.app.login=userType;
+            this.$router.app.username=this.credentials.username;
+        }
     }
 });
