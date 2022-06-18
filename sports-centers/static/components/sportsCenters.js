@@ -93,7 +93,7 @@ Vue.component("centers",{
 			}
 		},
 		routeToLogin(){
-			router.push(`/log`);
+			router.push(`/login`);
 		},
 		logout(){
 			this.loggedUserType = "";

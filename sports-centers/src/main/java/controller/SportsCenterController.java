@@ -18,6 +18,7 @@ import java.util.Collection;
 import static spark.Spark.post;
 
 import service.SportsCenterService;
+import util.ImageBase64Converter;
 
 public class SportsCenterController{
 	private static Gson gson = new Gson();
@@ -28,7 +29,7 @@ public class SportsCenterController{
 			res.type("application/json");
 			Collection<SportsCenter> dataWithImgPaths = service.getAll();
 			for(SportsCenter center : dataWithImgPaths) {
-				center.setLogoPath(imageConverter(center.getLogoPath()));
+				center.setLogoPath(ImageBase64Converter.convert(center.getLogoPath()));
 			}
 			return gson.toJson(dataWithImgPaths);
 		});
@@ -40,37 +41,5 @@ public class SportsCenterController{
 			service.create(center);
 			return "SUCCESS";
 		});
-	}
-	
-	private static String imageConverter(String imagePath) {
-		byte[] data = null;
-		String retVal = "";
-		try {
-			FileInputStream stream = new FileInputStream(imagePath);
-			
-			int bufLength = 2048;
-		    byte[] buffer = new byte[2048];
-		    
-		    
-		    ByteArrayOutputStream out = new ByteArrayOutputStream();
-		    int readLength;
-		    while ((readLength = stream.read(buffer, 0, bufLength)) != -1) {
-		        out.write(buffer, 0, readLength);
-		    }
-		    data = out.toByteArray();
-		    stream.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if(data !=null) {
-			retVal = Base64.getEncoder().withoutPadding().encodeToString(data);
-		}
-		
-		return retVal;
-		
 	}
 }

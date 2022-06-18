@@ -17,6 +17,7 @@ import beans.Gender;
 import beans.Location;
 import beans.SportsCenter;
 import beans.UserRole;
+import controller.CustomerContoller;
 import controller.SportsCenterController;
 import controller.UserController;
 import repository.CustomerRepository;
@@ -33,6 +34,7 @@ public class Main {
     	
     	SportsCenterController.getAllCenters();
     	UserController.login();
+    	CustomerContoller.addCustomer();
 
     }
 }

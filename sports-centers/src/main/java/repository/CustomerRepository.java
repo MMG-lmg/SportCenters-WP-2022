@@ -24,21 +24,22 @@ public class CustomerRepository implements RepositoryBase<Customer>{
 	public CustomerRepository() {
 		customerList = new HashMap<String,Customer>();
 		userRepo = new UserRepository();
+		readData();
+		syncData();
 	}
 	public CustomerRepository(String path) {
 		this.path = path;
 	}
 	@Override
 	public Collection<Customer> getAll() {
-		readData();
-		syncData();
+
 		return customerList.values();
 	}
 
 	@Override
 	public Customer getById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+
+		return customerList.get(id);
 	}
 
 	@Override
@@ -46,17 +47,25 @@ public class CustomerRepository implements RepositoryBase<Customer>{
 		customerList.put(id,item);
 		userRepo.create(id, new User(item.getUserName(),item.getPassword(),item.getName(),item.getGender(),item.getDateOfBirth(),item.getRole()));
 		writeData();
+		readData();
+		syncData();
 	}
 
 	@Override
 	public void delete(String id) {
-		// TODO Auto-generated method stub
+		customerList.remove(id);
+		writeData();
+		readData();
+		syncData();
 		
 	}
 
 	@Override
 	public void update(String id, Customer item) {
-		// TODO Auto-generated method stub
+		customerList.put(id, item);
+		writeData();
+		readData();
+		syncData();
 		
 	}
 	private void readData() {
@@ -113,7 +122,6 @@ public class CustomerRepository implements RepositoryBase<Customer>{
 		
 	}
 	public void syncData() {
-		//getAllusers, iterate customerList, fillout fields
 		Collection<User> users = userRepo.getAll();
 		
 		customerList.forEach((id, customer) ->{ 
