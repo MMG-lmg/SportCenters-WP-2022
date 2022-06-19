@@ -1,16 +1,26 @@
 {
-  "zoki": {
-    "membershipCost": 169420.0,
+  "aaa": {
+    "membershipCost": 0.0,
     "loyalityPoints": 0.0,
-    "userName": "zoki"
+    "userName": "aaa"
   },
-  "dragan123": {
-    "membershipCost": 2300.5,
+  "perica94": {
+    "membershipCost": 0.0,
     "loyalityPoints": 0.0,
-    "userName": "dragan123"
+    "userName": "perica94"
+  },
+  "djoleBiceps": {
+    "membershipCost": 0.0,
+    "loyalityPoints": 0.0,
+    "userName": "djoleBiceps"
+  },
+  "parica": {
+    "membershipCost": 0.0,
+    "loyalityPoints": 0.0,
+    "userName": "parica"
   },
   "milky": {
-    "membershipCost": 0.31,
+    "membershipCost": 0.0,
     "loyalityPoints": 0.0,
     "userName": "milky"
   }

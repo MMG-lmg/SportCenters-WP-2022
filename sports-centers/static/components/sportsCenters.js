@@ -70,10 +70,12 @@ Vue.component("centers",{
 		</table>
 		<div>
 			<button v-if="!userLogedIn" v-on:click="routeToLogin"> Prijava </button>
+			<button v-if="!userLogedIn" v-on:click="routeToRegister"> Registracija </button>
 			<p v-if="userLogedIn">
 				Dobrodosli, {{loggedUserName}}, {{loggedUserType}}
 			</p>
 			<button v-if="userLogedIn" v-on:click="logout"> Odjava </button>
+			
 		</div>
 	</div>
 	`,
@@ -93,11 +95,16 @@ Vue.component("centers",{
 			}
 		},
 		routeToLogin(){
-			router.push(`/log`);
+			router.push(`/login`);
+		},
+		routeToRegister(){
+			router.push(`/register`);
 		},
 		logout(){
 			this.loggedUserType = "";
 			this.loggedUserName ="";
+			this.$router.app.login ="";
+			this.$router.app.username="";
 			this.userLogedIn = false;
 		},
 		locationToString: function(sc){

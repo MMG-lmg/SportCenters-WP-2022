@@ -23,6 +23,7 @@ public class UserRepository implements RepositoryBase<User>{
 	
 	public UserRepository() {
 		usersList = new HashMap<String,User>();
+		readData();
 	}
 	
 	public UserRepository(String path) {
@@ -36,7 +37,6 @@ public class UserRepository implements RepositoryBase<User>{
 
 
 	public User getById(String id) {
-		readData();
 		return usersList.get(id);
 	}
 
@@ -44,17 +44,20 @@ public class UserRepository implements RepositoryBase<User>{
 	public void create(String id, User item) {
 		usersList.put(id, (User) item);
 		writeData();
+		readData();
 	}
 
 	public void delete(String id) {
 		usersList.remove(id);	
 		writeData();
+		readData();
 		
 	}
 
 	public void update(String id, User item) {
 		usersList.put(id, (User) item);
 		writeData();
+		readData();
 	}
 	private void readData() {
 		Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapterDeserializer()).create();
