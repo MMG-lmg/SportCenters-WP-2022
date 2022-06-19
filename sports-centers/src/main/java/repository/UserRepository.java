@@ -31,6 +31,7 @@ public class UserRepository implements RepositoryBase<User>{
 	}
 
 	public Collection<User> getAll() {
+		readData();
 		return usersList.values();
 	}
 
