@@ -14,7 +14,7 @@
         "zipCode": "21000?"
       }
     },
-    "logoPath": "E:\\ftp_home\\fax data fillezilla\\treca\\web\\SportCenters-WP-2022\\sports-centers\\data\\img\\gym.png",
+    "logoPath": "data\\img\\gym.png",
     "grade": 0.2,
     "workHours": [
       7.0,
@@ -36,7 +36,7 @@
         "zipCode": "797979"
       }
     },
-    "logoPath": "E:\\ftp_home\\fax data fillezilla\\treca\\web\\SportCenters-WP-2022\\sports-centers\\data\\img\\gym.png",
+    "logoPath": "data\\img\\gym.png",
     "grade": 1.6,
     "workHours": [
       0,
@@ -58,7 +58,7 @@
         "zipCode": "787979"
       }
     },
-    "logoPath": "E:\\ftp_home\\fax data fillezilla\\treca\\web\\SportCenters-WP-2022\\sports-centers\\data\\img\\gym.png",
+    "logoPath": "E:data\\img\\gym.png",
     "grade": 3.0,
     "workHours": [
       0,
