@@ -84,11 +84,25 @@ Vue.component("centers",{
 			.then(response=>{this.centers = response.data
 				this.filteredCenters = this.centers;
 		});
-		this.checkLogin();
+		axios.get('rest/loginCheck').then(response=>{
+            if(response.data == null){
+
+            }
+            else{
+				console.log(response.data)
+				this.$router.app.username = response.data.userName;
+				this.$router.app.login = response.data.role;
+				this.checkLogin();
+            }
+        });
+		
 	},
 	methods:{
 		checkLogin(){
-			if(this.$router.app.login !="" && this.$router.app.username !=""){
+			console.log("check");
+			if(this.$router.app.login && this.$router.app.username){
+				console.log(this.$router.app.login);
+				console.log(this.$router.app.username);
 				this.loggedUserType = this.$router.app.login;
 				this.loggedUserName = this.$router.app.username;
 				this.userLogedIn = true;
@@ -106,6 +120,7 @@ Vue.component("centers",{
 			this.$router.app.login ="";
 			this.$router.app.username="";
 			this.userLogedIn = false;
+			axios.get('rest/logout');
 		},
 		locationToString: function(sc){
 			return sc.location.latitude +","+ sc.location.longitude +"\n"

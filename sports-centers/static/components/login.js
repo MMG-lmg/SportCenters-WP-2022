@@ -19,12 +19,11 @@ Vue.component("login",{
         </div>
     `,
     mounted() {
-        
     },
     methods:{
         login: function(event){
             event.preventDefault();
-            console.log(this.credentials.username +","+ this.credentials.password);
+            //console.log(this.credentials.username +","+ this.credentials.password);
             if(this.credentials.username.trim() != "" && this.credentials.password.trim() != ""){
                 axios.post("rest/login", this.credentials)
                 .then(res => {
@@ -32,7 +31,7 @@ Vue.component("login",{
                         this.error ="Korisnicko ime ili lozinka nisu ispravni.";
                     }
                     else{
-                        this.storeData(userType = res.data.split(",")[1]);
+                        //this.storeData(userType = res.data.split(",")[1]);
                         router.push(`/`);
                     }
                 });

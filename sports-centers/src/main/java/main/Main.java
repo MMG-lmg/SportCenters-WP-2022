@@ -35,6 +35,7 @@ public class Main {
     	SportsCenterController.getAllCenters();
     	UserController.login();
     	CustomerContoller.addCustomer();
-
+    	UserController.logout();
+    	UserController.isLoggedIn();
     }
 }
