@@ -12,36 +12,38 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import beans.Coach;
 import beans.Manager;
 import beans.User;
 
-public class ManagerRepository implements RepositoryBase<Manager>{
-	private UserRepository userRepo;
-	private HashMap<String,Manager> managerList;
-	private String path = "data";
+public class CoachRepository implements RepositoryBase<Coach>{
 	
-	public ManagerRepository() {
-		managerList = new HashMap<String,Manager>();
+	private UserRepository userRepo;
+	private HashMap<String,Coach> coachList;
+	private String path = "data";
+			
+	public CoachRepository() {
+		coachList = new HashMap<String,Coach>();
 		userRepo = new UserRepository();
 		readData();
 		syncData();
 	}
-	public ManagerRepository(String path) {
+	public CoachRepository(String path) {
 		this.path = path;
 	}
 	@Override
-	public Collection<Manager> getAll() {
-		return managerList.values();
+	public Collection<Coach> getAll() {
+		return coachList.values();
 	}
 
 	@Override
-	public Manager getById(String id) {
-		return managerList.get(id);
+	public Coach getById(String id) {
+		return coachList.get(id);
 	}
 
 	@Override
-	public void create(String id, Manager item) {
-		managerList.put(id, item);
+	public void create(String id, Coach item) {
+		coachList.put(id, item);
 		userRepo.create(id, new User(item.getUserName(),item.getPassword(),item.getName(),item.getGender(),item.getDateOfBirth(),item.getRole()));
 		writeData();
 		readData();
@@ -50,24 +52,26 @@ public class ManagerRepository implements RepositoryBase<Manager>{
 
 	@Override
 	public void delete(String id) {
-		managerList.remove(id);
+		coachList.remove(id);
 		writeData();
 		readData();
 		syncData();
+		
 	}
 
 	@Override
-	public void update(String id, Manager item) {
-		managerList.put(id, item);
+	public void update(String id, Coach item) {
+		coachList.put(id, item);
 		writeData();
 		readData();
 		syncData();
+		
 	}
 	private void readData() {
 		Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new UserExclusionStrategy()).create();
 		BufferedReader in = null;
 		try {
-			File file = new File(this.path + "/managers.json");
+			File file = new File(this.path + "/coaches.json");
 			System.out.println(file.getCanonicalPath());
 			in = new BufferedReader(new FileReader(file));
 			StringBuilder data = new StringBuilder();
@@ -75,8 +79,8 @@ public class ManagerRepository implements RepositoryBase<Manager>{
 			while((line = in.readLine())!=null) {
 				data.append(line);
 			}
-			HashMap<String,Manager> fromJson = gson.fromJson(data.toString(), new TypeToken<HashMap<String, Manager>>(){}.getType());
-			this.managerList = fromJson;
+			HashMap<String,Coach> fromJson = gson.fromJson(data.toString(), new TypeToken<HashMap<String, Coach>>(){}.getType());
+			this.coachList = fromJson;
 
 		} 
 		catch(Exception e) {
@@ -96,9 +100,9 @@ public class ManagerRepository implements RepositoryBase<Manager>{
 		Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new UserExclusionStrategy()).create();
 		BufferedWriter out = null;
 		try {
-			File file = new File(this.path + "/managers.json");
+			File file = new File(this.path + "/coaches.json");
 			out = new BufferedWriter(new FileWriter(file));
-			out.write(gson.toJson(this.managerList));
+			out.write(gson.toJson(this.coachList));
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -117,19 +121,20 @@ public class ManagerRepository implements RepositoryBase<Manager>{
 	public void syncData() {
 		Collection<User> users = userRepo.getAll();
 		
-		managerList.forEach((id, manager) ->{ 
+		coachList.forEach((id, coach) ->{ 
 			for(User user : users) {
 				if(user.getUserName().equals(id)) {
-					this.fillOutManager(manager,user);
+					this.fillOutCoach(coach,user);
 				}
 			}
 		});
 	}
-	private void fillOutManager(Manager manager, User user) {
-		manager.setName(user.getName());
-		manager.setDateOfBirth(user.getDateOfBirth());
-		manager.setGender(user.getGender());
-		manager.setPassword(user.getPassword());
-		manager.setRole(user.getRole());
+	private void fillOutCoach(Coach coach, User user) {
+		coach.setName(user.getName());
+		coach.setDateOfBirth(user.getDateOfBirth());
+		coach.setGender(user.getGender());
+		coach.setPassword(user.getPassword());
+		coach.setRole(user.getRole());
 	}
+	
 }
