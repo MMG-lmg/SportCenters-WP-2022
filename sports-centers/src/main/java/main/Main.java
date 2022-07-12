@@ -16,6 +16,7 @@ import beans.CustomerType;
 import beans.Gender;
 import beans.Location;
 import beans.SportsCenter;
+import beans.User;
 import beans.UserRole;
 import controller.CustomerContoller;
 import controller.SportsCenterController;
@@ -23,6 +24,7 @@ import controller.UserController;
 import repository.CustomerRepository;
 import repository.UserRepository;
 import service.SportsCenterService;
+import service.UserService;
 import spark.Spark;
 
 public class Main {
@@ -37,5 +39,8 @@ public class Main {
     	CustomerContoller.addCustomer();
     	UserController.logout();
     	UserController.isLoggedIn();
+    	
+    	UserService service = new UserService();
+    	//service.create(new User("admin1","admin","SuperAdmin", Gender.MALE, LocalDate.of(2000,12,17), UserRole.ADMIN));
     }
 }

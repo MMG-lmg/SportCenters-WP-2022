@@ -7,7 +7,7 @@ import com.google.gson.FieldAttributes;
 
 import beans.User;
 
-public class ConsumerExclusionStrategy implements ExclusionStrategy {
+public class UserExclusionStrategy implements ExclusionStrategy {
 
 	@Override
 	public boolean shouldSkipField(FieldAttributes f) {

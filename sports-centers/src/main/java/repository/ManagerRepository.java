@@ -12,39 +12,36 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import beans.Customer;
+import beans.Manager;
 import beans.User;
 
-
-public class CustomerRepository implements RepositoryBase<Customer>{
+public class ManagerRepository implements RepositoryBase<Manager>{
 	private UserRepository userRepo;
-	private HashMap<String,Customer> customerList;
+	private HashMap<String,Manager> managerList;
 	private String path = "data";
 	
-	public CustomerRepository() {
-		customerList = new HashMap<String,Customer>();
+	public ManagerRepository() {
+		managerList = new HashMap<String,Manager>();
 		userRepo = new UserRepository();
 		readData();
 		syncData();
 	}
-	public CustomerRepository(String path) {
+	public ManagerRepository(String path) {
 		this.path = path;
 	}
 	@Override
-	public Collection<Customer> getAll() {
-
-		return customerList.values();
+	public Collection<Manager> getAll() {
+		return managerList.values();
 	}
 
 	@Override
-	public Customer getById(String id) {
-
-		return customerList.get(id);
+	public Manager getById(String id) {
+		return managerList.get(id);
 	}
 
 	@Override
-	public void create(String id, Customer item) {
-		customerList.put(id,item);
+	public void create(String id, Manager item) {
+		managerList.put(id, item);
 		userRepo.create(id, new User(item.getUserName(),item.getPassword(),item.getName(),item.getGender(),item.getDateOfBirth(),item.getRole()));
 		writeData();
 		readData();
@@ -53,26 +50,22 @@ public class CustomerRepository implements RepositoryBase<Customer>{
 
 	@Override
 	public void delete(String id) {
-		customerList.remove(id);
+		managerList.remove(id);
 		writeData();
 		readData();
 		syncData();
-		
 	}
 
 	@Override
-	public void update(String id, Customer item) {
-		customerList.put(id, item);
-		writeData();
-		readData();
-		syncData();
+	public void update(String id, Manager item) {
+		// TODO Auto-generated method stub
 		
 	}
 	private void readData() {
 		Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new UserExclusionStrategy()).create();
 		BufferedReader in = null;
 		try {
-			File file = new File(this.path + "/consumers.json");
+			File file = new File(this.path + "/managers.json");
 			System.out.println(file.getCanonicalPath());
 			in = new BufferedReader(new FileReader(file));
 			StringBuilder data = new StringBuilder();
@@ -80,8 +73,8 @@ public class CustomerRepository implements RepositoryBase<Customer>{
 			while((line = in.readLine())!=null) {
 				data.append(line);
 			}
-			HashMap<String,Customer> fromJson = gson.fromJson(data.toString(), new TypeToken<HashMap<String, Customer>>(){}.getType());
-			this.customerList = fromJson;
+			HashMap<String,Manager> fromJson = gson.fromJson(data.toString(), new TypeToken<HashMap<String, Manager>>(){}.getType());
+			this.managerList = fromJson;
 
 		} 
 		catch(Exception e) {
@@ -101,9 +94,9 @@ public class CustomerRepository implements RepositoryBase<Customer>{
 		Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new UserExclusionStrategy()).create();
 		BufferedWriter out = null;
 		try {
-			File file = new File(this.path + "/consumers.json");
+			File file = new File(this.path + "/managers.json");
 			out = new BufferedWriter(new FileWriter(file));
-			out.write(gson.toJson(this.customerList));
+			out.write(gson.toJson(this.managerList));
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -118,25 +111,23 @@ public class CustomerRepository implements RepositoryBase<Customer>{
 				}
 			}
 		}
-		
-		
 	}
 	public void syncData() {
 		Collection<User> users = userRepo.getAll();
 		
-		customerList.forEach((id, customer) ->{ 
+		managerList.forEach((id, manager) ->{ 
 			for(User user : users) {
 				if(user.getUserName().equals(id)) {
-					this.fillOutCustomer(customer,user);
+					this.fillOutManager(manager,user);
 				}
 			}
 		});
 	}
-	private void fillOutCustomer(Customer customer, User user) {
-		customer.setName(user.getName());
-		customer.setDateOfBirth(user.getDateOfBirth());
-		customer.setGender(user.getGender());
-		customer.setPassword(user.getPassword());
-		customer.setRole(user.getRole());
+	private void fillOutManager(Manager manager, User user) {
+		manager.setName(user.getName());
+		manager.setDateOfBirth(user.getDateOfBirth());
+		manager.setGender(user.getGender());
+		manager.setPassword(user.getPassword());
+		manager.setRole(user.getRole());
 	}
 }
