@@ -18,7 +18,7 @@ public class CoachController {
 	private static CoachService service = new CoachService();
 	
 	public static void addCoach() {
-		post("rest/addManager", (req,res) -> {
+		post("rest/addCoach", (req,res) -> {
 			res.type("application/json");
 			Coach coach = gson.fromJson(req.body(), Coach.class);
 			service.create(coach);

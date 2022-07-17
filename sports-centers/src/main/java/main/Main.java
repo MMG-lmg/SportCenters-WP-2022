@@ -11,6 +11,7 @@ import java.util.Date;
 import beans.Address;
 import beans.CenterStatus;
 import beans.CenterTypes;
+import beans.Coach;
 import beans.Customer;
 import beans.CustomerType;
 import beans.Gender;
@@ -18,11 +19,13 @@ import beans.Location;
 import beans.SportsCenter;
 import beans.User;
 import beans.UserRole;
+import controller.CoachController;
 import controller.CustomerContoller;
 import controller.SportsCenterController;
 import controller.UserController;
 import repository.CustomerRepository;
 import repository.UserRepository;
+import service.CoachService;
 import service.SportsCenterService;
 import service.UserService;
 import spark.Spark;
@@ -39,8 +42,7 @@ public class Main {
     	CustomerContoller.addCustomer();
     	UserController.logout();
     	UserController.isLoggedIn();
+    	CoachController.addCoach();
     	
-    	UserService service = new UserService();
-    	//service.create(new User("admin1","admin","SuperAdmin", Gender.MALE, LocalDate.of(2000,12,17), UserRole.ADMIN));
     }
 }

@@ -23,7 +23,7 @@ public class CoachService implements InterfaceBase<Coach> {
 
 	@Override
 	public void create(Coach item) {
-		repo.create(null, item);
+		repo.create(item.getUserName(), item);
 	}
 
 	@Override

@@ -15,6 +15,38 @@
     "dateOfBirth": "1994-01-01",
     "role": "CUSTOMER"
   },
+  "null": {
+    "userName": "zoranaTrener",
+    "password": "zoka",
+    "name": "Zorana Markovic",
+    "gender": "FEMALE",
+    "dateOfBirth": "2000-12-17",
+    "role": "COACH"
+  },
+  "zoranaTrener": {
+    "userName": "zoranaTrener",
+    "password": "zoka",
+    "name": "Zorana Markovic",
+    "gender": "FEMALE",
+    "dateOfBirth": "2000-12-17",
+    "role": "COACH"
+  },
+  "admin1": {
+    "userName": "admin1",
+    "password": "admin",
+    "name": "SuperAdmin",
+    "gender": "MALE",
+    "dateOfBirth": "2000-12-17",
+    "role": "ADMIN"
+  },
+  "mirkoTrener": {
+    "userName": "mirkoTrener",
+    "password": "1234",
+    "name": "mirko mirkovic",
+    "gender": "MALE",
+    "dateOfBirth": "1995-06-14",
+    "role": "COACH"
+  },
   "djoleBiceps": {
     "userName": "djoleBiceps",
     "password": "djoka",
@@ -22,6 +54,14 @@
     "gender": "MALE",
     "dateOfBirth": "1998-10-20",
     "role": "CUSTOMER"
+  },
+  "aha": {
+    "userName": "aha",
+    "password": "aha",
+    "name": "aha",
+    "gender": "MALE",
+    "dateOfBirth": "2022-06-27",
+    "role": "COACH"
   },
   "milky": {
     "userName": "milky",
