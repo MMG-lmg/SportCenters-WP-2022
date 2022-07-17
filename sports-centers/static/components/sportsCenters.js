@@ -75,6 +75,8 @@ Vue.component("centers",{
 				Dobrodosli, {{loggedUserName}}, {{loggedUserType}}
 			</p>
 			<button v-if="userLogedIn" v-on:click="logout"> Odjava </button>
+			<button v-if="loggedUserType == 'ADMIN'" v-on:click="routeToRegisterCoach"> Prijava trenera </button>
+			<button v-if="loggedUserType == 'ADMIN'" v-on:click="routeToRegisterManager"> Prijava menadzera </button>
 			
 		</div>
 	</div>
@@ -99,10 +101,7 @@ Vue.component("centers",{
 	},
 	methods:{
 		checkLogin(){
-			console.log("check");
 			if(this.$router.app.login && this.$router.app.username){
-				console.log(this.$router.app.login);
-				console.log(this.$router.app.username);
 				this.loggedUserType = this.$router.app.login;
 				this.loggedUserName = this.$router.app.username;
 				this.userLogedIn = true;
@@ -113,6 +112,12 @@ Vue.component("centers",{
 		},
 		routeToRegister(){
 			router.push(`/register`);
+		},
+		routeToRegisterCoach(){
+			router.push(`/register/coach`);
+		},
+		routeToRegisterManager(){
+			router.push(`/register/manager`);
 		},
 		logout(){
 			this.loggedUserType = "";

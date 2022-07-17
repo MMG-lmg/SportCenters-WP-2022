@@ -12,39 +12,38 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import beans.Customer;
+import beans.Coach;
+import beans.Manager;
 import beans.User;
 
-
-public class CustomerRepository implements RepositoryBase<Customer>{
-	private UserRepository userRepo;
-	private HashMap<String,Customer> customerList;
-	private String path = "data";
+public class CoachRepository implements RepositoryBase<Coach>{
 	
-	public CustomerRepository() {
-		customerList = new HashMap<String,Customer>();
+	private UserRepository userRepo;
+	private HashMap<String,Coach> coachList;
+	private String path = "data";
+			
+	public CoachRepository() {
+		coachList = new HashMap<String,Coach>();
 		userRepo = new UserRepository();
 		readData();
 		syncData();
 	}
-	public CustomerRepository(String path) {
+	public CoachRepository(String path) {
 		this.path = path;
 	}
 	@Override
-	public Collection<Customer> getAll() {
-
-		return customerList.values();
+	public Collection<Coach> getAll() {
+		return coachList.values();
 	}
 
 	@Override
-	public Customer getById(String id) {
-
-		return customerList.get(id);
+	public Coach getById(String id) {
+		return coachList.get(id);
 	}
 
 	@Override
-	public void create(String id, Customer item) {
-		customerList.put(id,item);
+	public void create(String id, Coach item) {
+		coachList.put(id, item);
 		userRepo.create(id, new User(item.getUserName(),item.getPassword(),item.getName(),item.getGender(),item.getDateOfBirth(),item.getRole()));
 		writeData();
 		readData();
@@ -53,7 +52,7 @@ public class CustomerRepository implements RepositoryBase<Customer>{
 
 	@Override
 	public void delete(String id) {
-		customerList.remove(id);
+		coachList.remove(id);
 		writeData();
 		readData();
 		syncData();
@@ -61,8 +60,8 @@ public class CustomerRepository implements RepositoryBase<Customer>{
 	}
 
 	@Override
-	public void update(String id, Customer item) {
-		customerList.put(id, item);
+	public void update(String id, Coach item) {
+		coachList.put(id, item);
 		writeData();
 		readData();
 		syncData();
@@ -72,7 +71,7 @@ public class CustomerRepository implements RepositoryBase<Customer>{
 		Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new UserExclusionStrategy()).create();
 		BufferedReader in = null;
 		try {
-			File file = new File(this.path + "/consumers.json");
+			File file = new File(this.path + "/coaches.json");
 			System.out.println(file.getCanonicalPath());
 			in = new BufferedReader(new FileReader(file));
 			StringBuilder data = new StringBuilder();
@@ -80,8 +79,8 @@ public class CustomerRepository implements RepositoryBase<Customer>{
 			while((line = in.readLine())!=null) {
 				data.append(line);
 			}
-			HashMap<String,Customer> fromJson = gson.fromJson(data.toString(), new TypeToken<HashMap<String, Customer>>(){}.getType());
-			this.customerList = fromJson;
+			HashMap<String,Coach> fromJson = gson.fromJson(data.toString(), new TypeToken<HashMap<String, Coach>>(){}.getType());
+			this.coachList = fromJson;
 
 		} 
 		catch(Exception e) {
@@ -101,9 +100,9 @@ public class CustomerRepository implements RepositoryBase<Customer>{
 		Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new UserExclusionStrategy()).create();
 		BufferedWriter out = null;
 		try {
-			File file = new File(this.path + "/consumers.json");
+			File file = new File(this.path + "/coaches.json");
 			out = new BufferedWriter(new FileWriter(file));
-			out.write(gson.toJson(this.customerList));
+			out.write(gson.toJson(this.coachList));
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -118,25 +117,24 @@ public class CustomerRepository implements RepositoryBase<Customer>{
 				}
 			}
 		}
-		
-		
 	}
 	public void syncData() {
 		Collection<User> users = userRepo.getAll();
 		
-		customerList.forEach((id, customer) ->{ 
+		coachList.forEach((id, coach) ->{ 
 			for(User user : users) {
 				if(user.getUserName().equals(id)) {
-					this.fillOutCustomer(customer,user);
+					this.fillOutCoach(coach,user);
 				}
 			}
 		});
 	}
-	private void fillOutCustomer(Customer customer, User user) {
-		customer.setName(user.getName());
-		customer.setDateOfBirth(user.getDateOfBirth());
-		customer.setGender(user.getGender());
-		customer.setPassword(user.getPassword());
-		customer.setRole(user.getRole());
+	private void fillOutCoach(Coach coach, User user) {
+		coach.setName(user.getName());
+		coach.setDateOfBirth(user.getDateOfBirth());
+		coach.setGender(user.getGender());
+		coach.setPassword(user.getPassword());
+		coach.setRole(user.getRole());
 	}
+	
 }
