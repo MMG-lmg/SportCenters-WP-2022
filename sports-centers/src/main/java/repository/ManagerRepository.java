@@ -13,16 +13,19 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import beans.Manager;
+import beans.SportsCenter;
 import beans.User;
 
 public class ManagerRepository implements RepositoryBase<Manager>{
 	private UserRepository userRepo;
+	private SportsCenterRepository centerRepo;
 	private HashMap<String,Manager> managerList;
 	private String path = "data";
 	
 	public ManagerRepository() {
 		managerList = new HashMap<String,Manager>();
 		userRepo = new UserRepository();
+		centerRepo = new SportsCenterRepository();
 		readData();
 		syncData();
 	}
@@ -64,7 +67,7 @@ public class ManagerRepository implements RepositoryBase<Manager>{
 		syncData();
 	}
 	private void readData() {
-		Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new UserExclusionStrategy()).create();
+		Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new UserExclusionStrategy(), new SportsCenterExclusionStrategy()).create();
 		BufferedReader in = null;
 		try {
 			File file = new File(this.path + "/managers.json");
@@ -93,7 +96,7 @@ public class ManagerRepository implements RepositoryBase<Manager>{
 	}
 	
 	private void writeData() {
-		Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new UserExclusionStrategy()).create();
+		Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new UserExclusionStrategy(), new SportsCenterExclusionStrategy()).create();
 		BufferedWriter out = null;
 		try {
 			File file = new File(this.path + "/managers.json");
@@ -116,13 +119,21 @@ public class ManagerRepository implements RepositoryBase<Manager>{
 	}
 	public void syncData() {
 		Collection<User> users = userRepo.getAll();
-		
+		Collection<SportsCenter> centers = centerRepo.getAll();
 		managerList.forEach((id, manager) ->{ 
 			for(User user : users) {
 				if(user.getUserName().equals(id)) {
 					this.fillOutManager(manager,user);
 				}
 			}
+			for(SportsCenter center : centers) {
+				if(manager.getCenter()!=null) {
+					if(center.getCenterId().equals(manager.getCenter().getCenterId())) {
+						manager.setCenter(center);
+					}
+				}
+			}
+				
 		});
 	}
 	private void fillOutManager(Manager manager, User user) {

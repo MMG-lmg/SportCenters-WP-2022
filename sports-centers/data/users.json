@@ -1,11 +1,11 @@
 {
-  "aaa": {
-    "userName": "aaa",
-    "password": "aaaa",
-    "name": "aaa",
+  "superMenadjer": {
+    "userName": "superMenadjer",
+    "password": "1234",
+    "name": "supMen",
     "gender": "FEMALE",
-    "dateOfBirth": "2022-06-07",
-    "role": "CUSTOMER"
+    "dateOfBirth": "2022-06-30",
+    "role": "MENAGER"
   },
   "perica94": {
     "userName": "perica94",
@@ -14,14 +14,6 @@
     "gender": "MALE",
     "dateOfBirth": "1994-01-01",
     "role": "CUSTOMER"
-  },
-  "null": {
-    "userName": "zoranaTrener",
-    "password": "zoka",
-    "name": "Zorana Markovic",
-    "gender": "FEMALE",
-    "dateOfBirth": "2000-12-17",
-    "role": "COACH"
   },
   "zoranaTrener": {
     "userName": "zoranaTrener",
@@ -38,6 +30,14 @@
     "gender": "MALE",
     "dateOfBirth": "2000-12-17",
     "role": "ADMIN"
+  },
+  "micaMenadzer": {
+    "userName": "micaMenadzer",
+    "password": "1234",
+    "name": "Milan Markoivc",
+    "gender": "MALE",
+    "dateOfBirth": "1995-12-05",
+    "role": "MENAGER"
   },
   "mirkoTrener": {
     "userName": "mirkoTrener",

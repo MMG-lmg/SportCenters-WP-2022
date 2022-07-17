@@ -34,6 +34,12 @@ public class SportsCenterController{
 			return gson.toJson(dataWithImgPaths);
 		});
 	}
+	public static void getAllCentersWithoutManager() {
+		get("rest/centers/free", (req,res)->{
+			res.type("application/json");
+			return gson.toJson(service.getAllWithoutManager());
+		});
+	}
 	public static void addCenter() {
 		post("rest/centers/add",(req,res)->{
 			res.type("application/json");

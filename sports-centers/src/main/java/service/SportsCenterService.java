@@ -1,7 +1,9 @@
 package service;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import beans.Manager;
 import beans.SportsCenter;
 import repository.SportsCenterRepository;
 import util.IdGenerator;
@@ -9,8 +11,10 @@ import util.IdGenerator;
 public class SportsCenterService implements InterfaceBase<SportsCenter> {
 
 	private SportsCenterRepository repo;
+	private ManagerService managerService;
 	public SportsCenterService() {
 		repo = new SportsCenterRepository();
+		managerService = new ManagerService();
 	}
 	@Override
 	public Collection<SportsCenter> getAll() {
@@ -21,7 +25,23 @@ public class SportsCenterService implements InterfaceBase<SportsCenter> {
 	public SportsCenter getById(String id) {
 		return repo.getById(id);
 	}
-
+	public Collection<String> getAllWithoutManager(){
+		Collection<SportsCenter> centers = repo.getAll();
+		Collection<Manager> managersList = managerService.getAll();
+		Collection<String> centerTitles = new ArrayList<String>();
+		
+		for(Manager man : managersList) {
+			if(man.getCenter() != null) {
+				if(centers.contains(man.getCenter())) {
+					centers.remove(man.getCenter());
+				}
+			}
+		}
+		for(SportsCenter center : centers) {
+			centerTitles.add(center.getCenterTitle());
+		}
+		return centerTitles;
+	}
 	@Override
 	public void create(SportsCenter item) {
 		String id = generateId();

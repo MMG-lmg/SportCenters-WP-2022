@@ -16,16 +16,19 @@ import beans.Customer;
 import beans.CustomerType;
 import beans.Gender;
 import beans.Location;
+import beans.Manager;
 import beans.SportsCenter;
 import beans.User;
 import beans.UserRole;
 import controller.CoachController;
 import controller.CustomerContoller;
+import controller.ManagerController;
 import controller.SportsCenterController;
 import controller.UserController;
 import repository.CustomerRepository;
 import repository.UserRepository;
 import service.CoachService;
+import service.ManagerService;
 import service.SportsCenterService;
 import service.UserService;
 import spark.Spark;
@@ -43,6 +46,9 @@ public class Main {
     	UserController.logout();
     	UserController.isLoggedIn();
     	CoachController.addCoach();
-    	
+    	ManagerController.addManager();
+    	SportsCenterController.getAllCentersWithoutManager();
+    	//ManagerService service = new ManagerService();
+    	//service.create(new Manager("micaMenadzer","1234","Milan Markoivc",Gender.MALE, LocalDate.of(1995, 12, 5),UserRole.MENAGER, null));
     }
 }
