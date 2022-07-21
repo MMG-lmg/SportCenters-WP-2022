@@ -1,7 +1,7 @@
 package controller;
 
 import static spark.Spark.post;
-
+import static spark.Spark.get;
 import java.time.LocalDate;
 
 import com.google.gson.Gson;
@@ -25,6 +25,16 @@ public class CoachController {
 			//TODO implement some validations in service and add casting exceptions
 			//catch them here, return FAILIURE.
 			return "SUCCESS";
+		});
+	}
+	public static void getCoach() {
+		get("rest/getCoach", (req,res)->{
+			res.type("application/json");
+			Coach coach = service.getById(req.queryParams("username"));
+			if(coach!=null) {
+				return coach;
+			}
+			return null;
 		});
 	}
 }

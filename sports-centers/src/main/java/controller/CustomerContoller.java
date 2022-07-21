@@ -1,5 +1,6 @@
 package controller;
 
+import static spark.Spark.get;
 import static spark.Spark.post;
 
 import java.time.LocalDate;
@@ -7,7 +8,9 @@ import java.time.LocalDate;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import DTO.ManagerDTO;
 import beans.Customer;
+import beans.Manager;
 import service.CustomerService;
 import util.LocalDateAdapterDeserializer;
 
@@ -25,5 +28,16 @@ public class CustomerContoller {
 			//catch them here, return FAILIURE.
 			return "SUCCESS";
 		});
+	}
+	public static void getCustomer() {
+		get("rest/getManager", (req,res) ->{
+			res.type("application/json");
+			Customer customer = service.getById(req.queryParams("username"));
+			if(customer!=null) {
+				return customer;
+			}
+			return "FAILIURE";
+		});
+							
 	}
 }

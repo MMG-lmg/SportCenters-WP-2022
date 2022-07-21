@@ -2,6 +2,7 @@ package controller;
 
 import java.time.LocalDate;
 import static spark.Spark.post;
+import static spark.Spark.get;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -27,5 +28,16 @@ public class ManagerController {
 			//catch them here, return FAILIURE.
 			return "SUCCESS";
 		});
+	}
+	public static void getManager() {
+		get("rest/getManager", (req,res) ->{
+			res.type("application/json");
+			Manager manager = service.getById(req.queryParams("username"));
+			if(manager!=null) {
+				return ManagerDTO.convertObject(manager);
+			}
+			return "FAILIURE";
+		});
+							
 	}
 }

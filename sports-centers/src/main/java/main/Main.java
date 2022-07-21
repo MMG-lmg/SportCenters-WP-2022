@@ -48,6 +48,8 @@ public class Main {
     	CoachController.addCoach();
     	ManagerController.addManager();
     	SportsCenterController.getAllCentersWithoutManager();
+    	UserController.getAdmin();
+    	//UserController userController = new UserController();
     	//ManagerService service = new ManagerService();
     	//service.create(new Manager("micaMenadzer","1234","Milan Markoivc",Gender.MALE, LocalDate.of(1995, 12, 5),UserRole.MENAGER, null));
     }

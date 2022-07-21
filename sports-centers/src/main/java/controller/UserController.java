@@ -8,6 +8,8 @@ import java.util.Collection;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import DTO.ManagerDTO;
+import beans.Manager;
 import beans.User;
 import service.UserService;
 import spark.Session;
@@ -54,6 +56,16 @@ public class UserController {
 			Session session = req.session(true);
 			User user = session.attribute("user");
 			return gson.toJson(user);
+		});
+	}
+	public static void getAdmin() {
+		get("rest/getAdmin", (req,res) ->{
+			res.type("application/json");
+			User admin = service.getById(req.queryParams("username"));
+			if(admin!=null) {
+				return gson.toJson(admin);
+			}
+			return "FAILIURE";
 		});
 	}
 }
