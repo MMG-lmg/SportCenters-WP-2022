@@ -17,12 +17,26 @@ Vue.component("profile",{
         <h3>Dobrodosli {{user.userName}}</h3>
         <div>
         <label for="uName">Korisnicko ime:</label>
-        <input type="text" name="uName" v-model="editUser.userName" :disabled="edit == 0"/>
+        <input type="text" name="uName" v-model="editUser.userName" disabled/>
         </div>
-        <p>Ime: {{user.name}}</p>
-        <p>Pol: {{user.gender}}</p>
-        <p>Datum Rodjenja: {{user.dateOfBirth}}</p>
-        <p>Uloga korisnika: {{user.role}}</p>
+        <div>
+        <label for="name">Ime:</label>
+        <input type="text" name="name" v-model="editUser.name" :disabled="edit == 0"/>
+        </div>
+        <div>
+        <label for="gender">Pol:</label>
+        <select name="gender" v-model="editUser.gender" :disabled="edit == 0">
+            <option :selected="editUser.gender=='MALE'" value="MALE">Muski</option>
+            <option :selected="editUser.gender=='FEMALE'" value="FEMALE" >Zenski</option>
+        </select>
+        </div>
+        <div>
+        <label for="date">Datum rodjenja:</label>
+        <input type="date" name="date" v-model="editUser.dateOfBirth" :disabled="edit == 0"/>
+        </div>
+        <div>
+        <p>Uloga: {{roleToString(editUser.role)}}</p>
+        </div>
         <div v-if="this.$router.app.login=='MENAGER'">
             <p>Naziv Sportskog Centra: {{manager.sportsCenterTitle}}</p>
         </div>
@@ -50,8 +64,9 @@ Vue.component("profile",{
             </tr>
             </table>
         </div>
-        <button @click="edit=1">Izmeni podatke</button>
-        <button v-if="edit==1" @click="this.cancelEdit">otkazi izmene</button>
+        <button v-if="edit==0" @click="edit=1">Izmeni podatke</button>
+        <button v-if="edit==1" @click="this.cancelEdit">Otkazi izmene</button>
+        <button v-if="edit==1" @click="this.cancelEdit">Primeni izmene</button>
     </div>
     `,
     mounted(){
@@ -137,25 +152,18 @@ Vue.component("profile",{
                 }
             }
         },
-        locationToString: function(sc){
-			return sc.location.latitude +","+ sc.location.longitude +"\n"
-			+sc.location.address.street +","+ sc.location.address.streetNumber +"\n"
-			+sc.location.address.city
+        roleToString: function(role){
+            switch(role){
+                case "CUSTOMER":
+                    return "Kupac";
+                case "ADMIN":
+                    return "Administrator";
+                case "MENAGER":
+                    return "Menadzer";
+                case "COACH":
+                    return "Trener";
+            }
 		},
-		typeToString: function(sc){
-			var retVal;
-			if(sc.type ==="POOL") retVal = "Bazen";
-			else if(sc.type ==="GYM") retVal = "Teretana";
-			else if(sc.type === "DANCE_STUDIO") retVal = "Plesni studio";
-			else if(sc.type ==="SPORTS_CENTER") retVal = "Sportski centar";
-			return retVal;
-		},
-		statusToString: function(sc){
-			var retVal;
-			if(sc.status ==="OPEN") retVal = "Otvoreno";
-			else retVal="Zatvoreno";
-			return retVal;
-        },
         resetEditFields: function(){
             this.copyUser();
             this.editManager = this.manager;
