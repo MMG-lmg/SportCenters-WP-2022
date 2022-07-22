@@ -40,6 +40,19 @@ public class ManagerDTO extends User{
 		return null;
 	}
 	public static ManagerDTO convertObject(Manager manager) {
-		return new ManagerDTO(manager.getUserName(),manager.getPassword(),manager.getName(),manager.getGender(),manager.getDateOfBirth(),manager.getRole(),manager.getCenter().getCenterTitle());
+		ManagerDTO dto = new ManagerDTO();
+		dto.setUserName(manager.getUserName());
+		dto.setName(manager.getName());
+		dto.setPassword(manager.getPassword());
+		dto.setDateOfBirth(manager.getDateOfBirth());
+		dto.setGender(manager.getGender());
+		dto.setRole(manager.getRole());
+		if(manager.getCenter()!=null) {
+			dto.setSportCenterTitle(manager.getCenter().getCenterTitle());
+		}
+		else {
+			dto.setSportCenterTitle("Nema");
+		}
+		return dto;
 	}
 }

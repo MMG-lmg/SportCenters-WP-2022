@@ -13,10 +13,11 @@ import beans.Customer;
 import beans.Manager;
 import service.CustomerService;
 import util.LocalDateAdapterDeserializer;
+import util.LocalDateAdapterSerializer;
 
 
 public class CustomerContoller {
-	private static Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapterDeserializer()).create();
+	private static Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapterDeserializer()).registerTypeAdapter(LocalDate.class, new LocalDateAdapterSerializer()).create();
 	private static CustomerService service = new CustomerService();
 	
 	public static void addCustomer() {
@@ -30,11 +31,11 @@ public class CustomerContoller {
 		});
 	}
 	public static void getCustomer() {
-		get("rest/getManager", (req,res) ->{
+		get("rest/getCustomer", (req,res) ->{
 			res.type("application/json");
 			Customer customer = service.getById(req.queryParams("username"));
 			if(customer!=null) {
-				return customer;
+				return gson.toJson(customer);
 			}
 			return "FAILIURE";
 		});

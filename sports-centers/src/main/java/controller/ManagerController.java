@@ -12,9 +12,10 @@ import beans.Manager;
 import service.ManagerService;
 import service.SportsCenterService;
 import util.LocalDateAdapterDeserializer;
+import util.LocalDateAdapterSerializer;
 
 public class ManagerController {
-	private static Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapterDeserializer()).create();
+	private static Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapterDeserializer()).registerTypeAdapter(LocalDate.class, new LocalDateAdapterSerializer()).create();
 	private static ManagerService service = new ManagerService();
 	private static SportsCenterService centersService = new SportsCenterService();
 	
@@ -34,7 +35,8 @@ public class ManagerController {
 			res.type("application/json");
 			Manager manager = service.getById(req.queryParams("username"));
 			if(manager!=null) {
-				return ManagerDTO.convertObject(manager);
+				ManagerDTO dto = ManagerDTO.convertObject(manager);
+				return gson.toJson(dto);
 			}
 			return "FAILIURE";
 		});
