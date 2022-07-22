@@ -14,10 +14,11 @@ import beans.User;
 import service.UserService;
 import spark.Session;
 import util.Credentials;
+import util.LocalDateAdapterDeserializer;
 import util.LocalDateAdapterSerializer;
 
 public class UserController {
-	private static Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapterSerializer()).create();
+	private static Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapterDeserializer()).registerTypeAdapter(LocalDate.class, new LocalDateAdapterSerializer()).create();
 	private static UserService service = new UserService();
 	
 	public static void login() {
@@ -66,6 +67,23 @@ public class UserController {
 				return gson.toJson(admin);
 			}
 			return "FAILIURE";
+		});
+	}
+	public static void editAdmin() {
+		post("rest/editAdmin", (req,res)->{
+			res.type("application/json");
+			User admin = gson.fromJson(req.body(), User.class);
+			User storedAdmin = service.getById(admin.getUserName());
+			if(storedAdmin==null) {
+				return "FAILIURE";
+			}
+			else {
+				admin.setPassword(storedAdmin.getPassword());
+				service.update(admin.getUserName(), admin);
+				Session session = req.session(true);
+				session.attribute("user", admin);
+				return "SUCCESS";
+			}
 		});
 	}
 }

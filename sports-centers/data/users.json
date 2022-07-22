@@ -26,7 +26,7 @@
   "admin1": {
     "userName": "admin1",
     "password": "admin",
-    "name": "SuperAdmin",
+    "name": "SuperAdminIzmena",
     "gender": "MALE",
     "dateOfBirth": "2000-12-17",
     "role": "ADMIN"

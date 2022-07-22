@@ -10,11 +10,13 @@ Vue.component("profile",{
             editCustomer:{membershipCost:0,visitedCenters:null,loyalityPoints: 0,type:null},
             editManager:{sportsCenterTitle:""},
             editCoach:{pastTrainings:null},
+            feedback:""
         }
     },
     template:`
     <div>
         <h3>Dobrodosli {{user.userName}}</h3>
+        <p>{{feedback}}</p>
         <div>
         <label for="uName">Korisnicko ime:</label>
         <input type="text" name="uName" v-model="editUser.userName" disabled/>
@@ -66,7 +68,7 @@ Vue.component("profile",{
         </div>
         <button v-if="edit==0" @click="edit=1">Izmeni podatke</button>
         <button v-if="edit==1" @click="this.cancelEdit">Otkazi izmene</button>
-        <button v-if="edit==1" @click="this.cancelEdit">Primeni izmene</button>
+        <button v-if="edit==1" @click="this.updateUser">Primeni izmene</button>
     </div>
     `,
     mounted(){
@@ -75,7 +77,7 @@ Vue.component("profile",{
 
             }
             else{
-				console.log(response.data)
+				console.log(response.data);
 				this.$router.app.username = response.data.userName;
                 this.$router.app.login = response.data.role;
                 this.fillUserData();
@@ -181,6 +183,25 @@ Vue.component("profile",{
             this.editUser.gender = this.user.gender;
             this.editUser.dateOfBirth = this.user.dateOfBirth;
             this.editUser.role = this.user.role;
+        },
+        updateUser:function(){
+            switch(this.$router.app.login){
+                case "ADMIN":
+                    this.updateAdmin();
+                    break;
+            }
+        },
+        updateAdmin: function(){
+            axios.post("rest/editAdmin",this.editUser)
+            .then(res=>{
+                if(res.data==="FAILIURE"){
+                    this.feedback="Greska izmena podataka, neuspesna!";
+                }
+                else{
+                    this.feedback="Podaci uspesno izmenjeni";
+                    setTimeout(() => {  router.push(`/`) }, 5000);
+                }
+            });
         }
     }
 });
