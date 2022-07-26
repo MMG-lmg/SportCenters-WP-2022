@@ -8,9 +8,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import beans.Coach;
+import beans.Customer;
 import beans.Manager;
 import service.CoachService;
 import service.ManagerService;
+import spark.Session;
 import util.LocalDateAdapterDeserializer;
 import util.LocalDateAdapterSerializer;
 
@@ -36,6 +38,24 @@ public class CoachController {
 				return gson.toJson(coach);
 			}
 			return null;
+		});
+	}
+	public static void editCoach() {
+		post("rest/editCoach", (req,res)->{
+			res.type("application/json");
+			Coach coach = gson.fromJson(req.body(), Coach.class);
+			Coach storedCoach = service.getById(coach.getUserName());
+			
+			if(storedCoach == null) {
+				return "FAILIURE";
+			}
+			else {
+				coach.setPassword(storedCoach.getPassword());
+				service.update(coach.getUserName(), coach);
+				Session session = req.session(true);
+				session.attribute("user", coach);
+				return "SUCCESS";
+			}
 		});
 	}
 }

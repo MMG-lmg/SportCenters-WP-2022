@@ -53,6 +53,7 @@ public class CoachRepository implements RepositoryBase<Coach>{
 	@Override
 	public void delete(String id) {
 		coachList.remove(id);
+		userRepo.delete(id);
 		writeData();
 		readData();
 		syncData();
@@ -62,6 +63,7 @@ public class CoachRepository implements RepositoryBase<Coach>{
 	@Override
 	public void update(String id, Coach item) {
 		coachList.put(id, item);
+		userRepo.update(id, item);
 		writeData();
 		readData();
 		syncData();

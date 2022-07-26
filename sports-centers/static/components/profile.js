@@ -139,7 +139,9 @@ Vue.component("profile",{
                                 username: String(this.$router.app.username)
                             }
                         })
-                            .then(response=>{this.user.userName = response.data.userName;
+                            .then(response=>{
+                                    console.log(response.data);
+                                    this.user.userName = response.data.userName;
                                     this.user.name = response.data.name;
                                     this.user.gender=response.data.gender;
                                     this.user.dateOfBirth=response.data.dateOfBirth;
@@ -189,6 +191,14 @@ Vue.component("profile",{
                 case "ADMIN":
                     this.updateAdmin();
                     break;
+                case "CUSTOMER":
+                    this.updateCustomer();
+                    break;
+                case "MENAGER":
+                    this.updateManager();
+                    break;
+                case "COACH":
+                    this.updateCoach();
             }
         },
         updateAdmin: function(){
@@ -202,6 +212,50 @@ Vue.component("profile",{
                     setTimeout(() => {  router.push(`/`) }, 5000);
                 }
             });
+        },
+        updateCustomer: function(){
+            var customerDTO = {userName:this.editUser.userName,password:this.editUser.password,name:this.editUser.name,
+                gender:this.editUser.gender,dateOfBirth:this.editUser.dateOfBirth,role:this.editUser.role,
+                membershipCost:this.editCustomer.membershipCost, visitedCenters:this.editCustomer.visitedCenters, loyalityPoints: this.editCustomer.loyalityPoints,type:this.editCustomer.type};
+            axios.post("rest/editCustomer",customerDTO)
+            .then(res=>{
+                if(res.data==="FAILIURE"){
+                    this.feedback="Greska izmena podataka, neuspesna!";
+                }
+                else{
+                    this.feedback="Podaci uspesno izmenjeni";
+                    setTimeout(() => {  router.push(`/`) }, 5000);
+                }
+            });
+
+        },
+        updateCoach: function(){
+            var coachDTO = {userName:this.editUser.userName,password:this.editUser.password,name:this.editUser.name,
+                gender:this.editUser.gender,dateOfBirth:this.editUser.dateOfBirth,role:this.editUser.role, pastTrainings:this.editCoach.pastTrainings};
+            axios.post("rest/editCoach",coachDTO)
+            .then(res=>{
+                if(res.data==="FAILIURE"){
+                    this.feedback="Greska izmena podataka, neuspesna!";
+                }
+                else{
+                    this.feedback="Podaci uspesno izmenjeni";
+                    setTimeout(() => {  router.push(`/`) }, 5000);
+                }
+            });
+        },
+        updateManager: function(){
+            var managerDTO = {userName:this.editUser.userName,password:this.editUser.password,name:this.editUser.name,
+                gender:this.editUser.gender,dateOfBirth:this.editUser.dateOfBirth,role:this.editUser.role,sportsCenterTitle:this.editManager.sportsCenterTitle};
+                axios.post("rest/editManager",managerDTO)
+                .then(res=>{
+                    if(res.data==="FAILIURE"){
+                        this.feedback="Greska izmena podataka, neuspesna!";
+                    }
+                    else{
+                        this.feedback="Podaci uspesno izmenjeni";
+                        setTimeout(() => {  router.push(`/`) }, 5000);
+                    }
+                });
         }
     }
 });

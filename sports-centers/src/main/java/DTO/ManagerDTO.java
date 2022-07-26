@@ -37,7 +37,7 @@ public class ManagerDTO extends User{
 				return new Manager(this.getUserName(),this.getPassword(),this.getName(),this.getGender(),this.getDateOfBirth(),this.getRole(),sportsCenter);
 			}
 		}
-		return null;
+		return new Manager(this.getUserName(),this.getPassword(),this.getName(),this.getGender(),this.getDateOfBirth(),this.getRole(),null);
 	}
 	public static ManagerDTO convertObject(Manager manager) {
 		ManagerDTO dto = new ManagerDTO();

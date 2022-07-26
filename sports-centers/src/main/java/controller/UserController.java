@@ -86,4 +86,19 @@ public class UserController {
 			}
 		});
 	}
+	public static void editPassword() {
+		post("rest/editPassword",(req,res)->{
+			res.type("application/json");
+			Credentials cred = gson.fromJson(req.body(), Credentials.class);
+			User user = service.getById(cred.getUsername());
+			if(user!=null) {
+				user.setPassword(cred.getPassword());
+				service.update(user.getUserName(), user);
+				return "SUCCESS";
+			}
+			else {
+				return "FAILIURE";
+			}
+			});
+	}
 }

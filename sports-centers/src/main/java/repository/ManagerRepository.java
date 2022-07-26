@@ -54,6 +54,7 @@ public class ManagerRepository implements RepositoryBase<Manager>{
 	@Override
 	public void delete(String id) {
 		managerList.remove(id);
+		userRepo.delete(id);
 		writeData();
 		readData();
 		syncData();
@@ -62,6 +63,7 @@ public class ManagerRepository implements RepositoryBase<Manager>{
 	@Override
 	public void update(String id, Manager item) {
 		managerList.put(id, item);
+		userRepo.update(id, item);
 		writeData();
 		readData();
 		syncData();

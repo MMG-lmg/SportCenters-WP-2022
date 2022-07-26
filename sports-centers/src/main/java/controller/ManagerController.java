@@ -8,9 +8,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import DTO.ManagerDTO;
+import beans.Coach;
 import beans.Manager;
 import service.ManagerService;
 import service.SportsCenterService;
+import spark.Session;
 import util.LocalDateAdapterDeserializer;
 import util.LocalDateAdapterSerializer;
 
@@ -41,5 +43,24 @@ public class ManagerController {
 			return "FAILIURE";
 		});
 							
+	}
+	public static void editManager() {
+		post("rest/editManager", (req,res)->{
+			res.type("application/json");
+			ManagerDTO managerDTO = gson.fromJson(req.body(), ManagerDTO.class);
+			Manager manager = managerDTO.convertDTO(centersService.getAll());
+			Manager storedManager = service.getById(manager.getUserName());
+			
+			if(storedManager == null) {
+				return "FAILIURE";
+			}
+			else {
+				manager.setPassword(storedManager.getPassword());
+				service.update(manager.getUserName(), manager);
+				Session session = req.session(true);
+				session.attribute("user", manager);
+				return "SUCCESS";
+			}
+		});
 	}
 }

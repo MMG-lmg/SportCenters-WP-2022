@@ -50,12 +50,15 @@ public class Main {
     	
     	CustomerContoller.addCustomer();
     	CustomerContoller.getCustomer();
+    	CustomerContoller.editCustomer();
     	
     	CoachController.addCoach();
     	CoachController.getCoach();
+    	CoachController.editCoach();
     	
     	ManagerController.addManager();
     	ManagerController.getManager();
+    	ManagerController.editManager();
     	
     	SportsCenterController.getAllCentersWithoutManager();
     	

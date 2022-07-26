@@ -20,23 +20,24 @@
     "password": "zoka",
     "name": "Zorana Markovic",
     "gender": "FEMALE",
-    "dateOfBirth": "2000-12-17",
+    "dateOfBirth": "2000-12-04",
     "role": "COACH"
   },
   "admin1": {
     "userName": "admin1",
     "password": "admin",
-    "name": "SuperAdminIzmena",
+    "name": "SuperAdminIzmena1",
     "gender": "MALE",
     "dateOfBirth": "2000-12-17",
     "role": "ADMIN"
   },
   "micaMenadzer": {
+    "center": null,
     "userName": "micaMenadzer",
     "password": "1234",
     "name": "Milan Markoivc",
     "gender": "MALE",
-    "dateOfBirth": "1995-12-05",
+    "dateOfBirth": "1995-12-07",
     "role": "MENAGER"
   },
   "mirkoTrener": {
@@ -50,7 +51,7 @@
   "djoleBiceps": {
     "userName": "djoleBiceps",
     "password": "djoka",
-    "name": "Djordje",
+    "name": "Djordje Djordjevic",
     "gender": "MALE",
     "dateOfBirth": "1998-10-20",
     "role": "CUSTOMER"

@@ -12,6 +12,7 @@ import DTO.ManagerDTO;
 import beans.Customer;
 import beans.Manager;
 import service.CustomerService;
+import spark.Session;
 import util.LocalDateAdapterDeserializer;
 import util.LocalDateAdapterSerializer;
 
@@ -40,5 +41,22 @@ public class CustomerContoller {
 			return "FAILIURE";
 		});
 							
+	}
+	public static void editCustomer() {
+		post("rest/editCustomer", (req,res)->{
+			res.type("application/json");
+			Customer customer = gson.fromJson(req.body(), Customer.class);
+			Customer storedCustomer = service.getById(customer.getUserName());
+			if(storedCustomer==null) {
+				return "FAILIURE";
+			}
+			else {
+				customer.setPassword(storedCustomer.getPassword());
+				service.update(customer.getUserName(), customer);
+				Session session = req.session(true);
+				session.attribute("user", customer);
+				return "SUCCESS";
+			}
+		});
 	}
 }
