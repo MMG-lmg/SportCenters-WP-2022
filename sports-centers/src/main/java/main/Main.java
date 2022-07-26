@@ -47,6 +47,7 @@ public class Main {
     	UserController.isLoggedIn();
     	UserController.getAdmin();
     	UserController.editAdmin();
+    	UserController.getAllAdmins();
     	
     	CustomerContoller.addCustomer();
     	CustomerContoller.getCustomer();

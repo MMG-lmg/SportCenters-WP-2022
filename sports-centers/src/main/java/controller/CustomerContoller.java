@@ -31,6 +31,12 @@ public class CustomerContoller {
 			return "SUCCESS";
 		});
 	}
+	public static void getAll() {
+		get("rest/getCustomers",(req,res)->{
+			res.type("application/json");
+			return gson.toJson(service.getAll());
+		});
+	}
 	public static void getCustomer() {
 		get("rest/getCustomer", (req,res) ->{
 			res.type("application/json");
