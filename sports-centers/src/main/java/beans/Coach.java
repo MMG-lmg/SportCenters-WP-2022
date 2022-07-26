@@ -11,18 +11,18 @@ public class Coach extends User{
 	}
 
 	public Coach(String userName, String password, String name, Gender gender, LocalDate dateOfBirth, UserRole role,
-			List<Training> pastTrainings) {
+			List<TrainingHistory> pastTrainings) {
 		super(userName, password, name, gender, dateOfBirth, role);
 		this.pastTrainings = pastTrainings;
 	}
 
-	private List<Training> pastTrainings;
+	private List<TrainingHistory> pastTrainings;
 
-	public List<Training> getPastTrainings() {
+	public List<TrainingHistory> getPastTrainings() {
 		return pastTrainings;
 	}
 
-	public void setPastTrainings(List<Training> pastTrainings) {
+	public void setPastTrainings(List<TrainingHistory> pastTrainings) {
 		this.pastTrainings = pastTrainings;
 	}
 }

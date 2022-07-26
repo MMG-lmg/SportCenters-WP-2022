@@ -8,14 +8,17 @@ import java.util.Collection;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import DTO.ManagerDTO;
+import beans.Manager;
 import beans.User;
 import service.UserService;
 import spark.Session;
 import util.Credentials;
+import util.LocalDateAdapterDeserializer;
 import util.LocalDateAdapterSerializer;
 
 public class UserController {
-	private static Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapterSerializer()).create();
+	private static Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapterDeserializer()).registerTypeAdapter(LocalDate.class, new LocalDateAdapterSerializer()).create();
 	private static UserService service = new UserService();
 	
 	public static void login() {
@@ -55,5 +58,47 @@ public class UserController {
 			User user = session.attribute("user");
 			return gson.toJson(user);
 		});
+	}
+	public static void getAdmin() {
+		get("rest/getAdmin", (req,res) ->{
+			res.type("application/json");
+			User admin = service.getById(req.queryParams("username"));
+			if(admin!=null) {
+				return gson.toJson(admin);
+			}
+			return "FAILIURE";
+		});
+	}
+	public static void editAdmin() {
+		post("rest/editAdmin", (req,res)->{
+			res.type("application/json");
+			User admin = gson.fromJson(req.body(), User.class);
+			User storedAdmin = service.getById(admin.getUserName());
+			if(storedAdmin==null) {
+				return "FAILIURE";
+			}
+			else {
+				admin.setPassword(storedAdmin.getPassword());
+				service.update(admin.getUserName(), admin);
+				Session session = req.session(true);
+				session.attribute("user", admin);
+				return "SUCCESS";
+			}
+		});
+	}
+	public static void editPassword() {
+		post("rest/editPassword",(req,res)->{
+			res.type("application/json");
+			Credentials cred = gson.fromJson(req.body(), Credentials.class);
+			User user = service.getById(cred.getUsername());
+			if(user!=null) {
+				user.setPassword(cred.getPassword());
+				service.update(user.getUserName(), user);
+				return "SUCCESS";
+			}
+			else {
+				return "FAILIURE";
+			}
+			});
 	}
 }

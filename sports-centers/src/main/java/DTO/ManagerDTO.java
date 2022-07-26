@@ -37,6 +37,22 @@ public class ManagerDTO extends User{
 				return new Manager(this.getUserName(),this.getPassword(),this.getName(),this.getGender(),this.getDateOfBirth(),this.getRole(),sportsCenter);
 			}
 		}
-		return null;
+		return new Manager(this.getUserName(),this.getPassword(),this.getName(),this.getGender(),this.getDateOfBirth(),this.getRole(),null);
+	}
+	public static ManagerDTO convertObject(Manager manager) {
+		ManagerDTO dto = new ManagerDTO();
+		dto.setUserName(manager.getUserName());
+		dto.setName(manager.getName());
+		dto.setPassword(manager.getPassword());
+		dto.setDateOfBirth(manager.getDateOfBirth());
+		dto.setGender(manager.getGender());
+		dto.setRole(manager.getRole());
+		if(manager.getCenter()!=null) {
+			dto.setSportCenterTitle(manager.getCenter().getCenterTitle());
+		}
+		else {
+			dto.setSportCenterTitle("Nema");
+		}
+		return dto;
 	}
 }

@@ -41,13 +41,28 @@ public class Main {
     	staticFiles.externalLocation(new File("./static").getCanonicalPath());
     	
     	SportsCenterController.getAllCenters();
+    	
     	UserController.login();
-    	CustomerContoller.addCustomer();
     	UserController.logout();
     	UserController.isLoggedIn();
+    	UserController.getAdmin();
+    	UserController.editAdmin();
+    	
+    	CustomerContoller.addCustomer();
+    	CustomerContoller.getCustomer();
+    	CustomerContoller.editCustomer();
+    	
     	CoachController.addCoach();
+    	CoachController.getCoach();
+    	CoachController.editCoach();
+    	
     	ManagerController.addManager();
+    	ManagerController.getManager();
+    	ManagerController.editManager();
+    	
     	SportsCenterController.getAllCentersWithoutManager();
+    	
+    	//UserController userController = new UserController();
     	//ManagerService service = new ManagerService();
     	//service.create(new Manager("micaMenadzer","1234","Milan Markoivc",Gender.MALE, LocalDate.of(1995, 12, 5),UserRole.MENAGER, null));
     }

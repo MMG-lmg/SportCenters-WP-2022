@@ -77,8 +77,8 @@ Vue.component("centers",{
 			<button v-if="userLogedIn" v-on:click="logout"> Odjava </button>
 			<button v-if="loggedUserType == 'ADMIN'" v-on:click="routeToRegisterCoach"> Prijava trenera </button>
 			<button v-if="loggedUserType == 'ADMIN'" v-on:click="routeToRegisterManager"> Prijava menadzera </button>
-			
 		</div>
+		<button v-if="userLogedIn" v-on:click="routeToProfile"> Profil </button>
 	</div>
 	`,
 	mounted(){
@@ -118,6 +118,9 @@ Vue.component("centers",{
 		},
 		routeToRegisterManager(){
 			router.push(`/register/manager`);
+		},
+		routeToProfile(){
+			router.push(`/profile`);
 		},
 		logout(){
 			this.loggedUserType = "";

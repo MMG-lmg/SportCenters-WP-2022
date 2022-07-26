@@ -54,6 +54,7 @@ public class CustomerRepository implements RepositoryBase<Customer>{
 	@Override
 	public void delete(String id) {
 		customerList.remove(id);
+		userRepo.delete(id);
 		writeData();
 		readData();
 		syncData();
@@ -63,6 +64,7 @@ public class CustomerRepository implements RepositoryBase<Customer>{
 	@Override
 	public void update(String id, Customer item) {
 		customerList.put(id, item);
+		userRepo.update(id, item);
 		writeData();
 		readData();
 		syncData();
