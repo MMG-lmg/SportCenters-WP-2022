@@ -27,8 +27,64 @@ Vue.component("profiles",{
             </tr>
         </table>
         <h1>Menadzeri</h1>
+            <table>
+                <tr>
+                    <th>Koriscnicko ime</th>
+                    <th>Ime</th>
+                    <th>Pol</th>
+                    <th>Datum rodjenja</th>
+                    <th>Uloga</th>
+                    <th>Naziv Sportskog Centra</th>
+                </tr>
+                    <tr v-for="manager in managers">
+                    <td>{{manager.userName}}</td>
+                    <td>{{manager.name}}</td>
+                    <td>{{manager.gender}}</td>
+                    <td>{{manager.dateOfBirth}}</td>
+                    <td>{{manager.role}}</td>
+                    <td>{{manager.SportCenterTitle}}</td>
+                </tr>
+            </table>
         <h1>Treneri</h1>
+        <table>
+            <tr>
+                <th>Koriscnicko ime</th>
+                <th>Ime</th>
+                <th>Pol</th>
+                <th>Datum rodjenja</th>
+                <th>Uloga</th>
+            </tr>
+            <tr v-for="coach in coaches">
+                <td>{{coach.userName}}</td>
+                <td>{{coach.name}}</td>
+                <td>{{coach.gender}}</td>
+                <td>{{coach.dateOfBirth}}</td>
+                <td>{{coach.role}}</td>
+            </tr>
+        </table>
         <h1>Kupci</h1>
+        <table>
+            <tr>
+                <th>Koriscnicko ime</th>
+                <th>Ime</th>
+                <th>Pol</th>
+                <th>Datum rodjenja</th>
+                <th>Uloga</th>
+                <th>Cena clanarine</th>
+                <th>Bodovi lojalnosti</th>
+                <th>Tip kupca</th>
+            </tr>
+            <tr v-for="customer in customers">
+                <td>{{customer.userName}}</td>
+                <td>{{customer.name}}</td>
+                <td>{{customer.gender}}</td>
+                <td>{{customer.dateOfBirth}}</td>
+                <td>{{customer.role}}</td>
+                <td>{{customer.membershipCost}}</td>
+                <td>{{customer.loyalityPoints}}</td>
+                <td>{{customer.type}}</td>
+            </tr>
+        </table>
     </div>
     `,
     mounted(){
@@ -50,7 +106,34 @@ Vue.component("profiles",{
                 console.log(response.data)
 				this.admins = response.data;
             }
-        })
+        });
+        axios.get("rest/getCoaches")
+        .then(response=>{
+            if(response.data==null){
+
+            }
+            else{
+                this.coaches = response.data;
+            }
+        });
+        axios.get("rest/getManagers")
+        .then(response=>{
+            if(response.data==null){
+
+            }
+            else{
+                this.managers = response.data;
+            }
+        });
+        axios.get("rest/getCustomers")
+        .then(response=>{
+            if(response.data==null){
+
+            }
+            else{
+                this.customers = response.data;
+            }
+        });
     },
     methods:{
         roleToString: function(role){

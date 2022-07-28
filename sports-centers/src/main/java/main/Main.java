@@ -40,8 +40,6 @@ public class Main {
     	
     	staticFiles.externalLocation(new File("./static").getCanonicalPath());
     	
-    	SportsCenterController.getAllCenters();
-    	
     	UserController.login();
     	UserController.logout();
     	UserController.isLoggedIn();
@@ -52,15 +50,19 @@ public class Main {
     	CustomerContoller.addCustomer();
     	CustomerContoller.getCustomer();
     	CustomerContoller.editCustomer();
+    	CustomerContoller.getAll();
     	
     	CoachController.addCoach();
     	CoachController.getCoach();
     	CoachController.editCoach();
+    	CoachController.getAll();
     	
     	ManagerController.addManager();
     	ManagerController.getManager();
     	ManagerController.editManager();
+    	ManagerController.getAll();
     	
+    	SportsCenterController.getAllCenters();
     	SportsCenterController.getAllCentersWithoutManager();
     	
     	//UserController userController = new UserController();
