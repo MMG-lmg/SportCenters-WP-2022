@@ -1,11 +1,17 @@
 {
   "superMenadjer": {
     "center": {
-      "centerId": "PhdugsxF"
+      "centerId": "PhdugsAF"
     },
     "userName": "superMenadjer"
   },
   "micaMenadzer": {
+    "center": {
+      "centerId": "Ig0ZRzmo"
+    },
     "userName": "micaMenadzer"
+  },
+  "men2": {
+    "userName": "men2"
   }
 }

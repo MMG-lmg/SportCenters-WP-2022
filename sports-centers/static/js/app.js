@@ -5,6 +5,7 @@ const RegisterCoach={template: '<registerCoach></registerCoach>'}
 const RegisterManager={template: '<registerManager></registerManager>'}
 const Profile={template: '<profile></profile>'}
 const Profiles={template: '<profiles></profiles>'}
+const Center={template:'<center></center>'}
 
 const router = new VueRouter({
 	mode: 'hash',
@@ -15,7 +16,8 @@ const router = new VueRouter({
 		{ path: '/register/coach', component:RegisterCoach},
 		{ path: '/register/manager', component:RegisterManager},
 		{ path: '/profile', component:Profile},
-		{ path: '/admin/profiles', component:Profiles}
+		{ path: '/admin/profiles', component:Profiles},
+		{ path: '/manager/center', component:Center}
 	  ]
 });
 

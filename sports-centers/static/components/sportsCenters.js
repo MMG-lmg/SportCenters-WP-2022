@@ -78,6 +78,7 @@ Vue.component("centers",{
 			<button v-if="loggedUserType == 'ADMIN'" v-on:click="routeToRegisterCoach"> Prijava trenera </button>
 			<button v-if="loggedUserType == 'ADMIN'" v-on:click="routeToRegisterManager"> Prijava menadzera </button>
 			<button v-if="loggedUserType == 'ADMIN'" v-on:click="routeToProfilesPanel"> Prikaz svih korisnika </button>
+			<button v-if="loggedUserType == 'MENAGER'" v-on:click="routeToManagerCenter"> Prikaz centra </button>
 		</div>
 		<button v-if="userLogedIn" v-on:click="routeToProfile"> Profil </button>
 	</div>
@@ -125,6 +126,9 @@ Vue.component("centers",{
 		},
 		routeToProfilesPanel(){
 			router.push(`/admin/profiles`);
+		},
+		routeToManagerCenter(){
+			router.push(`/manager/center`);
 		},
 		logout(){
 			this.loggedUserType = "";

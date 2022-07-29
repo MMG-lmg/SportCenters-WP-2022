@@ -32,7 +32,6 @@
     "role": "ADMIN"
   },
   "micaMenadzer": {
-    "center": null,
     "userName": "micaMenadzer",
     "password": "1234",
     "name": "Milan Markoivc",
@@ -71,5 +70,13 @@
     "gender": "FEMALE",
     "dateOfBirth": "2022-06-22",
     "role": "CUSTOMER"
+  },
+  "men2": {
+    "userName": "men2",
+    "password": "1234",
+    "name": "men",
+    "gender": "FEMALE",
+    "dateOfBirth": "2022-06-27",
+    "role": "MENAGER"
   }
 }
