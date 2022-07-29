@@ -1,6 +1,9 @@
 package controller;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
+
 import static spark.Spark.post;
 import static spark.Spark.get;
 
@@ -30,6 +33,16 @@ public class ManagerController {
 			//TODO implement some validations in service and add casting exceptions
 			//catch them here, return FAILIURE.
 			return "SUCCESS";
+		});
+	}
+	public static void getAll() {
+		get("rest/getManagers", (req,res) ->{
+			res.type("application/json");
+			Collection<ManagerDTO> DtoList = new ArrayList<ManagerDTO>();
+			for(Manager manager : service.getAll()) {
+				DtoList.add(ManagerDTO.convertObject(manager));
+			}
+			return gson.toJson(DtoList);
 		});
 	}
 	public static void getManager() {

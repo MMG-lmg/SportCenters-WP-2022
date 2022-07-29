@@ -3,6 +3,7 @@ import static spark.Spark.post;
 import static spark.Spark.get;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import com.google.gson.Gson;
@@ -11,6 +12,7 @@ import com.google.gson.GsonBuilder;
 import DTO.ManagerDTO;
 import beans.Manager;
 import beans.User;
+import beans.UserRole;
 import service.UserService;
 import spark.Session;
 import util.Credentials;
@@ -57,6 +59,18 @@ public class UserController {
 			Session session = req.session(true);
 			User user = session.attribute("user");
 			return gson.toJson(user);
+		});
+	}
+	public static void getAllAdmins() {
+		get("rest/getAdmins", (req,res) ->{
+			res.type("application/json");
+			Collection<User> adminList = new ArrayList<User>();
+			for(User user : service.getAll()) {
+				if(user.getRole().equals(UserRole.ADMIN)) {
+					adminList.add(user);
+				}
+			}
+			return gson.toJson(adminList);
 		});
 	}
 	public static void getAdmin() {

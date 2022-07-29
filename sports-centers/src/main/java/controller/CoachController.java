@@ -30,6 +30,12 @@ public class CoachController {
 			return "SUCCESS";
 		});
 	}
+	public static void getAll() {
+		get("rest/getCoaches",(req,res)->{
+			res.type("application/json");
+			return gson.toJson(service.getAll());
+		});
+	}
 	public static void getCoach() {
 		get("rest/getCoach", (req,res)->{
 			res.type("application/json");
