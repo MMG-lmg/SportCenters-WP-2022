@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Date;
 
 import beans.Address;
@@ -64,9 +65,7 @@ public class Main {
     	
     	SportsCenterController.getAllCenters();
     	SportsCenterController.getAllCentersWithoutManager();
+    	SportsCenterController.getCenter();
     	
-    	//UserController userController = new UserController();
-    	//ManagerService service = new ManagerService();
-    	//service.create(new Manager("micaMenadzer","1234","Milan Markoivc",Gender.MALE, LocalDate.of(1995, 12, 5),UserRole.MENAGER, null));
     }
 }

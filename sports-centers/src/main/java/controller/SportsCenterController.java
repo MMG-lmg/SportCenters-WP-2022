@@ -2,6 +2,7 @@ package controller;
 
 import com.google.gson.Gson;
 
+import beans.Manager;
 import beans.SportsCenter;
 
 import static spark.Spark.delete;
@@ -17,12 +18,14 @@ import java.util.Collection;
 
 import static spark.Spark.post;
 
+import service.ManagerService;
 import service.SportsCenterService;
 import util.ImageBase64Converter;
 
 public class SportsCenterController{
 	private static Gson gson = new Gson();
 	private static SportsCenterService service = new SportsCenterService();
+	private static ManagerService managerService = new ManagerService();
 	
 	public static void getAllCenters() {
 		get("rest/centers/", (req,res) ->{
@@ -32,6 +35,23 @@ public class SportsCenterController{
 				center.setLogoPath(ImageBase64Converter.convert(center.getLogoPath()));
 			}
 			return gson.toJson(dataWithImgPaths);
+		});
+	}
+	public static void getCenter() {
+		get("rest/centers/view", (req,res)->{
+			res.type("application/json");
+			Manager manager = managerService.getById(req.queryParams("menager"));
+			if(manager!= null) {
+				SportsCenter center = manager.getCenter();
+				if(center != null) {
+					center.setLogoPath(ImageBase64Converter.convert(center.getLogoPath()));
+					return gson.toJson(center);
+				}
+				else {
+					return "FAILIURE";
+				}
+			}
+			return null;
 		});
 	}
 	public static void getAllCentersWithoutManager() {
