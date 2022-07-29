@@ -57,6 +57,18 @@ public class ManagerController {
 		});
 							
 	}
+	public static void getFreeManagers() {
+		get("rest/getFreeManagers", (req,res) ->{
+			res.type("application/json");
+			Collection<Manager> retVal = new ArrayList<Manager>();
+			for(Manager manager : service.getAll()) {
+				if(manager.getCenter()==null) {
+					retVal.add(manager);
+				}
+			}
+			return retVal;
+		});
+	}
 	public static void editManager() {
 		post("rest/editManager", (req,res)->{
 			res.type("application/json");
