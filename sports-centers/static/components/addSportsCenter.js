@@ -11,7 +11,8 @@ Vue.component("addCenter",{
             city :"",
             zipCode :"",
             latitude:0,
-            longitude:0
+            longitude:0,
+            error:""
         }
     },
     template:`
@@ -23,10 +24,10 @@ Vue.component("addCenter",{
         <br>
         <label for="type">Tip</label> 
         <select name="type" v-model="type">
-            <option value="center">Sportski centar</option>
-            <option value="gym">Teretana</option>
-            <option value="pool">Bazen</option>
-            <option value="dance">Plesni studio</option>
+            <option value="SPORTS_CENTER">Sportski centar</option>
+            <option value="GYM">Teretana</option>
+            <option value="POOL">Bazen</option>
+            <option value="DANCE_STUDIO">Plesni studio</option>
         </select>
         <br>
         <label for="logo">Logo sporskog centra </label>
@@ -56,12 +57,56 @@ Vue.component("addCenter",{
         <label for="zip">Postanski broj</label>
         <input type="number" name="zip" v-model="zipCode"></input>
 
+        <button v-if="checkData" @click="addCenter">Dodaj centar</button>
     </div>
     `,
     mounted(){
 
     },
     methods:{
+        addCenter(){
+            if(this.checkData){
+                var SportsCenter = {centerId: 0, centerTitle: this.centerTitle, type: this.type, status:"CLOSED",
+                 location:{ latitude: this.latitude, longitude: this.longitude, address: {street: this.street, streetNumber: this.streetNumber, city:this.city, zipCode:this.zipCode}},
+                 logoPath: this.image.split(",")[1], grade: 0, workHours:[this.workHoursStart, this.workHoursEnd]
+                };
+                console.log(SportsCenter);
+                axios.post("rest/centers/add", SportsCenter)
+                .then(res=>{
+                    if(res.data==="FAILIURE"){
+                        this.feedback="Greska dodavanje centra, neuspesno!";
+                    }
+                    else{
+                        this.feedback="Centar uspesno dodat";
+                        setTimeout(() => {  router.push(`/`) }, 5000);
+                    }
+                });
+            }
+            else{
+                this.error="Sva polja moraju biti popunjena";
+            }
+
+        },
+        checkData(){
+            if(centerTitle===null || centerTitle==="",
+                type===null || type==="",
+                image===null || image==="",
+                workHoursStart===null || workHoursStart==="",
+                workHoursEnd===null || workHoursEnd==="",
+                centerTitle===null || centerTitle==="",
+                streetNumber===null || streetNumber==="",
+                street===null || street==="",
+                city===null || city==="", 
+                zipCode===null || zipCode==="",
+                latitude===null || latitude===0,
+                longitude===null || longitude===0)
+            {
+                return false;
+            }
+            else{
+                return true;
+            }
+        },
         onFileInput(e){
             var patternFileExtension = /\.([0-9a-z]+)(?:[\?#]|$)/i;
             var files = e.target.files;

@@ -1,5 +1,27 @@
 {
-    "Ig0ZRzmo": {
+  "SstEzuRw": {
+    "centerId": "SstEzuRw",
+    "centerTitle": "Super Centar",
+    "type": "SPORTS_CENTER",
+    "status": "CLOSED",
+    "location": {
+      "latitude": 92.5,
+      "longitude": 82.5,
+      "address": {
+        "street": "Markova ",
+        "streetNumber": "6A",
+        "city": "Novi Becej",
+        "zipCode": "23000"
+      }
+    },
+    "logoPath": "data\\img\\Super Centar",
+    "grade": 0.0,
+    "workHours": [
+      8,
+      17
+    ]
+  },
+  "Ig0ZRzmo": {
     "centerId": "Ig0ZRzmo",
     "centerTitle": "CoolPool",
     "type": "POOL",
@@ -17,8 +39,8 @@
     "logoPath": "data\\img\\gym.png",
     "grade": 0.2,
     "workHours": [
-      7.0,
-      23.0
+      7,
+      23
     ]
   },
   "PhduqsxF": {

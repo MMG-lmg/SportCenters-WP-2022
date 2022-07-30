@@ -66,6 +66,7 @@ public class Main {
     	SportsCenterController.getAllCenters();
     	SportsCenterController.getAllCentersWithoutManager();
     	SportsCenterController.getCenter();
+    	SportsCenterController.addCenter();
     	
     }
 }
