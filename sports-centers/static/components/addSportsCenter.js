@@ -12,7 +12,11 @@ Vue.component("addCenter",{
             zipCode :"",
             latitude:0,
             longitude:0,
-            error:""
+            error:"",
+            selectedManager:null,
+            freeManagers:null,
+            manager:{userName:"",password:"",name:"",gender:"",dateOfBirth:"",role:"MENAGER",SportCenterTitle:""},
+            passwordCheck:""
         }
     },
     template:`
@@ -57,49 +61,123 @@ Vue.component("addCenter",{
         <label for="zip">Postanski broj</label>
         <input type="number" name="zip" v-model="zipCode"></input>
 
+        <div v-if="freeManagers">
+            <label for="manager">Menadzer:</label>
+            <select v-model="selectedManager">
+                <option v-for="manager in freeManagers" :value="manager">{{manager.userName}}:{{manager.name}}</option>
+            </select>
+        </div>
+
+        <div v-if="!freeManagers">
+        <label for="username">Korisnicko ime:</label><br>
+        <input type="text" v-model="manager.userName" name="username"><br>
+
+        <label for="name">Ime:</label><br>
+        <input type="text" v-model="manager.name" name="name"><br>
+
+        <label for="password">Lozinka:</label><br>
+        <input type="password" v-model="manager.password" name="password"><br>
+
+        <label for="passwordCheck">Ponoviti lozinku:</label><br>
+        <input type="password" v-model="passwordCheck" name="passwordCheck"><br>
+
+        <label for="gender">Pol:</label><br>
+        <select ref="genderCombo" v-model="manager.gender" name="gender">
+                <option value="MALE" selected>Muski</option>
+                <option value="FEMALE">Zenski</option>
+        </select><br>
+        
+        <label for="date">Datum rodjenja:</label><br>
+        <input type="date" v-model="manager.dateOfBirth" name="date"><br>
+        </div>
+
         <button v-if="checkData" @click="addCenter">Dodaj centar</button>
     </div>
     `,
     mounted(){
-
+        axios.get("rest/getFreeManagers")
+        .then(response=>{
+            this.freeManagers = response.data;
+        });
     },
     methods:{
-        addCenter(){
-            if(this.checkData){
-                var SportsCenter = {centerId: 0, centerTitle: this.centerTitle, type: this.type, status:"CLOSED",
-                 location:{ latitude: this.latitude, longitude: this.longitude, address: {street: this.street, streetNumber: this.streetNumber, city:this.city, zipCode:this.zipCode}},
-                 logoPath: this.image.split(",")[1], grade: 0, workHours:[this.workHoursStart, this.workHoursEnd]
-                };
-                console.log(SportsCenter);
-                axios.post("rest/centers/add", SportsCenter)
-                .then(res=>{
-                    if(res.data==="FAILIURE"){
-                        this.feedback="Greska dodavanje centra, neuspesno!";
-                    }
-                    else{
-                        this.feedback="Centar uspesno dodat";
-                        setTimeout(() => {  router.push(`/`) }, 5000);
-                    }
-                });
+        canAddCenter: function(){
+            console.log("can add center");
+            if(!this.freeManagers){
+                if(this.checkManager()){
+                    this.addManager();
+                    this.manager.SportCenterTitle = this.centerTitle;
+                    this.selectedManager = this.manager;
+                    return true;
+                }
+                else{
+                    this.error="Polja menadzera nisu popunjena sva";
+                    return false;
+                }
+                
             }
             else{
-                this.error="Sva polja moraju biti popunjena";
+                console.log("free managers true");
+                if(this.selectedManager){
+                    console.log("WAAAAA");
+                    this.selectedManager.SportCenterTitle = this.centerTitle;
+                    return true;
+                }
             }
-
+            return false;
         },
-        checkData(){
-            if(centerTitle===null || centerTitle==="",
-                type===null || type==="",
-                image===null || image==="",
-                workHoursStart===null || workHoursStart==="",
-                workHoursEnd===null || workHoursEnd==="",
-                centerTitle===null || centerTitle==="",
-                streetNumber===null || streetNumber==="",
-                street===null || street==="",
-                city===null || city==="", 
-                zipCode===null || zipCode==="",
-                latitude===null || latitude===0,
-                longitude===null || longitude===0)
+        addCenter: function(){
+            if(this.canAddCenter()){
+                console.log("can add center : true");
+                if(this.checkData()){
+                    var SportsCenter = {centerId: 0, centerTitle: this.centerTitle, type: this.type, status:"CLOSED",
+                    location:{ latitude: this.latitude, longitude: this.longitude, address: {street: this.street, streetNumber: this.streetNumber, city:this.city, zipCode:this.zipCode}},
+                    logoPath: this.image.split(",")[1], grade: 0, workHours:[this.workHoursStart, this.workHoursEnd]
+                    };
+                    console.log(SportsCenter);
+                    axios.post("rest/centers/add", SportsCenter)
+                    .then(res=>{
+                        if(res.data==="FAILIURE"){
+                            this.error="Greska dodavanje centra, neuspesno!";
+                        }
+                        else{
+                            this.error="Centar uspesno dodat";
+                            console.log("Centar uspesno dodat");
+                        }
+                    });
+                    console.log(this.selectedManager);
+                    axios.post("rest/editManager",this.selectedManager).then(
+                        res=>{
+                            if(res.data==="FAILIURE"){
+                                this.error="Izmena menadzera, neuspesno!";
+                            }
+                            else{
+                                this.error="Uspesna izmena i dodavanja povratak na pocetnu";
+                                setTimeout(() => {  router.push(`/`) }, 5000);
+                            }
+                            
+                        }
+                    );
+                   
+                }
+                else{
+                    this.error="Sva polja moraju biti popunjena";
+                }
+            }
+        },
+        checkData: function(){
+            if(this.centerTitle===null || this.centerTitle==="" || 
+                this.type===null || this.type==="" || 
+                this.image===null || this.image==="" || 
+                this.workHoursStart===null || this.workHoursStart==="" || 
+                this.workHoursEnd===null || this.workHoursEnd==="" || 
+                this.centerTitle===null || this.centerTitle==="" || 
+                this.streetNumber===null || this.streetNumber==="" || 
+                this.street===null || this.street==="" || 
+                this.city===null || this.city==="" || 
+                this.zipCode===null || this.zipCode==="" || 
+                this.latitude===null || this.latitude===0 || 
+                this.longitude===null || this.longitude===0)
             {
                 return false;
             }
@@ -107,7 +185,32 @@ Vue.component("addCenter",{
                 return true;
             }
         },
-        onFileInput(e){
+        checkManager: function(){
+            if(this.manager.userName===null || this.manager.userName==="" || 
+            this.manager.password===null || this.manager.password==="" || 
+            this.passwordCheck===null || this.passwordCheck==="" || 
+            this.manager.name===null || this.manager.name==="" || 
+            this.manager.gender===null || this.manager.gender==="" || 
+            this.manager.dateOfBirth===null){}
+            else{
+                if(this.passwordCheck === this.manager.password){
+                    return true;
+                }
+                this.error="Lozinke se moraju poklapati";
+            }
+            return false;
+        },
+        addManager:function(){
+            axios.post("rest/addManager", this.manager)
+            .then(res =>{
+                if(res.data ==="FAILIURE"){
+                }
+                else{
+                    this.error="Manadzer dodat";
+                }
+            });
+        },
+        onFileInput: function(e){
             var patternFileExtension = /\.([0-9a-z]+)(?:[\?#]|$)/i;
             var files = e.target.files;
             if(!files.length){
@@ -122,7 +225,7 @@ Vue.component("addCenter",{
                 this.removeImage();
             }
         },
-        createImage(file){
+        createImage: function(file){
             var reader = new FileReader();
 
             reader.onload = (e) =>{
@@ -130,7 +233,7 @@ Vue.component("addCenter",{
             };
             reader.readAsDataURL(file);
         },
-        removeImage(){
+        removeImage: function(){
             this.image="";
             this.$refs.imgUpload.value = null;
         }
