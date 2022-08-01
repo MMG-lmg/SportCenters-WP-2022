@@ -57,6 +57,9 @@ Vue.component("centers",{
 						<option value="4">4+</option>
 					</select>
 				</th>
+				<th>
+					<p>Radno Vreme</p>
+				</th>
 	    	</tr>
 	    	
 	    	<tr v-for="(sc, index) in filteredCenters">
@@ -65,7 +68,8 @@ Vue.component("centers",{
 	    		<td>{{typeToString(sc)}}</td>
 	    		<td>{{statusToString(sc)}}</td>
 	    		<td>{{locationToString(sc)}}</td>
-	    		<td>{{sc.grade}}</td>
+				<td>{{sc.grade}}</td>
+				<td>{{sc.workHours[0]}:{{sc.workHours[1]}}
 	    	</tr>
 		</table>
 		<div>
