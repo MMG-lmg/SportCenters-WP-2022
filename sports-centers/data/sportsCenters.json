@@ -1,5 +1,71 @@
 {
-    "Ig0ZRzmo": {
+  "JejiyAOY": {
+    "centerId": "JejiyAOY",
+    "centerTitle": "SUPER",
+    "type": "POOL",
+    "status": "CLOSED",
+    "location": {
+      "latitude": 94.7,
+      "longitude": 12.2,
+      "address": {
+        "street": "AAAAA",
+        "streetNumber": "AAAAAAA",
+        "city": "AAAAAAA",
+        "zipCode": "20194"
+      }
+    },
+    "logoPath": "data\\img\\SUPER.jpg",
+    "grade": 0.0,
+    "workHours": [
+      14,
+      15
+    ]
+  },
+  "SstEzuRw": {
+    "centerId": "SstEzuRw",
+    "centerTitle": "Super Centar",
+    "type": "SPORTS_CENTER",
+    "status": "CLOSED",
+    "location": {
+      "latitude": 92.5,
+      "longitude": 82.5,
+      "address": {
+        "street": "Markova ",
+        "streetNumber": "6A",
+        "city": "Novi Becej",
+        "zipCode": "23000"
+      }
+    },
+    "logoPath": "data\\img\\Super Centar.jpg",
+    "grade": 0.0,
+    "workHours": [
+      8,
+      17
+    ]
+  },
+  "RUeQiRhI": {
+    "centerId": "RUeQiRhI",
+    "centerTitle": "LOSE",
+    "type": "SPORTS_CENTER",
+    "status": "CLOSED",
+    "location": {
+      "latitude": 1.0,
+      "longitude": 9.0,
+      "address": {
+        "street": "CCC",
+        "streetNumber": "1234",
+        "city": "CC CCC",
+        "zipCode": "23100"
+      }
+    },
+    "logoPath": "data\\img\\LOSE.jpg",
+    "grade": 0.0,
+    "workHours": [
+      1,
+      9
+    ]
+  },
+  "Ig0ZRzmo": {
     "centerId": "Ig0ZRzmo",
     "centerTitle": "CoolPool",
     "type": "POOL",
@@ -17,8 +83,8 @@
     "logoPath": "data\\img\\gym.png",
     "grade": 0.2,
     "workHours": [
-      7.0,
-      23.0
+      7,
+      23
     ]
   },
   "PhduqsxF": {
@@ -41,6 +107,28 @@
     "workHours": [
       0,
       24
+    ]
+  },
+  "4TxmCeqz": {
+    "centerId": "4TxmCeqz",
+    "centerTitle": "sdfa",
+    "type": "SPORTS_CENTER",
+    "status": "CLOSED",
+    "location": {
+      "latitude": 1.0,
+      "longitude": 2.0,
+      "address": {
+        "street": "asd",
+        "streetNumber": "asd",
+        "city": "asd",
+        "zipCode": "20194"
+      }
+    },
+    "logoPath": "data\\img\\sdfa.jpg",
+    "grade": 0.0,
+    "workHours": [
+      11,
+      7
     ]
   },
   "PhdugsxF": {

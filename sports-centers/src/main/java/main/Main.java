@@ -62,10 +62,12 @@ public class Main {
     	ManagerController.getManager();
     	ManagerController.editManager();
     	ManagerController.getAll();
+    	ManagerController.getFreeManagers();
     	
     	SportsCenterController.getAllCenters();
     	SportsCenterController.getAllCentersWithoutManager();
     	SportsCenterController.getCenter();
+    	SportsCenterController.addCenter();
     	
     }
 }

@@ -26,6 +26,7 @@ public class SportsCenterController{
 	private static Gson gson = new Gson();
 	private static SportsCenterService service = new SportsCenterService();
 	private static ManagerService managerService = new ManagerService();
+	private static String path = "data\\img\\";
 	
 	public static void getAllCenters() {
 		get("rest/centers/", (req,res) ->{
@@ -64,6 +65,7 @@ public class SportsCenterController{
 		post("rest/centers/add",(req,res)->{
 			res.type("application/json");
 			SportsCenter center = gson.fromJson(req.body(), SportsCenter.class);
+			center.setLogoPath(ImageBase64Converter.decode(center.getLogoPath(), path, center.getCenterTitle()));
 			service.create(center);
 			return "SUCCESS";
 		});

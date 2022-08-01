@@ -1,9 +1,21 @@
 {
+  "sus": {
+    "center": {
+      "centerId": "4TxmCeqz"
+    },
+    "userName": "sus"
+  },
   "superMenadjer": {
     "center": {
       "centerId": "PhdugsAF"
     },
     "userName": "superMenadjer"
+  },
+  "sus2": {
+    "center": {
+      "centerId": "RUeQiRhI"
+    },
+    "userName": "sus2"
   },
   "micaMenadzer": {
     "center": {
@@ -12,6 +24,9 @@
     "userName": "micaMenadzer"
   },
   "men2": {
+    "center": {
+      "centerId": "JejiyAOY"
+    },
     "userName": "men2"
   }
 }

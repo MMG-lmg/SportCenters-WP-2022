@@ -13,6 +13,8 @@ import com.google.gson.GsonBuilder;
 import DTO.ManagerDTO;
 import beans.Coach;
 import beans.Manager;
+import beans.User;
+import beans.UserRole;
 import service.ManagerService;
 import service.SportsCenterService;
 import spark.Session;
@@ -57,6 +59,21 @@ public class ManagerController {
 		});
 							
 	}
+	public static void getFreeManagers() {
+		get("rest/getFreeManagers", (req,res) ->{
+			res.type("application/json");
+			Collection<Manager> retVal = new ArrayList<Manager>();
+			for(Manager manager : service.getAll()) {
+				if(manager.getCenter()==null) {
+					retVal.add(manager);
+				}
+			}
+			if(retVal.isEmpty()) {
+				return "";
+			}
+			return gson.toJson(retVal);
+		});
+	}
 	public static void editManager() {
 		post("rest/editManager", (req,res)->{
 			res.type("application/json");
@@ -71,7 +88,10 @@ public class ManagerController {
 				manager.setPassword(storedManager.getPassword());
 				service.update(manager.getUserName(), manager);
 				Session session = req.session(true);
-				session.attribute("user", manager);
+				User userFromSession = session.attribute("user");
+				if(userFromSession.getRole().equals(UserRole.MENAGER)) {
+					session.attribute("user", manager);
+				} //when called by admin from addCenter do not overwrite session data
 				return "SUCCESS";
 			}
 		});

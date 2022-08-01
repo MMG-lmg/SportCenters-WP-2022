@@ -1,10 +1,15 @@
 package util;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Base64;
+
+import javax.imageio.ImageIO;
 
 public class ImageBase64Converter {
 	public static String convert(String imagePath) {
@@ -36,5 +41,22 @@ public class ImageBase64Converter {
 		}
 		
 		return retVal;
+	}
+	public static String decode(String image, String path, String imageTitle) {
+		byte[] data = new byte[2048];
+		data = Base64.getDecoder().decode(image);
+		
+		ByteArrayInputStream inputStream = new ByteArrayInputStream(data);
+	    BufferedImage bImage;
+		try {
+			bImage = ImageIO.read(inputStream);
+			File f = new File(path + imageTitle +".jpg");
+			ImageIO.write(bImage, "jpg", f);
+			return f.getPath();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	   return null;
 	}
 }
