@@ -69,7 +69,7 @@ Vue.component("centers",{
 	    		<td>{{statusToString(sc)}}</td>
 	    		<td>{{locationToString(sc)}}</td>
 				<td>{{sc.grade}}</td>
-				<td>{{sc.workHours[0]}:{{sc.workHours[1]}}
+				<td>{{sc.workHours[0]}}-{{sc.workHours[1]}}</td>
 	    	</tr>
 		</table>
 		<div>
