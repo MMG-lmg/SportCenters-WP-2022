@@ -1,8 +1,12 @@
 package service;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import beans.CenterStatus;
 import beans.Manager;
 import beans.SportsCenter;
 import repository.SportsCenterRepository;
@@ -18,12 +22,12 @@ public class SportsCenterService implements InterfaceBase<SportsCenter> {
 	}
 	@Override
 	public Collection<SportsCenter> getAll() {
-		return repo.getAll();
+		return this.syncStatusAll();
 	}
 
 	@Override
 	public SportsCenter getById(String id) {
-		return repo.getById(id);
+		return this.syncStatus(id);
 	}
 	public Collection<String> getAllWithoutManager(){
 		Collection<SportsCenter> centers = repo.getAll();
@@ -80,5 +84,48 @@ public class SportsCenterService implements InterfaceBase<SportsCenter> {
 			if(repo.getAllKeys().contains(id)) retVal = false;
 		}
 		return retVal;
+	}
+	public Collection<SportsCenter> syncStatusAll() {
+		Collection<SportsCenter> centers = repo.getAll();
+		for(SportsCenter center : centers) {
+			if(this.isOpen(center.getWorkHours())) {
+				center.setStatus(CenterStatus.OPEN);
+				
+			}
+			else {
+				center.setStatus(CenterStatus.CLOSED);
+			}
+		}
+		return centers;
+	}
+	public SportsCenter syncStatus(String id) {
+		SportsCenter center = repo.getById(id);
+		if(this.isOpen(center.getWorkHours())) {
+			center.setStatus(CenterStatus.OPEN);
+		}
+		else {
+			center.setStatus(CenterStatus.CLOSED);
+		}
+		return center;
+	}
+	
+	private boolean isOpen (int[] workHours) {
+		LocalDateTime startTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(workHours[0], 0));
+		LocalDateTime endTime;
+		if(workHours[1]==24) {
+			endTime = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(0, 0));
+		}
+		else {
+			endTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(workHours[1], 0));
+		}
+		
+		
+		if(LocalDateTime.now().isAfter(startTime) &&  LocalDateTime.now().isBefore(endTime)) {
+			return true;
+			
+		}
+		else {
+			return false;
+		}
 	}
 }
