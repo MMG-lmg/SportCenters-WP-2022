@@ -22,6 +22,19 @@ Vue.component("center",{
     </div>
     `,
     mounted(){
+        axios.get('rest/loginCheck').then(response=>{
+            if(response.data == null){
+                router.push(`/403`);
+            }
+            else{
+				this.$router.app.username = response.data.userName;
+                this.$router.app.login = response.data.role;
+                if(this.$router.app.login!="ADMIN" || this.$router.app.login!="MENAGER"){
+                    router.push(`/403`);
+                }
+            }
+        });
+
         axios.get("rest/centers/view",{
             params:{
                 menager: String(this.$router.app.username)
