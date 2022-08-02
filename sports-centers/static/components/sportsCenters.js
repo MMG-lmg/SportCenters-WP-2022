@@ -57,8 +57,10 @@ Vue.component("centers",{
 						<option value="4">4+</option>
 					</select>
 				</th>
+				<th>
+					<p>Radno Vreme</p>
+				</th>
 	    	</tr>
-	    	
 	    	<tr v-for="(sc, index) in filteredCenters" v-bind:data-id="sc.centerId"  v-on:click="rowClicked($event)" >
 	    		<td v-if="!sc.expand"><img v-bind:src="'data:image/png;base64,' + sc.logoPath" width="50" height="60"/></td>
 	    		<td v-if="!sc.expand">{{sc.centerTitle}}</td>
@@ -94,6 +96,7 @@ Vue.component("centers",{
 				}
 				this.centers = response.data
 				this.filteredCenters = this.centers;
+				this.sortByStatus();
 		});
 		axios.get('rest/loginCheck').then(response=>{
             if(response.data == null){
@@ -193,6 +196,18 @@ Vue.component("centers",{
 					return 1;
 				if(a.centerTitle > b.centerTitle)
 					return -1;
+				return 0; 
+			}
+			return this.filteredCenters.sort(compare);
+		},
+		sortByStatus: function(){
+			function compare(a,b){
+				if(a.status < b.status){
+					return 1;
+				}
+				if(a.status > b.status){
+					return -1;
+				}
 				return 0; 
 			}
 			return this.filteredCenters.sort(compare);
