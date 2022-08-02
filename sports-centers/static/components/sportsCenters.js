@@ -57,6 +57,9 @@ Vue.component("centers",{
 						<option value="4">4+</option>
 					</select>
 				</th>
+				<th>
+					<p>Radno Vreme</p>
+				</th>
 	    	</tr>
 	    	
 	    	<tr v-for="(sc, index) in filteredCenters">
@@ -65,7 +68,8 @@ Vue.component("centers",{
 	    		<td>{{typeToString(sc)}}</td>
 	    		<td>{{statusToString(sc)}}</td>
 	    		<td>{{locationToString(sc)}}</td>
-	    		<td>{{sc.grade}}</td>
+				<td>{{sc.grade}}</td>
+				<td>{{sc.workHours[0]}}-{{sc.workHours[1]}}</td>
 	    	</tr>
 		</table>
 		<div>
@@ -88,6 +92,7 @@ Vue.component("centers",{
 		axios.get('rest/centers/')
 			.then(response=>{this.centers = response.data
 				this.filteredCenters = this.centers;
+				this.sortByStatus();
 		});
 		axios.get('rest/loginCheck').then(response=>{
             if(response.data == null){
@@ -187,6 +192,18 @@ Vue.component("centers",{
 					return 1;
 				if(a.centerTitle > b.centerTitle)
 					return -1;
+				return 0; 
+			}
+			return this.filteredCenters.sort(compare);
+		},
+		sortByStatus: function(){
+			function compare(a,b){
+				if(a.status < b.status){
+					return 1;
+				}
+				if(a.status > b.status){
+					return -1;
+				}
 				return 0; 
 			}
 			return this.filteredCenters.sort(compare);

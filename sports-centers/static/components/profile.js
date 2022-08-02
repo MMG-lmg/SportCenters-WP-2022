@@ -74,7 +74,7 @@ Vue.component("profile",{
     mounted(){
         axios.get('rest/loginCheck').then(response=>{
             if(response.data == null){
-
+                router.push(`/403`);
             }
             else{
 				console.log(response.data);
