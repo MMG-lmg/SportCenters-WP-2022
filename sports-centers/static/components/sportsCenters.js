@@ -59,13 +59,15 @@ Vue.component("centers",{
 				</th>
 	    	</tr>
 	    	
-	    	<tr v-for="(sc, index) in filteredCenters">
-	    		<td><img v-bind:src="'data:image/png;base64,' + sc.logoPath" width="50" height="60"/></td>
-	    		<td>{{sc.centerTitle}}</td>
-	    		<td>{{typeToString(sc)}}</td>
-	    		<td>{{statusToString(sc)}}</td>
-	    		<td>{{locationToString(sc)}}</td>
-	    		<td>{{sc.grade}}</td>
+	    	<tr v-for="(sc, index) in filteredCenters" v-bind:data-id="sc.centerId"  v-on:click="rowClicked($event)" >
+	    		<td v-if="!sc.expand"><img v-bind:src="'data:image/png;base64,' + sc.logoPath" width="50" height="60"/></td>
+	    		<td v-if="!sc.expand">{{sc.centerTitle}}</td>
+	    		<td v-if="!sc.expand">{{typeToString(sc)}}</td>
+	    		<td v-if="!sc.expand">{{statusToString(sc)}}</td>
+	    		<td v-if="!sc.expand">{{locationToString(sc)}}</td>
+				<td v-if="!sc.expand" >{{sc.grade}}</td>
+				<td v-if="!sc.expand">{{sc.workHours[0]}}-{{sc.workHours[1]}}</td>
+				<td v-if="sc.expand" colspan="7"><p> ovo je super supa {{sc.centerTitle}}</p></td>
 	    	</tr>
 		</table>
 		<div>
@@ -86,7 +88,11 @@ Vue.component("centers",{
 	`,
 	mounted(){
 		axios.get('rest/centers/')
-			.then(response=>{this.centers = response.data
+			.then(response=>{ 
+				for(var i=0; i<response.data.length; i++){ //add propperty "expand"
+					response.data[i]["expand"] = 0;
+				}
+				this.centers = response.data
 				this.filteredCenters = this.centers;
 		});
 		axios.get('rest/loginCheck').then(response=>{
@@ -242,6 +248,24 @@ Vue.component("centers",{
 			else if(this.typeSearch === "dance"){
 				this.filteredCenters = this.centers.filter(item => item.type === "DANCE_STUDIO");
 			}
+		},
+		rowClicked: function(event){
+			var id = event.currentTarget.getAttribute("data-id");
+			console.log(event.path[1]);
+			console.log(id);
+			console.log(this.findCenter(id));
+			this.flipExpand(id);
+		},
+		findCenter: function(id){
+			for(let i=0; i < this.centers.length; i ++){
+				if(this.centers[i].centerId=== id){
+					return this.centers[i];
+				}
+			}
+			return null;
+		},
+		flipExpand: function(id){
+			this.findCenter(id).expand=!this.findCenter(id).expand;
 		}
 	}
 });
