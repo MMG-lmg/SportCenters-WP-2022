@@ -4,6 +4,8 @@ Vue.component("centers",{
 			centers:null,
 			filteredCenters:null,
 			sortName:0,
+			sortAddress:0,
+			sortGrade:0,
 			nameSearch:"",
 			statusSerach:"",
 			gradeSearch:"",
@@ -18,6 +20,7 @@ Vue.component("centers",{
 	<div>
 		<h3> Sportski centri </h3>
 		<button v-on:click=resetSearch>Ponisti pretragu</button>
+		<button v-on:click=filterOpened>Filtriraj samo otvorene</button>
 		<table border = "1">
 			<tr>
 				<th>Logo</th>
@@ -35,20 +38,12 @@ Vue.component("centers",{
 						<option value="dance">Plesni studio</option>
 					</select>
 				</th>
-    			<th>
-	    			<p>Status</p> 
-	    			<select ref="statusCombo" v-model="statusSerach" @change="searchByStatus">
-	    				<option disabled value="">Svi</option>
-						<option value="open">Otvoreno</option>
-						<option value="closed">Zatvoreno</option>
-					</select>
-				</th>
 				<th>
-					<p>Adresa</p> 
+					<p v-on:click=sortByAddress>Adresa</p> 
 					<input ref="addressField" type="text" v-model="addressSearch" v-on:keyup="searchByAddress"></input>
 				</th>
     			<th>
-    				<p>ProsecnaOcena</p> 
+    				<p v-on:click=sortByGrade>ProsecnaOcena</p> 
 	    			<select ref="gradeCombo" v-model="gradeSearch" @change="searchByGrade">
 	    				<option disabled value="">Svi</option>
 						<option value="1">1+</option>
@@ -64,12 +59,22 @@ Vue.component("centers",{
 	    	<tr v-for="(sc, index) in filteredCenters" v-bind:data-id="sc.centerId"  v-on:click="rowClicked($event)" >
 	    		<td v-if="!sc.expand"><img v-bind:src="'data:image/png;base64,' + sc.logoPath" width="50" height="60"/></td>
 	    		<td v-if="!sc.expand">{{sc.centerTitle}}</td>
-	    		<td v-if="!sc.expand">{{typeToString(sc)}}</td>
-	    		<td v-if="!sc.expand">{{statusToString(sc)}}</td>
-	    		<td v-if="!sc.expand">{{locationToString(sc)}}</td>
+				<td v-if="!sc.expand">{{typeToString(sc)}}</td>
+				<td v-if="!sc.expand">{{locationToString(sc)}}</td>
 				<td v-if="!sc.expand" >{{sc.grade}}</td>
 				<td v-if="!sc.expand">{{sc.workHours[0]}}-{{sc.workHours[1]}}</td>
-				<td v-if="sc.expand" colspan="7"><p> ovo je super supa {{sc.centerTitle}}</p></td>
+				<td v-if="sc.expand" colspan="6">
+					<div>
+						<h3>{{sc.centerTitle}}</h3>
+						<img v-bind:src="'data:image/png;base64,' + sc.logoPath" width="70" height="80"/>
+						<p>Naziv:{{sc.centerTitle}}</p>
+						<p>Tip:{{typeToString(sc)}}</p>
+						<p>Lokacija:{{locationToString(sc)}}</p>
+						<p>Status:{{statusToString(sc)}}</p>
+						<p>Prosecna ocena:{{sc.grade}}</p>
+
+					</div>
+				</td>
 	    	</tr>
 		</table>
 		<div>
@@ -182,9 +187,9 @@ Vue.component("centers",{
 		},
 		sortByNameAsc: function(){
 			function compare(a,b){
-				if(a.centerTitle < b.centerTitle)
+				if(a.centerTitle.toLowerCase() < b.centerTitle.toLowerCase())
 					return -1;
-				if(a.centerTitle > b.centerTitle)
+				if(a.centerTitle.toLowerCase() > b.centerTitle.toLowerCase())
 					return 1;
 				return 0; 
 			}
@@ -192,9 +197,69 @@ Vue.component("centers",{
 		},
 		sortByNameDesc: function(){
 			function compare(a,b){
-				if(a.centerTitle < b.centerTitle)
+				if(a.centerTitle.toLowerCase() < b.centerTitle.toLowerCase())
 					return 1;
-				if(a.centerTitle > b.centerTitle)
+				if(a.centerTitle.toLowerCase()  > b.centerTitle.toLowerCase() )
+					return -1;
+				return 0; 
+			}
+			return this.filteredCenters.sort(compare);
+		},
+		sortByAddress:function(){
+			if(this.sortAddress === 0 ){
+				this.sortByAddressAsc();
+				this.sortAddress = 1;
+			}
+			else{
+				this.sortByAddressDesc();
+				this.sortAddress = 0;
+			}
+		},
+		sortByAddressAsc:function(){
+			function compare(a,b){
+				if(a.location.address.street.toLowerCase() < b.location.address.street.toLowerCase() )
+					return -1;
+				if(a.location.address.street.toLowerCase()  > b.location.address.street.toLowerCase() )
+					return 1;
+				return 0; 
+			}
+			return this.filteredCenters.sort(compare);
+		},
+		sortByAddressDesc:function(){
+			function compare(a,b){
+				if(a.location.address.street.toLowerCase() < b.location.address.street.toLowerCase())
+					return 1;
+				if(a.location.address.street.toLowerCase() > b.location.address.street.toLowerCase())
+					return -1;
+				return 0; 
+			}
+			return this.filteredCenters.sort(compare);
+		},
+		sortByGrade: function(){
+			if(this.sortGrade === 0 ){
+				this.sortByGradeAsc();
+				this.sortGrade = 1;
+			}
+			else{
+				this.sortByGradeDesc();
+				this.sortGrade = 0;
+			}
+		},
+		sortByGradeAsc: function(){
+			function compare(a,b){
+				if(a.grade < b.grade)
+					return -1;
+				if(a.grade > b.grade)
+					return 1;
+				return 0; 
+			}
+			return this.filteredCenters.sort(compare);
+		},
+		sortByGradeDesc: function(){
+			function compare(a,b){
+				if(a.grade < b.grade)
+					return 1;
+				if(a.grade > b.grade)
 					return -1;
 				return 0; 
 			}
@@ -213,7 +278,6 @@ Vue.component("centers",{
 			return this.filteredCenters.sort(compare);
 		},
 		resetSearch: function(){
-			this.$refs.statusCombo.value = "";
 			this.$refs.titleField.value=null;
 			this.$refs.gradeCombo.value="";
 			this.$refs.typeCombo.value="";
@@ -264,11 +328,11 @@ Vue.component("centers",{
 				this.filteredCenters = this.centers.filter(item => item.type === "DANCE_STUDIO");
 			}
 		},
+		filterOpened:function(){
+			this.filteredCenters = this.centers.filter(item => item.status === "OPEN");
+		},
 		rowClicked: function(event){
 			var id = event.currentTarget.getAttribute("data-id");
-			console.log(event.path[1]);
-			console.log(id);
-			console.log(this.findCenter(id));
 			this.flipExpand(id);
 		},
 		findCenter: function(id){
