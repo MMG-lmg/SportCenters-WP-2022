@@ -2,7 +2,9 @@ Vue.component("center",{
     data: function(){
         return{
             center:null,
-            error:""
+            error:"",
+            addNew:0,
+            newTraining:{trainingId:"",title:"",centerId:"",durationMins:0,coachId:"",description:"",imagePath:""}
         }
     },
     template:`
@@ -17,6 +19,17 @@ Vue.component("center",{
             <p>Adresa: {{locationToString(center.location)}}
             <p>Prosecna ocena: {{center.grade}}</p>
             <p>Radno vreme: {{workHoursToString(center.workHours)}}</p>
+            <button v-on:click="flipAddFlag">Dodavanje novog treninga</button>
+            <div v-if="addNew">
+                <label for="title">Naziv treninga</label>
+                <input type="text" name="title" v-model="newTraining.title"></input>
+                <br>
+                <label for="logo">Logo sporskog centra </label>
+                <input type="file" name="logo" ref="imgUpload" @change="onFileInput($event)"></input>
+                <button @click="removeImage">Ukloni logo</button>
+                <img :src="imagePath"></img>
+                <br>
+            </div>
         </div>
 
     </div>
@@ -72,6 +85,36 @@ Vue.component("center",{
         },
         workHoursToString: function(hours){
             return hours[0] +" : "+ hours[1];
+        },
+        flipAddFlag: function(){
+            this.addNew=!this.addNew;
+        },
+        onFileInput: function(e){
+            var patternFileExtension = /\.([0-9a-z]+)(?:[\?#]|$)/i;
+            var files = e.target.files;
+            if(!files.length){
+                return;
+            }
+            var fileExtension = (files[0].name).match(patternFileExtension)[1];
+            if(fileExtension=="png" || fileExtension=="jpg" || fileExtension=="jpeg" || fileExtension=="gif"){
+                this.createImage(files[0]);
+            }
+            else{
+                alert("odabrani file mora biti slika");
+                this.removeImage();
+            }
+        },
+        createImage: function(file){
+            var reader = new FileReader();
+
+            reader.onload = (e) =>{
+                this.imagePath = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        },
+        removeImage: function(){
+            this.imagePath="";
+            this.$refs.imgUpload.value = null;
         }
     }
 });
