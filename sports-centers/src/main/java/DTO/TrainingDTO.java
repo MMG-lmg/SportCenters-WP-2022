@@ -78,7 +78,7 @@ public class TrainingDTO {
 		SportsCenter centerHolder = null;
 		Coach coachHolder =null;
 		for(SportsCenter sportsCenter : centers) {
-			if(sportsCenter.getCenterTitle().equals(this.getCenterId())) {
+			if(sportsCenter.getCenterId().equals(this.getCenterId())) {
 				centerHolder=sportsCenter;
 			}
 		}

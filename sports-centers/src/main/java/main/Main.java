@@ -72,7 +72,7 @@ public class Main {
     	SportsCenterController.getCenter();
     	SportsCenterController.addCenter();
     	
-    	TrainingController.addCoach();
+    	TrainingController.addTraining();
     	/*TrainingService service = new TrainingService();
     	SportsCenterService centerService = new SportsCenterService();
     	SportsCenter center = centerService.getById("PhdugsAF");

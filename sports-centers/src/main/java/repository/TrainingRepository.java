@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
@@ -16,6 +17,8 @@ import com.google.gson.reflect.TypeToken;
 import beans.SportsCenter;
 import beans.Training;
 import beans.User;
+import util.LocalDateAdapterDeserializer;
+import util.LocalDateAdapterSerializer;
 
 public class TrainingRepository implements RepositoryBase<Training> {
 	private HashMap<String,Training> trainingList;
@@ -67,7 +70,7 @@ public class TrainingRepository implements RepositoryBase<Training> {
 		
 	}
 	private void readData() {
-		Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new SportsCenterExclusionStrategy()).create();
+		Gson gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(LocalDate.class, new LocalDateAdapterDeserializer()).registerTypeAdapter(LocalDate.class, new LocalDateAdapterSerializer()).setExclusionStrategies(new SportsCenterExclusionStrategy(), new CoachExclusionStrategy()).create();
 		BufferedReader in = null;
 		try {
 			File file = new File(this.path + "/trainings.json");
@@ -95,7 +98,7 @@ public class TrainingRepository implements RepositoryBase<Training> {
 		}
 	}
 	private void writeData() {
-		Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new SportsCenterExclusionStrategy()).create();
+		Gson gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(LocalDate.class, new LocalDateAdapterDeserializer()).registerTypeAdapter(LocalDate.class, new LocalDateAdapterSerializer()).setExclusionStrategies(new SportsCenterExclusionStrategy(),new CoachExclusionStrategy()).create();
 		BufferedWriter out = null;
 		try {
 			File file = new File(this.path + "/trainings.json");

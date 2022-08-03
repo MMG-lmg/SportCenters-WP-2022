@@ -52,6 +52,7 @@ public class ImageBase64Converter {
 			bImage = ImageIO.read(inputStream);
 			File f = new File(path + imageTitle +".jpg");
 			ImageIO.write(bImage, "jpg", f);
+			//handle write->fail
 			return f.getPath();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
