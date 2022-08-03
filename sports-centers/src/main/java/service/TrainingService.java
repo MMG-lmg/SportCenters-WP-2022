@@ -1,5 +1,6 @@
 package service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import beans.Training;
@@ -22,6 +23,15 @@ public class TrainingService implements InterfaceBase<Training>{
 	public Training getById(String id) {
 		// TODO Auto-generated method stub
 		return repo.getById(id);
+	}
+	public Collection<Training> getForCenterId(String id){
+		Collection<Training> retVal = new ArrayList<Training>();
+		for(Training training : repo.getAll()) {
+			if(training.getCenter().getCenterId().equals(id)) {
+				retVal.add(training);
+			}
+		}
+		return retVal;
 	}
 
 	@Override

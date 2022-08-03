@@ -34,6 +34,8 @@ public class TrainingRepository implements RepositoryBase<Training> {
 	
 	@Override
 	public Collection<Training> getAll() {
+		readData();
+		syncData();
 		return trainingList.values();
 	}
 	public Set<String> getAllKeys() {

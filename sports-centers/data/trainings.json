@@ -1,1 +1,38 @@
-{}
+{
+  "GB0jhT7s": {
+    "trainingId": "GB0jhT7s",
+    "title": "Olimpijsko plivanje",
+    "center": {
+      "centerId": "Ig0ZRzmo"
+    },
+    "durationMins": 69.0,
+    "coach": {
+      "userName": "aha",
+      "password": "aha",
+      "name": "aha",
+      "gender": "MALE",
+      "dateOfBirth": "2022-06-27",
+      "role": "COACH"
+    },
+    "description": "Plivanje u olimpijskom bazenu.",
+    "imagePath": "data\\img\\Olimpijsko plivanje.jpg"
+  },
+  "9tnBqQ3D": {
+    "trainingId": "9tnBqQ3D",
+    "title": "Skolica plivanja",
+    "center": {
+      "centerId": "Ig0ZRzmo"
+    },
+    "durationMins": 45.0,
+    "coach": {
+      "userName": "mirkoTrener",
+      "password": "1234",
+      "name": "mirko mirkovic",
+      "gender": "MALE",
+      "dateOfBirth": "1995-06-14",
+      "role": "COACH"
+    },
+    "description": "Skolica plivanja sa cika mirkom!",
+    "imagePath": "data\\img\\Skolica plivanja.jpg"
+  }
+}

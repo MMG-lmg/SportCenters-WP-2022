@@ -72,7 +72,11 @@ Vue.component("centers",{
 						<p>Lokacija:{{locationToString(sc)}}</p>
 						<p>Status:{{statusToString(sc)}}</p>
 						<p>Prosecna ocena:{{sc.grade}}</p>
-
+						<div v-if="sc.trainings!='FAILIURE'" v-for="training in sc.trainings">
+							<p>{{training.trainingId}}</p>
+							<p>{{training.title}}</p>
+						</div>
+						<p v-if="sc.trainings=='FAILIURE'">Sportski centar jos uvek nema treninge</p>
 					</div>
 				</td>
 	    	</tr>
@@ -98,6 +102,7 @@ Vue.component("centers",{
 			.then(response=>{ 
 				for(var i=0; i<response.data.length; i++){ //add propperty "expand"
 					response.data[i]["expand"] = 0;
+					response.data[i]["trainings"] = null;
 				}
 				this.centers = response.data
 				this.filteredCenters = this.centers;
@@ -114,7 +119,6 @@ Vue.component("centers",{
 				this.checkLogin();
             }
         });
-		
 	},
 	methods:{
 		checkLogin(){
@@ -334,6 +338,8 @@ Vue.component("centers",{
 		rowClicked: function(event){
 			var id = event.currentTarget.getAttribute("data-id");
 			this.flipExpand(id);
+			this.getTrainingsForCenter(id,this.findCenter(id));
+			
 		},
 		findCenter: function(id){
 			for(let i=0; i < this.centers.length; i ++){
@@ -345,6 +351,18 @@ Vue.component("centers",{
 		},
 		flipExpand: function(id){
 			this.findCenter(id).expand=!this.findCenter(id).expand;
+		},
+		getTrainingsForCenter:function(id,center){
+			axios.get("rest/getTrainingsForCenter",{
+				params:{
+					centerId: id
+				}
+			}).then(
+				response=>{
+					console.log(response.data);
+					center.trainings=response.data;
+				}
+			)
 		}
 	}
 });
