@@ -49,6 +49,9 @@ public class TrainingController {
 			String centerId = req.queryParams("centerId");
 			Collection<Training> trainings =  service.getForCenterId(centerId);
 			if(!trainings.isEmpty()) {
+				for(Training training : trainings) {
+					training.setImagePath(ImageBase64Converter.convert(training.getImagePath()));
+				}
 				return gson.toJson(trainings);
 			}
 			return "FAILIURE";

@@ -43,7 +43,7 @@ public class ImageBase64Converter {
 		return retVal;
 	}
 	public static String decode(String image, String path, String imageTitle) {
-		byte[] data = new byte[2048];
+		byte[] data = new byte[8192];
 		data = Base64.getDecoder().decode(image);
 		
 		ByteArrayInputStream inputStream = new ByteArrayInputStream(data);

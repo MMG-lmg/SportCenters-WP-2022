@@ -73,8 +73,10 @@ Vue.component("centers",{
 						<p>Status:{{statusToString(sc)}}</p>
 						<p>Prosecna ocena:{{sc.grade}}</p>
 						<div v-if="sc.trainings!='FAILIURE'" v-for="training in sc.trainings">
-							<p>{{training.trainingId}}</p>
 							<p>{{training.title}}</p>
+							<img v-bind:src="'data:image/png;base64,' + training.imagePath" width="30" height="35"/>
+							<p>{{training.description}}</p>
+							<p>{{training.coach.name}}</p>
 						</div>
 						<p v-if="sc.trainings=='FAILIURE'">Sportski centar jos uvek nema treninge</p>
 					</div>
