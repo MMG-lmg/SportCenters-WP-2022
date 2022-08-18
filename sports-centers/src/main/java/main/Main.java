@@ -19,18 +19,21 @@ import beans.Gender;
 import beans.Location;
 import beans.Manager;
 import beans.SportsCenter;
+import beans.Training;
 import beans.User;
 import beans.UserRole;
 import controller.CoachController;
 import controller.CustomerContoller;
 import controller.ManagerController;
 import controller.SportsCenterController;
+import controller.TrainingController;
 import controller.UserController;
 import repository.CustomerRepository;
 import repository.UserRepository;
 import service.CoachService;
 import service.ManagerService;
 import service.SportsCenterService;
+import service.TrainingService;
 import service.UserService;
 import spark.Spark;
 
@@ -69,5 +72,14 @@ public class Main {
     	SportsCenterController.getCenter();
     	SportsCenterController.addCenter();
     	
+    	TrainingController.addTraining();
+    	TrainingController.getTrainingsForCenter();
+    	/*TrainingService service = new TrainingService();
+    	SportsCenterService centerService = new SportsCenterService();
+    	SportsCenter center = centerService.getById("PhdugsAF");
+    	CoachService coachService = new CoachService();
+    	Coach coach = coachService.getById("mirkoTrener");
+    	service.create(new Training("","Draganovi tegovi",center,120,coach,"Dizite kod Dragana",""));
+    	*/
     }
 }

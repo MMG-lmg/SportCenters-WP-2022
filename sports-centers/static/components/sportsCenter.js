@@ -2,7 +2,11 @@ Vue.component("center",{
     data: function(){
         return{
             center:null,
-            error:""
+            error:"",
+            addNew:0,
+            coaches:null,
+            image:null,
+            newTraining:{trainingId:"",title:"",centerId:"",durationMins:0,coachId:"",description:"",imagePath:""}
         }
     },
     template:`
@@ -17,6 +21,27 @@ Vue.component("center",{
             <p>Adresa: {{locationToString(center.location)}}
             <p>Prosecna ocena: {{center.grade}}</p>
             <p>Radno vreme: {{workHoursToString(center.workHours)}}</p>
+            <button  v-if="!addNew" v-on:click="flipAddFlag">Dodavanje novog treninga</button>
+            <button  v-if="addNew" v-on:click="cancelAdd">Odustani od dodavanja</button>
+            <div v-if="addNew">
+                <label for="title">Naziv treninga</label>
+                <input type="text" name="title" v-model="newTraining.title"></input>
+                <br>
+                <label for="logo">Logo sporskog centra </label>
+                <input type="file" name="logo" ref="imgUpload" @change="onFileInput($event)"></input>
+                <button @click="removeImage">Ukloni logo</button>
+                <img :src="image"></img>
+                <br>
+                <label for="duration">Trajanje treninga</label>
+                <input type="number" name="duration" v-model="newTraining.durationMins"></input>
+                <label for="coach">Trener</label>
+                <select v-model="newTraining.coachId">
+                    <option v-for="coach in coaches" :value="coach.userName">{{coach.userName}}:{{coach.name}}</option>
+                </select>
+                <label for="description">Opis treninga</label>
+                <textarea  name="description" v-model="newTraining.description" rows="5" cols="40"></textarea>
+                <button v-on:click="addTraining"> Dodaj </button>
+            </div>
         </div>
 
     </div>
@@ -29,7 +54,7 @@ Vue.component("center",{
             else{
 				this.$router.app.username = response.data.userName;
                 this.$router.app.login = response.data.role;
-                if(this.$router.app.login!="ADMIN" || this.$router.app.login!="MENAGER"){
+                if(this.$router.app.login!="MENAGER"){
                     router.push(`/403`);
                 }
             }
@@ -50,7 +75,12 @@ Vue.component("center",{
                 this.error="menadzer nema sportski centar";
             }
            
-        })
+        });
+        axios.get('rest/getCoaches').then(response=>{
+            if(response.data != null){
+                this.coaches = response.data;
+            }
+        });
     },
     methods:{
         typeToString: function(type){
@@ -72,6 +102,56 @@ Vue.component("center",{
         },
         workHoursToString: function(hours){
             return hours[0] +" : "+ hours[1];
+        },
+        flipAddFlag: function(){
+            this.addNew=!this.addNew;
+        },
+        cancelAdd:function(){
+            this.newTraining = {trainingId:"",title:"",centerId:"",durationMins:0,coachId:"",description:"",imagePath:""};
+            this.addNew = 0;
+        },
+        onFileInput: function(e){
+            var patternFileExtension = /\.([0-9a-z]+)(?:[\?#]|$)/i;
+            var files = e.target.files;
+            if(!files.length){
+                return;
+            }
+            var fileExtension = (files[0].name).match(patternFileExtension)[1];
+            if(fileExtension=="png" || fileExtension=="jpg" || fileExtension=="jpeg" || fileExtension=="gif"){
+                this.createImage(files[0]);
+            }
+            else{
+                alert("odabrani file mora biti slika");
+                this.removeImage();
+            }
+        },
+        createImage: function(file){
+            var reader = new FileReader();
+
+            reader.onload = (e) =>{
+                this.image = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        },
+        removeImage: function(){
+            this.image="";
+            this.$refs.imgUpload.value = null;
+        },
+        addTraining: function(){
+            this.newTraining.centerId = this.center.centerId;
+            this.newTraining.imagePath = this.image.split(",")[1];
+            axios.post("rest/addTraining",this.newTraining).then(
+                res=>{
+                    if(res.data==="FAILIURE"){
+                        this.error="Dodavanja treninga, neuspesno!";
+                    }
+                    else{
+                        this.error="Uspesna izmena i dodavanja povratak na pocetnu";
+                        setTimeout(() => {  router.push(`/`) }, 5000);
+                    }
+                    
+                }
+            )
         }
     }
 });

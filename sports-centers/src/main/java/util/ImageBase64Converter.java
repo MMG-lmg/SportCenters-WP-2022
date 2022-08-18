@@ -43,7 +43,7 @@ public class ImageBase64Converter {
 		return retVal;
 	}
 	public static String decode(String image, String path, String imageTitle) {
-		byte[] data = new byte[2048];
+		byte[] data = new byte[8192];
 		data = Base64.getDecoder().decode(image);
 		
 		ByteArrayInputStream inputStream = new ByteArrayInputStream(data);
@@ -52,6 +52,7 @@ public class ImageBase64Converter {
 			bImage = ImageIO.read(inputStream);
 			File f = new File(path + imageTitle +".jpg");
 			ImageIO.write(bImage, "jpg", f);
+			//handle write->fail
 			return f.getPath();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

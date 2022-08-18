@@ -113,6 +113,26 @@ Vue.component("addCenter",{
         });
     },
     methods:{
+        addCenter: async function(){
+            var canAdd = await this.canAddCenter();
+            if(canAdd){
+                if(this.checkData()){
+                    var SportsCenter = {centerId: 0, centerTitle: this.centerTitle, type: this.type, status:"CLOSED",
+                    location:{ latitude: this.latitude, longitude: this.longitude, address: {street: this.street, streetNumber: this.streetNumber, city:this.city, zipCode:this.zipCode}},
+                    logoPath: this.image.split(",")[1], grade: 0, workHours:[this.workHoursStart, this.workHoursEnd]
+                    };
+                    await this.axiosAddCenter(SportsCenter);
+                    this.axiosEditManager();
+                   
+                }
+                else{
+                    this.error="Sva polja moraju biti popunjena";
+                }
+            }
+            else{
+                this.error="Sva polja moraju biti popunjena";
+            }
+        },
         canAddCenter: function(){
             console.log("can add center");
             if(!this.freeManagers){
@@ -138,46 +158,36 @@ Vue.component("addCenter",{
             }
             return false;
         },
-        addCenter: function(){
-            if(this.canAddCenter()){
-                console.log("can add center : true");
-                if(this.checkData()){
-                    var SportsCenter = {centerId: 0, centerTitle: this.centerTitle, type: this.type, status:"CLOSED",
-                    location:{ latitude: this.latitude, longitude: this.longitude, address: {street: this.street, streetNumber: this.streetNumber, city:this.city, zipCode:this.zipCode}},
-                    logoPath: this.image.split(",")[1], grade: 0, workHours:[this.workHoursStart, this.workHoursEnd]
-                    };
-                    console.log(SportsCenter);
-                    axios.post("rest/centers/add", SportsCenter)
-                    .then(res=>{
-                        if(res.data==="FAILIURE"){
-                            this.error="Greska dodavanje centra, neuspesno!";
-                        }
-                        else{
-                            this.error="Centar uspesno dodat";
-                            console.log("Centar uspesno dodat");
-                        }
-                    });
-                    console.log(this.selectedManager);
-                    axios.post("rest/editManager",this.selectedManager).then(
-                        res=>{
-                            if(res.data==="FAILIURE"){
-                                this.error="Izmena menadzera, neuspesno!";
-                            }
-                            else{
-                                this.error="Uspesna izmena i dodavanja povratak na pocetnu";
-                                setTimeout(() => {  router.push(`/`) }, 5000);
-                            }
-                            
-                        }
-                    );
-                   
+        axiosAddCenter:function(SportsCenter){
+            console.log("axios add");
+            axios.post("rest/centers/add", SportsCenter)
+            .then(res=>{
+                if(res.data==="FAILIURE"){
+                    this.error="Greska dodavanje centra, neuspesno!";
                 }
                 else{
-                    this.error="Sva polja moraju biti popunjena";
+                    this.error="Centar uspesno dodat";
+                    console.log("Centar uspesno dodat");
                 }
-            }
+            });
+        },
+        axiosEditManager:function(){
+            console.log("axios eddit");
+            axios.post("rest/editManager",this.selectedManager).then(
+                res=>{
+                    if(res.data==="FAILIURE"){
+                        this.error="Izmena menadzera, neuspesno!";
+                    }
+                    else{
+                        this.error="Uspesna izmena i dodavanja povratak na pocetnu";
+                        setTimeout(() => {  router.push(`/`) }, 5000);
+                    }
+                    
+                }
+            );  
         },
         checkData: function(){
+            console.log("c data");
             if(this.centerTitle===null || this.centerTitle==="" || 
                 this.type===null || this.type==="" || 
                 this.image===null || this.image==="" || 
