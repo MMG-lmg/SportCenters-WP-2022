@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Set;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -128,5 +129,8 @@ public class MembershipRepository implements RepositoryBase<Membership>{
 				}
 			}
 		});
+	}
+	public Set<String> getAllKeys() {
+		return this.membershipList.keySet();
 	}
 }
