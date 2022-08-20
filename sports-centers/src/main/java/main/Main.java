@@ -25,6 +25,7 @@ import beans.UserRole;
 import controller.CoachController;
 import controller.CustomerContoller;
 import controller.ManagerController;
+import controller.MembershipOffersController;
 import controller.SportsCenterController;
 import controller.TrainingController;
 import controller.UserController;
@@ -74,6 +75,10 @@ public class Main {
     	
     	TrainingController.addTraining();
     	TrainingController.getTrainingsForCenter();
+    	
+    	MembershipOffersController.addOffer();
+    	MembershipOffersController.getOffer();
+    	MembershipOffersController.getAllOffers();
     	/*TrainingService service = new TrainingService();
     	SportsCenterService centerService = new SportsCenterService();
     	SportsCenter center = centerService.getById("PhdugsAF");

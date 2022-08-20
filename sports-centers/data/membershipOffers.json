@@ -1,0 +1,30 @@
+{
+  "zaeb802L": {
+    "membershipOfferId": "zaeb802L",
+    "description": "jos bolja ponuda",
+    "type": "WEEKLY",
+    "price": 300.0,
+    "numOfVisits": 4
+  },
+  "26T0oFV6": {
+    "membershipOfferId": "26T0oFV6",
+    "description": "SUS",
+    "type": "ANNUAL",
+    "price": 15000.0,
+    "numOfVisits": 69
+  },
+  "NuVGdgUL": {
+    "membershipOfferId": "NuVGdgUL",
+    "description": "super nova ponuda",
+    "type": "MONTHLY",
+    "price": 12.0,
+    "numOfVisits": 12
+  },
+  "Km3el4Pl": {
+    "membershipOfferId": "Km3el4Pl",
+    "description": "adsfa",
+    "type": "MONTHLY",
+    "price": 123.0,
+    "numOfVisits": 21
+  }
+}

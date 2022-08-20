@@ -10,10 +10,10 @@ public class Membership {
 	private double price;
 	private Customer customer;
 	private MembershipStatus status;
-	private int dailyVisits;
+	private int numOfVisits;
 	
 	public Membership(String membershipId, MembershipType type, Date payDate, Date validDue, double price,
-			Customer customer, MembershipStatus status, int dailyVisits) {
+			Customer customer, MembershipStatus status, int numOfVisits) {
 		super();
 		this.membershipId = membershipId;
 		this.type = type;
@@ -22,7 +22,7 @@ public class Membership {
 		this.price = price;
 		this.customer = customer;
 		this.status = status;
-		this.dailyVisits = dailyVisits;
+		this.numOfVisits = numOfVisits;
 	}
 	public Membership() {
 		super();
@@ -69,11 +69,11 @@ public class Membership {
 	public void setStatus(MembershipStatus status) {
 		this.status = status;
 	}
-	public int getDailyVisits() {
-		return dailyVisits;
+	public int getnumOfVisits() {
+		return numOfVisits;
 	}
-	public void setDailyVisits(int dailyVisits) {
-		this.dailyVisits = dailyVisits;
+	public void setnumOfVisits(int numOfVisits) {
+		this.numOfVisits = numOfVisits;
 	}
 
 }

@@ -26,7 +26,7 @@ public class MembershipOffersService implements InterfaceBase<MembershipOffer>{
 	public void create(MembershipOffer item) {
 		String id = generateId();
 		item.setMembershipOfferId(id);
-		repo.create(null, item);
+		repo.create(id, item);
 	}
 
 	@Override

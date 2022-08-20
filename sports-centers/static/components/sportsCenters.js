@@ -112,7 +112,7 @@ Vue.component("centers",{
 		});
 		axios.get('rest/loginCheck').then(response=>{
             if(response.data == null){
-
+	
             }
             else{
 				console.log(response.data)
