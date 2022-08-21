@@ -7,6 +7,7 @@ import static spark.Spark.post;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import DTO.MembershipDTO;
 import beans.Membership;
 import service.CustomerService;
 import service.MembershipService;
@@ -29,10 +30,10 @@ public class MembershipController {
 		});
 	}
 	public static void addMembership() {
-		post("rest/Membership/post", (req,res) ->{
+		post("rest/Membership/add", (req,res) ->{
 			res.type("application/json");
-			Membership membership = gson.fromJson(req.body(), Membership.class);
-			membership.setCustomer(customerService.getById(membership.getCustomer().getUserName()));
+			MembershipDTO dto = gson.fromJson(req.body(), MembershipDTO.class);
+			Membership membership = dto.convertDTO(customerService.getAll());
 			service.create(membership);
 			return "SUCCESS";
 		});

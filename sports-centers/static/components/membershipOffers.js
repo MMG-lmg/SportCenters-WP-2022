@@ -18,7 +18,7 @@ Vue.component("membershipOffers",{
             <div v-if="listedOffers" v-for="offer in listedOffers">
                 <p>{{offer.membershipOfferId}}</p>
                 <p>Opis:{{offer.description}}</p>
-                <p>{{offer.type}},Broj treninga:{{offer.dailyVisits}},Broj poseta:{{offer.numOfVisits}}</p>
+                <p>{{offer.type}},Broj poseta:{{offer.numOfVisits}}</p>
                 <p>Cena:{{offer.price}}</p>
             </div>
             <button v-if="add==false" @click="add=true">Dodavanje ponude</button>

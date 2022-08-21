@@ -1,18 +1,19 @@
 package beans;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Membership {
 	private String membershipId;
 	private MembershipType type;
-	private Date payDate;
-	private Date validDue;
+	private LocalDate payDate;
+	private LocalDate validDue;
 	private double price;
 	private Customer customer;
 	private MembershipStatus status;
 	private int numOfVisits;
 	
-	public Membership(String membershipId, MembershipType type, Date payDate, Date validDue, double price,
+	public Membership(String membershipId, MembershipType type, LocalDate payDate, LocalDate validDue, double price,
 			Customer customer, MembershipStatus status, int numOfVisits) {
 		super();
 		this.membershipId = membershipId;
@@ -39,16 +40,16 @@ public class Membership {
 	public void setType(MembershipType type) {
 		this.type = type;
 	}
-	public Date getPayDate() {
+	public LocalDate getPayDate() {
 		return payDate;
 	}
-	public void setPayDate(Date payDate) {
+	public void setPayDate(LocalDate payDate) {
 		this.payDate = payDate;
 	}
-	public Date getValidDue() {
+	public LocalDate getValidDue() {
 		return validDue;
 	}
-	public void setValidDue(Date validDue) {
+	public void setValidDue(LocalDate validDue) {
 		this.validDue = validDue;
 	}
 	public double getPrice() {

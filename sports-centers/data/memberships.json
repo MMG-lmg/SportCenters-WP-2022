@@ -1,0 +1,38 @@
+{
+  "K3zxlNyt": {
+    "membershipId": "K3zxlNyt",
+    "type": "MONTHLY",
+    "payDate": "2022-07-21",
+    "validDue": "2022-08-21",
+    "price": 123.0,
+    "customer": {
+      "userName": "perica94"
+    },
+    "status": "ACTIVE",
+    "numOfVisits": 21
+  },
+  "Z7iO4qXs": {
+    "membershipId": "Z7iO4qXs",
+    "type": "MONTHLY",
+    "payDate": "2022-07-21",
+    "validDue": "2022-08-21",
+    "price": 123.0,
+    "customer": {
+      "userName": "perica94"
+    },
+    "status": "ACTIVE",
+    "numOfVisits": 21
+  },
+  "isyrZP1s": {
+    "membershipId": "isyrZP1s",
+    "type": "ANNUAL",
+    "payDate": "2022-07-21",
+    "validDue": "2023-07-21",
+    "price": 15000.0,
+    "customer": {
+      "userName": "perica94"
+    },
+    "status": "ACTIVE",
+    "numOfVisits": 69
+  }
+}
