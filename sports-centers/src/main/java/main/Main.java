@@ -82,6 +82,7 @@ public class Main {
     	MembershipOffersController.getAllOffers();
     	
     	MembershipController.addMembership();
+    	MembershipController.getActiveMembershipForUsername();
     	/*TrainingService service = new TrainingService();
     	SportsCenterService centerService = new SportsCenterService();
     	SportsCenter center = centerService.getById("PhdugsAF");

@@ -4,6 +4,7 @@ Vue.component("buyMembership",{
             membershipOffers:null,
             newMembership:null,
             feedback:"",
+            existingMembership:null
         }
     },
     template:`
@@ -15,7 +16,15 @@ Vue.component("buyMembership",{
                 <p>{{offer.type}},Broj poseta:{{offer.numOfVisits}}</p>
                 <p>Cena:{{offer.price}}</p>
             </div>
+            
             <div v-if="newMembership">
+                <div v-if="existingMembership">
+                    <p>Paznja postoji uplacena aktivna clanarina, kupovinom nove prestaje vazenje stare</p>
+                    <p>Opis:{{existingMembership.description}}</p>
+                    <p>{{existingMembership.type}}Broj poseta:{{existingMembership.numOfVisits}}</p>
+                    <p>Cena:{{existingMembership.price}}</p>
+                    <p>Clanarina vazi od {{existingMembership.payDate}} do {{existingMembership.validDue}}</p>
+                </div>
                 <br>
                 <p>Nova clanarina</p>
                 <p>Opis:{{newMembership.description}}</p>
@@ -47,6 +56,16 @@ Vue.component("buyMembership",{
             }
             else{
                 this.feedback="Nema ponuda";
+            }
+        });
+
+        axios.get('rest/Membership/getActive',
+        {
+            params: {username:this.$router.app.username}
+        })
+        .then(response=>{
+            if(response.data!="FAILIURE"){
+                this.existingMembership = response.data;
             }
         });
     },

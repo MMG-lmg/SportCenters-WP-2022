@@ -29,6 +29,17 @@ public class MembershipController {
 			return "FAILIURE";
 		});
 	}
+	public static void getActiveMembershipForUsername() {
+		get("rest/Membership/getActive",(req,res) ->{
+			res.type("application/json");
+			Membership membership = service.getActiveByUsername(req.queryParams("username"));
+			if(membership!=null) {
+				return gson.toJson(membership);
+			}
+			return "FAILIURE";
+		});
+		
+	}
 	public static void addMembership() {
 		post("rest/Membership/add", (req,res) ->{
 			res.type("application/json");
