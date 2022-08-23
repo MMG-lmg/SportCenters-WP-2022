@@ -3,6 +3,7 @@ package service;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import beans.Customer;
 import beans.Membership;
 import beans.MembershipStatus;
 import repository.MembershipRepository;
@@ -10,9 +11,11 @@ import util.IdGenerator;
 
 public class MembershipService implements InterfaceBase<Membership>{
 	private MembershipRepository repo;
+	private CustomerService customerService;
 	
 	public MembershipService() {
 		repo = new MembershipRepository();
+		customerService = new CustomerService();
 	}
 	@Override
 	public Collection<Membership> getAll() {
@@ -44,7 +47,7 @@ public class MembershipService implements InterfaceBase<Membership>{
 		item.setMembershipId(id);
 		checkExistingMemberships(item.getCustomer().getUserName());
 		repo.create(id, item);
-		
+		updateCustomerPrice(item.getCustomer(),item.getPrice());
 	}
 
 	@Override
@@ -83,8 +86,25 @@ public class MembershipService implements InterfaceBase<Membership>{
 	private void checkExistingMemberships(String username) {
 		Membership active = this.getActiveByUsername(username);
 		if(!active.equals(null)) {
-			active.setStatus(MembershipStatus.INACTIVE);
-			repo.update(active.getMembershipId(), active);
+			terminateExistingMembership(active);
 		}	
+	}
+	private void terminateExistingMembership(Membership active) {
+		active.setStatus(MembershipStatus.INACTIVE);
+		repo.update(active.getMembershipId(), active);
+		double gainedPoints = active.getPrice()/1000.0 * active.getUsedVisits();
+		double lostPoints = 0;
+		if(active.getNumOfVisits()/3.0 > active.getUsedVisits()) {
+			lostPoints = active.getPrice()/1000.0*133*4;
+		}
+		double finalPoints = gainedPoints - lostPoints;
+		if(finalPoints < 0) {
+			finalPoints = 0;
+		}
+		customerService.saveLoyalityPoints(active.getCustomer().getUserName(), finalPoints);
+	}
+	private void updateCustomerPrice(Customer customer, double price) {
+		customer.setMembershipCost(price);
+		customerService.update(customer.getUserName(), customer);
 	}
 }

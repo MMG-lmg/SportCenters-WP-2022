@@ -12,6 +12,7 @@ public class Membership {
 	private Customer customer;
 	private MembershipStatus status;
 	private int numOfVisits;
+	private int usedVisits;
 	
 	public Membership(String membershipId, MembershipType type, LocalDate payDate, LocalDate validDue, double price,
 			Customer customer, MembershipStatus status, int numOfVisits) {
@@ -24,6 +25,7 @@ public class Membership {
 		this.customer = customer;
 		this.status = status;
 		this.numOfVisits = numOfVisits;
+		this.usedVisits = 0;
 	}
 	public Membership() {
 		super();
@@ -70,11 +72,17 @@ public class Membership {
 	public void setStatus(MembershipStatus status) {
 		this.status = status;
 	}
-	public int getnumOfVisits() {
+	public int getNumOfVisits() {
 		return numOfVisits;
 	}
-	public void setnumOfVisits(int numOfVisits) {
+	public void setNumOfVisits(int numOfVisits) {
 		this.numOfVisits = numOfVisits;
+	}
+	public int getUsedVisits() {
+		return usedVisits;
+	}
+	public void setUsedVisits(int usedVisits) {
+		this.usedVisits = usedVisits;
 	}
 
 }
