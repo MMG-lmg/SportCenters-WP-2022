@@ -1,19 +1,21 @@
 package beans;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Membership {
 	private String membershipId;
 	private MembershipType type;
-	private Date payDate;
-	private Date validDue;
+	private LocalDate payDate;
+	private LocalDate validDue;
 	private double price;
 	private Customer customer;
 	private MembershipStatus status;
-	private int dailyVisits;
+	private int numOfVisits;
+	private int usedVisits;
 	
-	public Membership(String membershipId, MembershipType type, Date payDate, Date validDue, double price,
-			Customer customer, MembershipStatus status, int dailyVisits) {
+	public Membership(String membershipId, MembershipType type, LocalDate payDate, LocalDate validDue, double price,
+			Customer customer, MembershipStatus status, int numOfVisits) {
 		super();
 		this.membershipId = membershipId;
 		this.type = type;
@@ -22,7 +24,8 @@ public class Membership {
 		this.price = price;
 		this.customer = customer;
 		this.status = status;
-		this.dailyVisits = dailyVisits;
+		this.numOfVisits = numOfVisits;
+		this.usedVisits = 0;
 	}
 	public Membership() {
 		super();
@@ -39,16 +42,16 @@ public class Membership {
 	public void setType(MembershipType type) {
 		this.type = type;
 	}
-	public Date getPayDate() {
+	public LocalDate getPayDate() {
 		return payDate;
 	}
-	public void setPayDate(Date payDate) {
+	public void setPayDate(LocalDate payDate) {
 		this.payDate = payDate;
 	}
-	public Date getValidDue() {
+	public LocalDate getValidDue() {
 		return validDue;
 	}
-	public void setValidDue(Date validDue) {
+	public void setValidDue(LocalDate validDue) {
 		this.validDue = validDue;
 	}
 	public double getPrice() {
@@ -69,11 +72,17 @@ public class Membership {
 	public void setStatus(MembershipStatus status) {
 		this.status = status;
 	}
-	public int getDailyVisits() {
-		return dailyVisits;
+	public int getNumOfVisits() {
+		return numOfVisits;
 	}
-	public void setDailyVisits(int dailyVisits) {
-		this.dailyVisits = dailyVisits;
+	public void setNumOfVisits(int numOfVisits) {
+		this.numOfVisits = numOfVisits;
+	}
+	public int getUsedVisits() {
+		return usedVisits;
+	}
+	public void setUsedVisits(int usedVisits) {
+		this.usedVisits = usedVisits;
 	}
 
 }

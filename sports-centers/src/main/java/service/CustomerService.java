@@ -48,5 +48,9 @@ public class CustomerService implements InterfaceBase<Customer>{
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	public void saveLoyalityPoints(String id, double points) {
+		Customer customer = repo.getById(id);
+		customer.setLoyalityPoints(points);
+		repo.update(id, customer);
+	}
 }

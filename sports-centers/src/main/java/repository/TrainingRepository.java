@@ -44,6 +44,8 @@ public class TrainingRepository implements RepositoryBase<Training> {
 	}
 	@Override
 	public Training getById(String id) {
+		readData();
+		syncData();
 		return trainingList.get(id);
 	}
 

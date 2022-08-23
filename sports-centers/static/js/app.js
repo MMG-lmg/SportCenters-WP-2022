@@ -7,7 +7,10 @@ const Profile={template: '<profile></profile>'}
 const Profiles={template: '<profiles></profiles>'}
 const Center={template:'<center></center>'}
 const addCenter={template:'<addCenter></addCenter>'}
+const membershipOffers={template:'<membershipOffers></membershipOffers>'}
+const buyMembership={template:'<buyMembership></buyMembership>'}
 const vueForbiden={template:'<vueForbiden></vueForbiden>'}
+
 
 const router = new VueRouter({
 	mode: 'hash',
@@ -20,7 +23,9 @@ const router = new VueRouter({
 		{ path: '/profile', component:Profile},
 		{ path: '/admin/profiles', component:Profiles},
 		{ path: '/admin/addCenter', component:addCenter},
+		{ path: '/admin/offers', component:membershipOffers},
 		{ path: '/manager/center', component:Center},
+		{ path: '/customer/buyMembership', component:buyMembership},
 		{ path: '/403', component:vueForbiden}
 	  ]
 });

@@ -1,0 +1,54 @@
+{
+  "K3zxlNyt": {
+    "membershipId": "K3zxlNyt",
+    "type": "MONTHLY",
+    "payDate": "2022-07-21",
+    "validDue": "2022-08-21",
+    "price": 123.0,
+    "customer": {
+      "userName": "perica94"
+    },
+    "status": "INACTIVE",
+    "numOfVisits": 21,
+    "usedVisits": 0
+  },
+  "lwLtvh3b": {
+    "membershipId": "lwLtvh3b",
+    "type": "MONTHLY",
+    "payDate": "2022-07-23",
+    "validDue": "2022-08-23",
+    "price": 123.0,
+    "customer": {
+      "userName": "perica94"
+    },
+    "status": "INACTIVE",
+    "numOfVisits": 21,
+    "usedVisits": 0
+  },
+  "SLSpiXYG": {
+    "membershipId": "SLSpiXYG",
+    "type": "ANNUAL",
+    "payDate": "2022-07-23",
+    "validDue": "2023-07-23",
+    "price": 15000.0,
+    "customer": {
+      "userName": "perica94"
+    },
+    "status": "ACTIVE",
+    "numOfVisits": 69,
+    "usedVisits": 0
+  },
+  "nqiOVpiB": {
+    "membershipId": "nqiOVpiB",
+    "type": "WEEKLY",
+    "payDate": "2022-07-21",
+    "validDue": "2022-07-28",
+    "price": 300.0,
+    "customer": {
+      "userName": "perica94"
+    },
+    "status": "INACTIVE",
+    "numOfVisits": 4,
+    "usedVisits": 0
+  }
+}
