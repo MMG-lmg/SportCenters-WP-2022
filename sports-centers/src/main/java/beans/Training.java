@@ -3,6 +3,7 @@ package beans;
 public class Training {
 	private String trainingId;
 	private String title;
+	private TrainingType type;
 	private SportsCenter center;
 	private double durationMins;
 	private Coach coach;
@@ -11,11 +12,12 @@ public class Training {
 	public Training() {
 		super();
 	}
-	public Training(String trainingId, String title, SportsCenter center, double durationMins, Coach coach,
+	public Training(String trainingId, String title, TrainingType type, SportsCenter center, double durationMins, Coach coach,
 			String description, String imagePath) {
 		super();
 		this.trainingId = trainingId;
 		this.title = title;
+		this.type = type;
 		this.center = center;
 		this.durationMins = durationMins;
 		this.coach = coach;
@@ -63,5 +65,11 @@ public class Training {
 	}
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
+	}
+	public TrainingType getType() {
+		return type;
+	}
+	public void setType(TrainingType type) {
+		this.type = type;
 	}
 }

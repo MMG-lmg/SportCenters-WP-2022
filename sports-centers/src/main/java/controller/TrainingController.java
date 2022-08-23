@@ -11,6 +11,7 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 import service.CoachService;
@@ -19,9 +20,11 @@ import service.TrainingService;
 import util.ImageBase64Converter;
 import util.LocalDateAdapterDeserializer;
 import util.LocalDateAdapterSerializer;
+import util.LocalDateTimeAdapterDeserialiser;
+import util.LocalDateTimeAdapterSerialiser;
 
 public class TrainingController {
-	private static Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapterDeserializer()).registerTypeAdapter(LocalDate.class, new LocalDateAdapterSerializer()).create();
+	private static Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapterDeserialiser()).registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapterSerialiser()).registerTypeAdapter(LocalDate.class, new LocalDateAdapterDeserializer()).registerTypeAdapter(LocalDate.class, new LocalDateAdapterSerializer()).create();
 	private static TrainingService service = new TrainingService();
 	private static SportsCenterService centerService = new SportsCenterService();
 	private static CoachService coachService = new CoachService();

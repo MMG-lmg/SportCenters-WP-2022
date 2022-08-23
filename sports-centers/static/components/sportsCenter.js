@@ -6,7 +6,7 @@ Vue.component("center",{
             addNew:0,
             coaches:null,
             image:null,
-            newTraining:{trainingId:"",title:"",centerId:"",durationMins:0,coachId:"",description:"",imagePath:""}
+            newTraining:{trainingId:"",title:"",type:"PERSONAL",centerId:"",durationMins:0,coachId:"",description:"",imagePath:""}
         }
     },
     template:`
@@ -32,6 +32,11 @@ Vue.component("center",{
                 <button @click="removeImage">Ukloni logo</button>
                 <img :src="image"></img>
                 <br>
+                <label for="type">Tip treninga:</label>
+                <select ref="typeCombo" name="type" v-model="newTraining.type">
+                    <option value="PERSONAL" selected>Personalni</option>
+                    <option value="GROUP">Grupni</option>
+                </select>
                 <label for="duration">Trajanje treninga</label>
                 <input type="number" name="duration" v-model="newTraining.durationMins"></input>
                 <label for="coach">Trener</label>

@@ -6,21 +6,24 @@ import beans.Coach;
 import beans.Manager;
 import beans.SportsCenter;
 import beans.Training;
+import beans.TrainingType;
 
 public class TrainingDTO {
 	private String trainingId;
 	private String title;
+	private TrainingType type;
 	private String centerId;
 	private double durationMins;
 	private String coachId;
 	private String description;
 	private String imagePath;
 	
-	public TrainingDTO(String trainingId, String title, String centerId, double durationMins, String coachId,
+	public TrainingDTO(String trainingId, TrainingType type, String title, String centerId, double durationMins, String coachId,
 			String description, String imagePath) {
 		super();
 		this.trainingId = trainingId;
 		this.title = title;
+		this.type=type;
 		this.centerId = centerId;
 		this.durationMins = durationMins;
 		this.coachId = coachId;
@@ -91,6 +94,7 @@ public class TrainingDTO {
 			return new Training(
 					this.getTrainingId(),
 					this.getTitle(),
+					this.getType(),
 					centerHolder,
 					this.getDurationMins(),
 					coachHolder,
@@ -102,6 +106,14 @@ public class TrainingDTO {
 		else {
 			return null;
 		}
+	}
+
+	public TrainingType getType() {
+		return type;
+	}
+
+	public void setType(TrainingType type) {
+		this.type = type;
 	}
 	
 }
