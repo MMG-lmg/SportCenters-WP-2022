@@ -5,6 +5,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -15,6 +17,9 @@ import com.google.gson.reflect.TypeToken;
 import beans.Coach;
 import beans.Manager;
 import beans.User;
+import util.LocalDateAdapterDeserializer;
+import util.LocalDateTimeAdapterDeserialiser;
+import util.LocalDateTimeAdapterSerialiser;
 
 public class CoachRepository implements RepositoryBase<Coach>{
 	
@@ -70,7 +75,7 @@ public class CoachRepository implements RepositoryBase<Coach>{
 		
 	}
 	private void readData() {
-		Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new UserExclusionStrategy()).create();
+		Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapterDeserialiser()).setPrettyPrinting().setExclusionStrategies(new UserExclusionStrategy()).create();
 		BufferedReader in = null;
 		try {
 			File file = new File(this.path + "/coaches.json");
@@ -99,7 +104,7 @@ public class CoachRepository implements RepositoryBase<Coach>{
 	}
 	
 	private void writeData() {
-		Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new UserExclusionStrategy()).create();
+		Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapterSerialiser()).setPrettyPrinting().setExclusionStrategies(new UserExclusionStrategy()).create();
 		BufferedWriter out = null;
 		try {
 			File file = new File(this.path + "/coaches.json");

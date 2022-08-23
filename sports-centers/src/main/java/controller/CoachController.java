@@ -3,6 +3,7 @@ package controller;
 import static spark.Spark.post;
 import static spark.Spark.get;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -15,9 +16,11 @@ import service.ManagerService;
 import spark.Session;
 import util.LocalDateAdapterDeserializer;
 import util.LocalDateAdapterSerializer;
+import util.LocalDateTimeAdapterDeserialiser;
+import util.LocalDateTimeAdapterSerialiser;
 
 public class CoachController {
-	private static Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapterDeserializer()).registerTypeAdapter(LocalDate.class, new LocalDateAdapterSerializer()).create();
+	private static Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapterDeserialiser()).registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapterSerialiser()).registerTypeAdapter(LocalDate.class, new LocalDateAdapterDeserializer()).registerTypeAdapter(LocalDate.class, new LocalDateAdapterSerializer()).create();
 	private static CoachService service = new CoachService();
 	
 	public static void addCoach() {

@@ -43,7 +43,7 @@ public class SportsCenterController{
 			res.type("application/json");
 			Manager manager = managerService.getById(req.queryParams("menager"));
 			if(manager!= null) {
-				SportsCenter center = manager.getCenter();
+				SportsCenter center = service.getById(manager.getCenter().getCenterId());
 				if(center != null) {
 					center.setLogoPath(ImageBase64Converter.convert(center.getLogoPath()));
 					return gson.toJson(center);
