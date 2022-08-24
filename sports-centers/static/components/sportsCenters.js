@@ -14,7 +14,6 @@ Vue.component("centers",{
 			loggedUserType:"",
 			loggedUserName:"",
 			userLogedIn: false,
-			scheduleTrainigId :null
 		}
 	},
 	template:`
@@ -369,9 +368,8 @@ Vue.component("centers",{
 				}
 			)
 		},
-		scheduleTraining: function(traning){
-			this.$router.app.trainingForSchedule = training;
-			router.push(`/customer/schedule`);
+		scheduleTraining: function(training){
+			router.push(`/customer/scheduleTraining/${training.trainingId}`);
 		}
 	}
 });

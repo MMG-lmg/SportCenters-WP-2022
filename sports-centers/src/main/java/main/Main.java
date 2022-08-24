@@ -75,6 +75,7 @@ public class Main {
     	SportsCenterController.addCenter();
     	
     	TrainingController.addTraining();
+    	TrainingController.getTraining();
     	TrainingController.getTrainingsForCenter();
     	
     	MembershipOffersController.addOffer();

@@ -9,6 +9,7 @@ const Center={template:'<center></center>'}
 const addCenter={template:'<addCenter></addCenter>'}
 const membershipOffers={template:'<membershipOffers></membershipOffers>'}
 const buyMembership={template:'<buyMembership></buyMembership>'}
+const scheduleTraining={template:'<scheduleTraining></scheduleTraining>'}
 const vueForbiden={template:'<vueForbiden></vueForbiden>'}
 
 
@@ -26,6 +27,7 @@ const router = new VueRouter({
 		{ path: '/admin/offers', component:membershipOffers},
 		{ path: '/manager/center', component:Center},
 		{ path: '/customer/buyMembership', component:buyMembership},
+		{ path: '/customer/scheduleTraining/:trainingId', component:scheduleTraining},
 		{ path: '/403', component:vueForbiden}
 	  ]
 });
@@ -35,6 +37,6 @@ var app = new Vue({
 	el: '#app',
 	data:{
 		login:'',
-		username:''
+		username:'',
 	}
 });
