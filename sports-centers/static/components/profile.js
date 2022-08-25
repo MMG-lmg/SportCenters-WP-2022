@@ -10,7 +10,9 @@ Vue.component("profile",{
             editCustomer:{membershipCost:0,visitedCenters:null,loyalityPoints: 0,type:null},
             editManager:{sportsCenterTitle:""},
             editCoach:{pastTrainings:null},
-            feedback:""
+            feedback:"",
+            customerPastTrainings:[],
+            customerFutureTrainings:[],
         }
     },
     template:`
@@ -39,6 +41,11 @@ Vue.component("profile",{
         <div>
         <p>Uloga: {{roleToString(editUser.role)}}</p>
         </div>
+
+        <button v-if="edit==0" @click="edit=1">Izmeni podatke</button>
+        <button v-if="edit==1" @click="this.cancelEdit">Otkazi izmene</button>
+        <button v-if="edit==1" @click="this.updateUser">Primeni izmene</button>
+
         <div v-if="this.$router.app.login=='MENAGER'">
             <p>Naziv Sportskog Centra: {{manager.sportsCenterTitle}}</p>
         </div>
@@ -65,10 +72,22 @@ Vue.component("profile",{
                 <td>{{sc.grade}}</td>
             </tr>
             </table>
+            <h3 v-if="customerPastTrainings.length===0">Nemate prethodno posecenih treninga</h3>
+            <h3 v-if="customerPastTrainings.lenght!=0">Prethodno poseceni treninzi</h3>
+            <div v-for="history in customerPastTrainings">
+                <p>Naziv traninga: {{history.training.title}}</p>
+                <p>Naziv centra:{{history.training.center.centerTitle}}</p>
+                <p>Datum treninga:{{history.date}}</p>
+            </div>
+
+            <h3 v-if="customerFutureTrainings.length===0">Nemate zakazanih treninga treninga</h3>
+            <h3 v-if="customerFutureTrainings.lenght!=0">Zakazani treninzi</h3>
+            <div v-for="history in customerFutureTrainings">
+                <p>Naziv traninga: {{history.training.title}}</p>
+                <p>Naziv centra:{{history.training.center.centerTitle}}</p>
+                <p>Datum treninga:{{history.date}}</p>
+            </div>
         </div>
-        <button v-if="edit==0" @click="edit=1">Izmeni podatke</button>
-        <button v-if="edit==1" @click="this.cancelEdit">Otkazi izmene</button>
-        <button v-if="edit==1" @click="this.updateUser">Primeni izmene</button>
     </div>
     `,
     mounted(){
@@ -84,6 +103,29 @@ Vue.component("profile",{
                 
             }
         });
+        axios.get('rest/getHistoryUsername',{
+            params:{
+                username:this.$router.app.username
+            }
+        })
+        .then(
+            response=>{
+                response.data.forEach((item, index) =>{
+                    //String[] date = json.getAsJsonPrimitive().getAsString().split("T")[0].split("-");
+		            //String[] time = json.getAsJsonPrimitive().getAsString().split("T")[1].split(":");
+                    var currentDateDate = item.date.split("T")[0].split("-");
+                    var currentDateTime = item.date.split("T")[1].split(":");
+                    var currentDate = new Date(currentDateDate[0],currentDateDate[1],currentDateDate[2],currentDateTime[0],currentDateTime[1],0,0);
+                    if(currentDate < new Date()){
+                        this.customerPastTrainings.push(item);
+                    }
+                    else{
+                        this.customerFutureTrainings.push(item);
+                    }
+                })
+                //this.customerPastTrainings=response.data;
+            }
+        )
     },
     methods:{
         fillUserData: function(){

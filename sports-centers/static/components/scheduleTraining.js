@@ -19,7 +19,7 @@ Vue.component("scheduleTraining",{
                 <label for="duration">Trajanje u minutama:</label>
                 <input type="text" name="duration" v-model="training.durationMins" disabled/>
                 <label for="date">Zeljeni datum treninga:</label>
-                <input type="datetime-local" name="date" v-model="dateTime"/>
+                <input type="datetime-local" name="date" v-model="dateTime" required/>
                 <button v-if="dateTime" @click="scheduleTraining">Zakazi</button>
             </div>
         </div>
@@ -56,17 +56,19 @@ Vue.component("scheduleTraining",{
     },
     methods:{
         scheduleTraining: function(){
-            var trainingHistory = {historyId:"",date:this.dateTime,trainingId:this.training.trainingId,customerId:this.customer.userName,coachId:this.training.coach.userName};
-            axios.post("rest/addTrainingHistory",trainingHistory)
-            .then(res =>{
-                if(res.data === "FAILIURE"){
-                    this.feedback = "Greska upis nije uspeo";
-                }
-                else{
-                    this.feedback = "Trening uspesno zakazan, povratak na pocetnu";
-                    setTimeout(() => {  router.push(`/`) }, 1500);
-                }
-            });
+            if(this.dateTime!=null){
+                var trainingHistory = {historyId:"",date:this.dateTime,trainingId:this.training.trainingId,customerId:this.customer.userName,coachId:this.training.coach.userName};
+                axios.post("rest/addTrainingHistory",trainingHistory)
+                .then(res =>{
+                    if(res.data === "FAILIURE"){
+                        this.feedback = "Greska upis nije uspeo";
+                    }
+                    else{
+                        this.feedback = "Trening uspesno zakazan, povratak na pocetnu";
+                        setTimeout(() => {  router.push(`/`) }, 1500);
+                    }
+                });
+            }
         }
     }
 })

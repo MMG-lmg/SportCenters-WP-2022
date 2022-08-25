@@ -1,6 +1,7 @@
 package controller;
 
 import static spark.Spark.post;
+import static spark.Spark.get;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -38,6 +39,12 @@ public class TrainingHistoryController {
 			else {
 				return "FAILIURE";
 			}
+		});
+	}
+	public static void getTrainingHistoryByUsername() {
+		get("rest/getHistoryUsername",(req,res)->{
+			res.type("application/json");
+			return gson.toJson(service.getForCustomer(req.queryParams("username")));
 		});
 	}
 }
