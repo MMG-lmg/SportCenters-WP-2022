@@ -58,17 +58,35 @@ Vue.component("scheduleTraining",{
         scheduleTraining: function(){
             if(this.dateTime!=null){
                 var trainingHistory = {historyId:"",date:this.dateTime,trainingId:this.training.trainingId,customerId:this.customer.userName,coachId:this.training.coach.userName};
-                axios.post("rest/addTrainingHistory",trainingHistory)
-                .then(res =>{
-                    if(res.data === "FAILIURE"){
-                        this.feedback = "Greska upis nije uspeo";
-                    }
-                    else{
-                        this.feedback = "Trening uspesno zakazan, povratak na pocetnu";
-                        setTimeout(() => {  router.push(`/`) }, 1500);
-                    }
-                });
+                if(this.canTrainingBeModified(trainingHistory)){
+                    axios.post("rest/addTrainingHistory",trainingHistory)
+                    .then(res =>{
+                        if(res.data === "FAILIURE"){
+                            this.feedback = "Greska upis nije uspeo";
+                        }
+                        else{
+                            this.feedback = "Trening uspesno zakazan, povratak na pocetnu";
+                            setTimeout(() => {  router.push(`/`) }, 1500);
+                        }
+                    });
+                }
+                else{
+                    this.feedback = "Trening je moguce zakazati tek nakosutra";
+                }
             }
+        },
+        trainingDateConverter: function(training){
+            var currentDateDate = training.date.split("T")[0].split("-");
+            var currentDateTime = training.date.split("T")[1].split(":");
+            return new Date(currentDateDate[0],currentDateDate[1]-1,currentDateDate[2],currentDateTime[0],currentDateTime[1],0,0);
+        },
+        canTrainingBeModified: function(training){
+            var trainingDate = this.trainingDateConverter(training);
+            trainingDate.setDate(trainingDate.getDate()-2);
+            if(new Date() < trainingDate){
+                return true;
+            }
+            return false;
         }
     }
 })

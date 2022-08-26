@@ -96,6 +96,7 @@ Vue.component("profile",{
             <h3 v-if="coachPastTrainings.length!=0">Prethodni treninzi</h3>
             <div v-for="history in coachPastTrainings">
                 <p>Naziv traninga: {{history.training.title}}</p>
+                <p>Tip treninga: {{trainingTypeToString(history.training.type)}}</p>
                 <p>Naziv centra:{{history.training.center.centerTitle}}</p>
                 <p>Datum treninga:{{history.date}}</p>
             </div>
@@ -104,9 +105,10 @@ Vue.component("profile",{
             <h3 v-if="coachFutureTrainings.length!=0">Zakazani treninzi</h3>
             <div v-for="history in coachFutureTrainings">
                 <p>Naziv traninga: {{history.training.title}}</p>
+                <p>Tip treninga: {{trainingTypeToString(history.training.type)}}</p>
                 <p>Naziv centra:{{history.training.center.centerTitle}}</p>
                 <p>Datum treninga:{{history.date}}</p>
-                <button @click="cancelTraining(history.HistoryId)"> otkazi trening </button>
+                <button v-if="history.training.type ==='PERSONAL'" @click="cancelTraining(history)"> otkazi trening </button>
             </div>
         </div>
 
@@ -249,7 +251,15 @@ Vue.component("profile",{
                 case "COACH":
                     return "Trener";
             }
-		},
+        },
+        trainingTypeToString: function(type){
+            switch(type){
+                case "GROUP":
+                    return "Grupni trening";
+                case "PERSONAL":
+                    return "Personalni trening";
+            }
+        },
         resetEditFields: function(){
             this.copyUser();
             this.editManager = this.manager;
@@ -339,28 +349,44 @@ Vue.component("profile",{
                     }
                 });
         },
-        cancelTraining:function(trainingHistoryId){
-            axios.post("rest/cancelTraining", trainingHistoryId)
-            .then(res=>{
-                if(res.data==="FAILIURE"){
-                    this.feedback="Otkazivanje treninga neuspesno!";
-                }
-                else{
-                    this.feedback="Trening uspesno otkazan";
-                    setTimeout(() => {  router.push(`/profile`) }, 1500);
-                }
-            });
+        cancelTraining:function(trainingHistory){        
+            if(this.canTrainingBeModified(trainingHistory)){
+                axios.post("rest/cancelTraining", trainingHistory.HistoryId)
+                .then(res=>{
+                    if(res.data==="FAILIURE"){
+                        this.feedback="Otkazivanje treninga neuspesno!";
+                    }
+                    else{
+                        this.feedback="Trening uspesno otkazan";
+                        setTimeout(() => {  router.push(`/`) }, 1500);
+                    }
+                });
+            }
+            else{
+                this.feedback="Trening nije moguce otkazati, neophodno je otkazati najmanje 2 dana pre pocetka";
+            }
+            
         },
-        trainingDateAnalizer: function(item){
-            var currentDateDate = item.date.split("T")[0].split("-");
-            var currentDateTime = item.date.split("T")[1].split(":");
-            var currentDate = new Date(currentDateDate[0],currentDateDate[1]-1,currentDateDate[2],currentDateTime[0],currentDateTime[1],0,0);
-            if(currentDate < new Date()){
+        trainingDateAnalizer: function(training){
+            if(this.trainingDateConverter(training) < new Date()){
                 return "PAST";
             }
             else{
                 return "FUTURE";
             }
+        },
+        trainingDateConverter: function(training){
+            var currentDateDate = training.date.split("T")[0].split("-");
+            var currentDateTime = training.date.split("T")[1].split(":");
+            return new Date(currentDateDate[0],currentDateDate[1]-1,currentDateDate[2],currentDateTime[0],currentDateTime[1],0,0);
+        },
+        canTrainingBeModified: function(training){
+            var trainingDate = this.trainingDateConverter(training);
+            trainingDate.setDate(trainingDate.getDate()-2);
+            if(new Date() < trainingDate){
+                return true;
+            }
+            return false;
         }
     }
 });

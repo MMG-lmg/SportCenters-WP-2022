@@ -2,6 +2,7 @@
   "GB0jhT7s": {
     "trainingId": "GB0jhT7s",
     "title": "Olimpijsko plivanje",
+    "type": "PERSONAL",
     "center": {
       "centerId": "Ig0ZRzmo"
     },
@@ -20,6 +21,7 @@
   "9tnBqQ3D": {
     "trainingId": "9tnBqQ3D",
     "title": "Skolica plivanja",
+    "type": "PERSONAL",
     "center": {
       "centerId": "Ig0ZRzmo"
     },
