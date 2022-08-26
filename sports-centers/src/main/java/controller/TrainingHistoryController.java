@@ -41,10 +41,24 @@ public class TrainingHistoryController {
 			}
 		});
 	}
-	public static void getTrainingHistoryByUsername() {
-		get("rest/getHistoryUsername",(req,res)->{
+	public static void getTrainingHistoryByCustomerUsername() {
+		get("rest/getHistoryCustomer",(req,res)->{
 			res.type("application/json");
 			return gson.toJson(service.getForCustomer(req.queryParams("username")));
+		});
+	}
+	
+	public static void getTrainingHistoryByCoachUsername() {
+		get("rest/getHistoryCoach",(req,res)->{
+			res.type("application/json");
+			return gson.toJson(service.getForCoach(req.queryParams("username")));
+		});
+	}
+	public static void cancelTraining() {
+		post("rest/cancelTraining", (req,res)->{
+			res.type("application/json");
+			service.delete(req.body());
+			return "SUCCESS";
 		});
 	}
 }

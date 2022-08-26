@@ -13,6 +13,8 @@ Vue.component("profile",{
             feedback:"",
             customerPastTrainings:[],
             customerFutureTrainings:[],
+            coachPastTrainings:[],
+            coachFutureTrainings:[],
         }
     },
     template:`
@@ -73,21 +75,41 @@ Vue.component("profile",{
             </tr>
             </table>
             <h3 v-if="customerPastTrainings.length===0">Nemate prethodno posecenih treninga</h3>
-            <h3 v-if="customerPastTrainings.lenght!=0">Prethodno poseceni treninzi</h3>
+            <h3 v-if="customerPastTrainings.length!=0">Prethodno poseceni treninzi</h3>
             <div v-for="history in customerPastTrainings">
                 <p>Naziv traninga: {{history.training.title}}</p>
                 <p>Naziv centra:{{history.training.center.centerTitle}}</p>
                 <p>Datum treninga:{{history.date}}</p>
             </div>
 
-            <h3 v-if="customerFutureTrainings.length===0">Nemate zakazanih treninga treninga</h3>
-            <h3 v-if="customerFutureTrainings.lenght!=0">Zakazani treninzi</h3>
+            <h3 v-if="customerFutureTrainings.length===0">Nemate zakazanih treninga</h3>
+            <h3 v-if="customerFutureTrainings.length!=0">Zakazani treninzi</h3>
             <div v-for="history in customerFutureTrainings">
                 <p>Naziv traninga: {{history.training.title}}</p>
                 <p>Naziv centra:{{history.training.center.centerTitle}}</p>
                 <p>Datum treninga:{{history.date}}</p>
             </div>
         </div>
+
+        <div v-if="this.$router.app.login=='COACH'">
+            <h3 v-if="coachPastTrainings.length===0">Nemate prethodnih treninga</h3>
+            <h3 v-if="coachPastTrainings.length!=0">Prethodni treninzi</h3>
+            <div v-for="history in coachPastTrainings">
+                <p>Naziv traninga: {{history.training.title}}</p>
+                <p>Naziv centra:{{history.training.center.centerTitle}}</p>
+                <p>Datum treninga:{{history.date}}</p>
+            </div>
+
+            <h3 v-if="coachFutureTrainings.length===0">Nemate zakazanih treninga</h3>
+            <h3 v-if="coachFutureTrainings.length!=0">Zakazani treninzi</h3>
+            <div v-for="history in coachFutureTrainings">
+                <p>Naziv traninga: {{history.training.title}}</p>
+                <p>Naziv centra:{{history.training.center.centerTitle}}</p>
+                <p>Datum treninga:{{history.date}}</p>
+                <button @click="cancelTraining(history.HistoryId)"> otkazi trening </button>
+            </div>
+        </div>
+
     </div>
     `,
     mounted(){
@@ -103,29 +125,47 @@ Vue.component("profile",{
                 
             }
         });
-        axios.get('rest/getHistoryUsername',{
-            params:{
-                username:this.$router.app.username
-            }
-        })
-        .then(
-            response=>{
-                response.data.forEach((item, index) =>{
-                    //String[] date = json.getAsJsonPrimitive().getAsString().split("T")[0].split("-");
-		            //String[] time = json.getAsJsonPrimitive().getAsString().split("T")[1].split(":");
-                    var currentDateDate = item.date.split("T")[0].split("-");
-                    var currentDateTime = item.date.split("T")[1].split(":");
-                    var currentDate = new Date(currentDateDate[0],currentDateDate[1],currentDateDate[2],currentDateTime[0],currentDateTime[1],0,0);
-                    if(currentDate < new Date()){
-                        this.customerPastTrainings.push(item);
-                    }
-                    else{
-                        this.customerFutureTrainings.push(item);
-                    }
-                })
-                //this.customerPastTrainings=response.data;
-            }
-        )
+        if(this.$router.app.login ==="CUSTOMER"){
+            axios.get('rest/getHistoryCustomer',{
+                params:{
+                    username:this.$router.app.username
+                }
+            })
+            .then(
+                response=>{
+                    response.data.forEach((item, index) =>{
+                        var trainingDate = this.trainingDateAnalizer(item);
+                        if(trainingDate === "PAST"){
+                            this.customerPastTrainings.push(item);
+                        }
+                        else{
+                            this.customerFutureTrainings.push(item);
+                        }
+                    })
+                }
+            )
+        }
+        if(this.$router.app.login ==="COACH"){
+            axios.get('rest/getHistoryCoach',{
+                params:{
+                    username:this.$router.app.username
+                }
+            })
+            .then(
+                response=>{
+                    response.data.forEach((item, index) =>{
+                        var trainingDate = this.trainingDateAnalizer(item);
+                        if(trainingDate === "PAST"){
+                            this.coachPastTrainings.push(item);
+                        }
+                        else{
+                            this.coachFutureTrainings.push(item);
+                        }
+                    })
+                }
+            )
+        }
+        
     },
     methods:{
         fillUserData: function(){
@@ -298,6 +338,29 @@ Vue.component("profile",{
                         setTimeout(() => {  router.push(`/`) }, 5000);
                     }
                 });
+        },
+        cancelTraining:function(trainingHistoryId){
+            axios.post("rest/cancelTraining", trainingHistoryId)
+            .then(res=>{
+                if(res.data==="FAILIURE"){
+                    this.feedback="Otkazivanje treninga neuspesno!";
+                }
+                else{
+                    this.feedback="Trening uspesno otkazan";
+                    setTimeout(() => {  router.push(`/profile`) }, 1500);
+                }
+            });
+        },
+        trainingDateAnalizer: function(item){
+            var currentDateDate = item.date.split("T")[0].split("-");
+            var currentDateTime = item.date.split("T")[1].split(":");
+            var currentDate = new Date(currentDateDate[0],currentDateDate[1]-1,currentDateDate[2],currentDateTime[0],currentDateTime[1],0,0);
+            if(currentDate < new Date()){
+                return "PAST";
+            }
+            else{
+                return "FUTURE";
+            }
         }
     }
 });
