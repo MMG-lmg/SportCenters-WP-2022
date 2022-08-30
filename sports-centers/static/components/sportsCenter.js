@@ -6,7 +6,7 @@ Vue.component("center",{
             addNew:0,
             coaches:null,
             image:null,
-            newTraining:{trainingId:"",title:"",type:"PERSONAL",centerId:"",durationMins:0,coachId:"",description:"",imagePath:""},
+            newTraining:{trainingId:"",title:"",type:"PERSONAL",centerId:"",durationMins:0,coachId:"",description:"",imagePath:"",price:0},
             trainigsList:null
         }
     },
@@ -23,7 +23,6 @@ Vue.component("center",{
             <p>Prosecna ocena: {{center.grade}}</p>
             <p>Radno vreme: {{workHoursToString(center.workHours)}}</p>
             
-
             <table v-if="trainigsList">
                 <tr>
                     <th>Slicica traninga</th>
@@ -35,12 +34,11 @@ Vue.component("center",{
                     <td><img v-bind:src="'data:image/png;base64,' + training.imagePath" width="70" height="80"/></td>
                     <td>{{training.description}}</td>
                     <td>{{training.coach.name}}</td>
+                    <td v-if="training.price===0">Trening nema doplatu.</td>
+                    <td v-if="training.price!=0">{{training.price}}</td>
                 </tr>
             </table>
             
-            <button  v-if="!addNew" v-on:click="flipAddFlag">Dodavanje novog treninga</button>
-            <button  v-if="addNew" v-on:click="cancelAdd">Odustani od dodavanja</button>
-
             <div v-if="addNew">
                 <label for="title">Naziv treninga</label>
                 <input type="text" name="title" v-model="newTraining.title"></input>
@@ -63,8 +61,13 @@ Vue.component("center",{
                 </select>
                 <label for="description">Opis treninga</label>
                 <textarea  name="description" v-model="newTraining.description" rows="5" cols="40"></textarea>
+                <label for="price">Cena treninga:(opciono)</label>
+                <input type="number" name="price" v-model="newTraining.price"></input>
                 <button v-on:click="addTraining"> Dodaj </button>
             </div>
+
+            <button  v-if="!addNew" v-on:click="flipAddFlag">Dodavanje novog treninga</button>
+            <button  v-if="addNew" v-on:click="cancelAdd">Odustani od dodavanja</button>
         </div>
 
     </div>

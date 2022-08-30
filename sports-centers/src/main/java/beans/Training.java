@@ -9,11 +9,12 @@ public class Training {
 	private Coach coach;
 	private String description;
 	private String imagePath;
+	private double price;
 	public Training() {
 		super();
 	}
 	public Training(String trainingId, String title, TrainingType type, SportsCenter center, double durationMins, Coach coach,
-			String description, String imagePath) {
+			String description, String imagePath, double price) {
 		super();
 		this.trainingId = trainingId;
 		this.title = title;
@@ -23,6 +24,7 @@ public class Training {
 		this.coach = coach;
 		this.description = description;
 		this.imagePath = imagePath;
+		this.price = price;
 	}
 	public String getTrainingId() {
 		return trainingId;
@@ -72,4 +74,11 @@ public class Training {
 	public void setType(TrainingType type) {
 		this.type = type;
 	}
+	public double getPrice() {
+		return price;
+	}
+	public void setPrice(double price) {
+		this.price = price;
+	}
+	
 }

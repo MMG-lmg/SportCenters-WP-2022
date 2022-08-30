@@ -88,6 +88,8 @@ Vue.component("profile",{
                     <td>{{history.training.title}}</td>
                     <td>{{history.training.center.centerTitle}}</td>
                     <td><pre>{{dateReformater(history.date)}}</pre></td>
+                    <td v-if="history.training.price===0">Trening nema doplatu.</td>
+                    <td v-if="history.training.price!=0">{{history.training.price}}</td>
                 </tr>
             </table>
 
@@ -105,6 +107,8 @@ Vue.component("profile",{
                     <td>{{history.training.title}}</td>
                     <td>{{history.training.center.centerTitle}}</td>
                     <td><pre>{{dateReformater(history.date)}}</pre></td>
+                    <td v-if="history.training.price===0">Trening nema doplatu.</td>
+                    <td v-if="history.training.price!=0">{{history.training.price}}</td>
                 </tr>
             </table>
         </div>
@@ -123,6 +127,8 @@ Vue.component("profile",{
                     <td>{{history.training.title}}</td>
                     <td>{{history.training.center.centerTitle}}</td>
                     <td><pre>{{dateReformater(history.date)}}</pre></td>
+                    <td v-if="history.training.price===0">Trening nema doplatu.</td>
+                    <td v-if="history.training.price!=0">{{history.training.price}}</td>
                 </tr>
             </table>
 
@@ -139,6 +145,8 @@ Vue.component("profile",{
                     <td>{{history.training.title}}</td>
                     <td>{{history.training.center.centerTitle}}</td>
                     <td><pre>{{dateReformater(history.date)}}</pre></td>
+                    <td v-if="history.training.price===0">Trening nema doplatu.</td>
+                    <td v-if="history.training.price!=0">{{history.training.price}}</td>
                 </tr>
             </table>
         </div>

@@ -16,7 +16,8 @@
       "role": "COACH"
     },
     "description": "Plivanje u olimpijskom bazenu.",
-    "imagePath": "data\\img\\Olimpijsko plivanje.jpg"
+    "imagePath": "data\\img\\Olimpijsko plivanje.jpg",
+    "price": 0.0
   },
   "9tnBqQ3D": {
     "trainingId": "9tnBqQ3D",
@@ -35,7 +36,8 @@
       "role": "COACH"
     },
     "description": "Skolica plivanja sa cika mirkom!",
-    "imagePath": "data\\img\\Skolica plivanja.jpg"
+    "imagePath": "data\\img\\Skolica plivanja.jpg",
+    "price": 0.0
   },
   "73xygpML": {
     "trainingId": "73xygpML",
@@ -54,7 +56,28 @@
       "role": "COACH"
     },
     "description": "asdfasdfasdfasdfasdf",
-    "imagePath": "data\\img\\super novi treninga.jpg"
+    "imagePath": "data\\img\\super novi treninga.jpg",
+    "price": 0.0
+  },
+  "KaPhmuzB": {
+    "trainingId": "KaPhmuzB",
+    "title": "Nema plivanja vise",
+    "type": "GROUP",
+    "center": {
+      "centerId": "Ig0ZRzmo"
+    },
+    "durationMins": 16.0,
+    "coach": {
+      "userName": "mirkoTrener",
+      "password": "1234",
+      "name": "mirko mirkovic",
+      "gender": "MALE",
+      "dateOfBirth": "1995-06-14",
+      "role": "COACH"
+    },
+    "description": "Nema plivanja sa mirkom,\npovredio se.",
+    "imagePath": "data\\img\\Nema plivanja vise.jpg",
+    "price": 150.0
   },
   "iFtPuOwW": {
     "trainingId": "iFtPuOwW",
@@ -73,6 +96,7 @@
       "role": "COACH"
     },
     "description": "Nema kriza",
-    "imagePath": "data\\img\\igluyasfd .jpg"
+    "imagePath": "data\\img\\igluyasfd .jpg",
+    "price": 0.0
   }
 }
