@@ -35,6 +35,11 @@ public class TrainingController {
 		post("rest/addTraining", (req,res)->{
 			res.type("application/json");
 			TrainingDTO dto = gson.fromJson(req.body(), TrainingDTO.class);
+			for(Training training : service.getAll()) {
+				if(training.getTitle().equals(dto.getTitle())) {
+					return "FAILIURE_NAME";
+				}
+			}
 			Training training = dto.convertDTO(centerService.getAll(), coachService.getAll());
 			training.setImagePath(ImageBase64Converter.decode(training.getImagePath(), path, training.getTitle()));
 			if(training != null) {

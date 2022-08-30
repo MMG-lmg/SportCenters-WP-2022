@@ -176,6 +176,7 @@ Vue.component("center",{
         cancelAdd:function(){
             this.newTraining = {trainingId:"",title:"",centerId:"",durationMins:0,coachId:"",description:"",imagePath:""};
             this.addNew = 0;
+            this.removeImage();
         },
         onFileInput: function(e){
             var patternFileExtension = /\.([0-9a-z]+)(?:[\?#]|$)/i;
@@ -211,6 +212,10 @@ Vue.component("center",{
                 res=>{
                     if(res.data==="FAILIURE"){
                         this.error="Dodavanja treninga, neuspesno!";
+                    }
+                    else if(res.data==="FAILIURE_NAME"){
+                        this.error="Ime treninga vec postoji molimo odaberite drugo!";
+                        return;
                     }
                     else{
                         this.error="Uspesna izmena i dodavanja povratak na pocetnu";
