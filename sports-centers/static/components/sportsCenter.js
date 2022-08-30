@@ -6,7 +6,8 @@ Vue.component("center",{
             addNew:0,
             coaches:null,
             image:null,
-            newTraining:{trainingId:"",title:"",type:"PERSONAL",centerId:"",durationMins:0,coachId:"",description:"",imagePath:""}
+            newTraining:{trainingId:"",title:"",type:"PERSONAL",centerId:"",durationMins:0,coachId:"",description:"",imagePath:""},
+            trainigsList:null
         }
     },
     template:`
@@ -23,6 +24,13 @@ Vue.component("center",{
             <p>Radno vreme: {{workHoursToString(center.workHours)}}</p>
             <button  v-if="!addNew" v-on:click="flipAddFlag">Dodavanje novog treninga</button>
             <button  v-if="addNew" v-on:click="cancelAdd">Odustani od dodavanja</button>
+            <div v-if="trainigsList" v-for="training in trainigsList">
+                <p>Naziv: {{training.title}}</p>
+                <p>Tip Treninga: {{trainingTypeToString(training.type)}}</p>
+                <p>Trajanje Treninga: {{training.durationMins}}</p>
+                <p>Kratak opis: {{training.description}}</p>
+                <p>Trener: {{training.coach.name}}</p>
+            </div>
             <div v-if="addNew">
                 <label for="title">Naziv treninga</label>
                 <input type="text" name="title" v-model="newTraining.title"></input>
@@ -74,6 +82,16 @@ Vue.component("center",{
             console.log(response.data);
             if(response.data!="FAILIURE"){
                 this.center = response.data;
+                axios.get('rest/getTrainingsForCenter',{
+                    params:{
+                        centerId: this.center.centerId,
+                    }
+                })
+                .then(
+                    response=>{
+                       this.trainigsList=response.data;
+                    }
+                )
             }
             else{
                 console.log("else");
@@ -86,6 +104,8 @@ Vue.component("center",{
                 this.coaches = response.data;
             }
         });
+        
+        
     },
     methods:{
         typeToString: function(type){
@@ -157,6 +177,14 @@ Vue.component("center",{
                     
                 }
             )
-        }
+        },
+        trainingTypeToString: function(type){
+            switch(type){
+                case "GROUP":
+                    return "Grupni trening";
+                case "PERSONAL":
+                    return "Personalni trening";
+            }
+        },
     }
 });
