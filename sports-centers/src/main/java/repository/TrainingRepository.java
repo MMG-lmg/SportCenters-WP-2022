@@ -128,17 +128,10 @@ public class TrainingRepository implements RepositoryBase<Training> {
 	}
 	public void syncData() {
 		Collection<SportsCenter> centers = sportsRepo.getAll();
-		Collection<Coach> coaches = coachRepo.getAll();
 		trainingList.forEach((id, training) ->{ 
 			for(SportsCenter center : centers) {
 				if(center.getCenterId().equals(training.getCenter().getCenterId())) {
 					this.fillOutCenter(center,training);
-					break;
-				}
-			}
-			for(Coach coach: coaches) {
-				if(coach.getUserName().equals(training.getCoach().getUserName()));{
-					training.setCoach(coach);
 					break;
 				}
 			}

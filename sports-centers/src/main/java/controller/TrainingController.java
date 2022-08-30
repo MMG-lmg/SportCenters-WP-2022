@@ -51,6 +51,15 @@ public class TrainingController {
 			}
 		});
 	}
+	public static void editTraining() {
+		post("rest/editTraining", (req,res)->{
+			res.type("application/json");
+			Training training = gson.fromJson(req.body(), Training.class);
+			training.setImagePath(service.getById(training.getTrainingId()).getImagePath());
+			service.update(training.getTrainingId(), training);
+			return "SUCCESS";
+		});
+	}
 	public static void getTraining() {
 		get("rest/getTraining",(req,res)->{
 			res.type("application/json");
