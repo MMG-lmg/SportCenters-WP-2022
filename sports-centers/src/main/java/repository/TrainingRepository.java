@@ -130,6 +130,7 @@ public class TrainingRepository implements RepositoryBase<Training> {
 			for(SportsCenter center : centers) {
 				if(center.getCenterId().equals(training.getCenter().getCenterId())) {
 					this.fillOutCenter(center,training);
+					break;
 				}
 			}
 		});

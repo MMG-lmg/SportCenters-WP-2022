@@ -13,7 +13,7 @@ Vue.component("centers",{
 			addressSearch:"",
 			loggedUserType:"",
 			loggedUserName:"",
-			userLogedIn: false
+			userLogedIn: false,
 		}
 	},
 	template:`
@@ -76,8 +76,12 @@ Vue.component("centers",{
 							<p>{{training.title}}</p>
 							<img v-bind:src="'data:image/png;base64,' + training.imagePath" width="30" height="35"/>
 							<p>{{training.description}}</p>
+							<p>{{trainingTypeToString(training.type)}}</p>
 							<p>{{training.coach.name}}</p>
+							<button v-if="loggedUserType=='CUSTOMER' && training.type=='PERSONAL'"  @click="scheduleTraining(training)">Zakazi trening</button>
+							<p v-if="training.type!='PERSONAL'">Samo personalni treninzi se mogu zakazati</p>
 						</div>
+						
 						<p v-if="sc.trainings=='FAILIURE'">Sportski centar jos uvek nema treninge</p>
 					</div>
 				</td>
@@ -181,6 +185,14 @@ Vue.component("centers",{
 			else retVal="Zatvoreno";
 			return retVal;
 		},
+		trainingTypeToString: function(type){
+            switch(type){
+                case "GROUP":
+                    return "Grupni trening";
+                case "PERSONAL":
+                    return "Personalni trening";
+            }
+        },
 		sortByName: function(){
 			if(this.sortName === 0 ){
 				this.sortByNameAsc();
@@ -365,6 +377,9 @@ Vue.component("centers",{
 					center.trainings=response.data;
 				}
 			)
+		},
+		scheduleTraining: function(training){
+			router.push(`/customer/scheduleTraining/${training.trainingId}`);
 		}
 	}
 });

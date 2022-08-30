@@ -17,9 +17,10 @@ public class TrainingDTO {
 	private String coachId;
 	private String description;
 	private String imagePath;
+	private double price;
 	
 	public TrainingDTO(String trainingId, TrainingType type, String title, String centerId, double durationMins, String coachId,
-			String description, String imagePath) {
+			String description, String imagePath, double price) {
 		super();
 		this.trainingId = trainingId;
 		this.title = title;
@@ -29,6 +30,7 @@ public class TrainingDTO {
 		this.coachId = coachId;
 		this.description = description;
 		this.imagePath = imagePath;
+		this.price = price;
 	}
 	
 	public TrainingDTO() {
@@ -76,6 +78,12 @@ public class TrainingDTO {
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
 	}
+	public double getPrice() {
+		return price;
+	}
+	public void setPrice(double price) {
+		this.price = price;
+	}
 	
 	public Training convertDTO(Collection<SportsCenter> centers, Collection<Coach> coaches) {
 		SportsCenter centerHolder = null;
@@ -83,11 +91,13 @@ public class TrainingDTO {
 		for(SportsCenter sportsCenter : centers) {
 			if(sportsCenter.getCenterId().equals(this.getCenterId())) {
 				centerHolder=sportsCenter;
+				break;
 			}
 		}
 		for(Coach coach : coaches) {
 			if(coach.getUserName().equals(this.getCoachId())) {
 				coachHolder = coach;
+				break;
 			}
 		}
 		if(centerHolder!=null && coachHolder!=null) {
@@ -99,7 +109,8 @@ public class TrainingDTO {
 					this.getDurationMins(),
 					coachHolder,
 					this.getDescription(),
-					this.getImagePath()
+					this.getImagePath(),
+					this.getPrice()
 					);
 					
 		}

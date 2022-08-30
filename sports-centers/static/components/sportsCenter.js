@@ -6,7 +6,9 @@ Vue.component("center",{
             addNew:0,
             coaches:null,
             image:null,
-            newTraining:{trainingId:"",title:"",type:"PERSONAL",centerId:"",durationMins:0,coachId:"",description:"",imagePath:""}
+            newTraining:{trainingId:"",title:"",type:"PERSONAL",centerId:"",durationMins:0,coachId:"",description:"",imagePath:"",price:0},
+            trainigsList:null,
+            trainingHistory:null
         }
     },
     template:`
@@ -21,8 +23,39 @@ Vue.component("center",{
             <p>Adresa: {{locationToString(center.location)}}
             <p>Prosecna ocena: {{center.grade}}</p>
             <p>Radno vreme: {{workHoursToString(center.workHours)}}</p>
-            <button  v-if="!addNew" v-on:click="flipAddFlag">Dodavanje novog treninga</button>
-            <button  v-if="addNew" v-on:click="cancelAdd">Odustani od dodavanja</button>
+            
+            <table v-if="trainigsList">
+                <tr>
+                    <th>Slicica traninga</th>
+                    <th>Opis treninga</th>
+                    <th>Ime trenera</th>
+                    <th>Cena treninga</th>
+                </tr>
+                <tr v-for="training in trainigsList">
+                    <td><img v-bind:src="'data:image/png;base64,' + training.imagePath" width="70" height="80"/></td>
+                    <td>{{training.description}}</td>
+                    <td>{{training.coach.name}}</td>
+                    <td v-if="training.price===0">Trening nema doplatu.</td>
+                    <td v-if="training.price!=0">{{training.price}}</td>
+                </tr>
+            </table>
+
+            <table v-if="trainingHistory">
+                <tr>
+                    <th>Naziv traninga</th>
+                    <th>Naziv centra</th>
+                    <th>Datum treninga</th>
+                    <th>Cena treninga</th>
+                </tr>
+                <tr v-for="history in trainingHistory">
+                    <td>{{history.training.title}}</td>
+                    <td>{{history.training.center.centerTitle}}</td>
+                    <td><pre>{{dateReformater(history.date)}}</pre></td>
+                    <td v-if="history.training.price===0">Trening nema doplatu.</td>
+                    <td v-if="history.training.price!=0">{{history.training.price}}</td>
+                </tr>
+            </table>
+            
             <div v-if="addNew">
                 <label for="title">Naziv treninga</label>
                 <input type="text" name="title" v-model="newTraining.title"></input>
@@ -45,8 +78,13 @@ Vue.component("center",{
                 </select>
                 <label for="description">Opis treninga</label>
                 <textarea  name="description" v-model="newTraining.description" rows="5" cols="40"></textarea>
+                <label for="price">Cena treninga:(opciono)</label>
+                <input type="number" name="price" v-model="newTraining.price"></input>
                 <button v-on:click="addTraining"> Dodaj </button>
             </div>
+
+            <button  v-if="!addNew" v-on:click="flipAddFlag">Dodavanje novog treninga</button>
+            <button  v-if="addNew" v-on:click="cancelAdd">Odustani od dodavanja</button>
         </div>
 
     </div>
@@ -74,6 +112,28 @@ Vue.component("center",{
             console.log(response.data);
             if(response.data!="FAILIURE"){
                 this.center = response.data;
+
+                axios.get('rest/getTrainingsForCenter',{
+                    params:{
+                        centerId: this.center.centerId,
+                    }
+                })
+                .then(
+                    response=>{
+                       this.trainigsList=response.data;
+                    }
+                );
+
+                axios.get('rest/getHistoryCenter',{
+                    params:{
+                        centerId: this.center.centerId,
+                    }
+                })
+                .then(
+                    response=>{
+                       this.trainingHistory=response.data;
+                    }
+                );
             }
             else{
                 console.log("else");
@@ -86,6 +146,8 @@ Vue.component("center",{
                 this.coaches = response.data;
             }
         });
+        
+        
     },
     methods:{
         typeToString: function(type){
@@ -157,6 +219,18 @@ Vue.component("center",{
                     
                 }
             )
+        },
+        trainingTypeToString: function(type){
+            switch(type){
+                case "GROUP":
+                    return "Grupni trening";
+                case "PERSONAL":
+                    return "Personalni trening";
+            }
+        },
+        dateReformater: function(dateString){
+            var date = dateString.split("T");
+            return date[0] + "\n" + date[1];
         }
     }
 });

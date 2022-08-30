@@ -46,6 +46,16 @@ public class TrainingController {
 			}
 		});
 	}
+	public static void getTraining() {
+		get("rest/getTraining",(req,res)->{
+			res.type("application/json");
+			Training training = service.getById(req.queryParams("trainingId"));
+			if(training!=null) {
+				return gson.toJson(training);
+			}
+			return "FAILIURE";
+		});
+	}
 	public static void getTrainingsForCenter() {
 		get("rest/getTrainingsForCenter", (req,res) ->{
 			res.type("application/json");

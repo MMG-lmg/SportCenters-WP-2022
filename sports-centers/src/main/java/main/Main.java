@@ -29,6 +29,7 @@ import controller.MembershipController;
 import controller.MembershipOffersController;
 import controller.SportsCenterController;
 import controller.TrainingController;
+import controller.TrainingHistoryController;
 import controller.UserController;
 import repository.CustomerRepository;
 import repository.UserRepository;
@@ -75,6 +76,7 @@ public class Main {
     	SportsCenterController.addCenter();
     	
     	TrainingController.addTraining();
+    	TrainingController.getTraining();
     	TrainingController.getTrainingsForCenter();
     	
     	MembershipOffersController.addOffer();
@@ -83,6 +85,12 @@ public class Main {
     	
     	MembershipController.addMembership();
     	MembershipController.getActiveMembershipForUsername();
+    	
+    	TrainingHistoryController.addTrainingHistory();
+    	TrainingHistoryController.getTrainingHistoryByCustomerUsername();
+    	TrainingHistoryController.getTrainingHistoryByCoachUsername();
+    	TrainingHistoryController.getTrainingHistoryByCenterId();
+    	TrainingHistoryController.cancelTraining();
     	/*TrainingService service = new TrainingService();
     	SportsCenterService centerService = new SportsCenterService();
     	SportsCenter center = centerService.getById("PhdugsAF");

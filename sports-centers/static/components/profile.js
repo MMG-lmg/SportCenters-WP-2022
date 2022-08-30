@@ -10,7 +10,11 @@ Vue.component("profile",{
             editCustomer:{membershipCost:0,visitedCenters:null,loyalityPoints: 0,type:null},
             editManager:{sportsCenterTitle:""},
             editCoach:{pastTrainings:null},
-            feedback:""
+            feedback:"",
+            customerPastTrainings:[],
+            customerFutureTrainings:[],
+            coachPastTrainings:[],
+            coachFutureTrainings:[],
         }
     },
     template:`
@@ -39,6 +43,11 @@ Vue.component("profile",{
         <div>
         <p>Uloga: {{roleToString(editUser.role)}}</p>
         </div>
+
+        <button v-if="edit==0" @click="edit=1">Izmeni podatke</button>
+        <button v-if="edit==1" @click="this.cancelEdit">Otkazi izmene</button>
+        <button v-if="edit==1" @click="this.updateUser">Primeni izmene</button>
+
         <div v-if="this.$router.app.login=='MENAGER'">
             <p>Naziv Sportskog Centra: {{manager.sportsCenterTitle}}</p>
         </div>
@@ -46,7 +55,7 @@ Vue.component("profile",{
             <p>Cena clanarine: {{customer.membershipCost}}</p>
             <p>Poeni lojalnosti(bodovi): {{customer.loyalityPoints}}</p>
             <p>Tip kupca: {{customer.type}}</p>
-            <p v-if="customer.visitedCenters==null">Niste posetili ni jedan sportski centar</p>
+            <h3 v-if="customer.visitedCenters==null">Niste posetili ni jedan sportski centar</h3>
             <table v-if="customer.visitedCenters!=null">
             <tr>
                 <th>Logo</th>
@@ -65,10 +74,83 @@ Vue.component("profile",{
                 <td>{{sc.grade}}</td>
             </tr>
             </table>
+            <h3 v-if="customerPastTrainings.length===0">Nemate prethodno posecenih treninga</h3>
+            <h3 v-if="customerPastTrainings.length!=0">Prethodno poseceni treninzi</h3>
+
+            <table v-if="customerPastTrainings">
+                <tr>
+                    <th>Naziv traninga</th>
+                    <th>Naziv centra</th>
+                    <th>Datum treninga</th>
+                    <th>Cena treninga</th>
+                </tr>
+                <tr v-for="history in customerPastTrainings">
+                    <td>{{history.training.title}}</td>
+                    <td>{{history.training.center.centerTitle}}</td>
+                    <td><pre>{{dateReformater(history.date)}}</pre></td>
+                    <td v-if="history.training.price===0">Trening nema doplatu.</td>
+                    <td v-if="history.training.price!=0">{{history.training.price}}</td>
+                </tr>
+            </table>
+
+            <h3 v-if="customerFutureTrainings.length===0">Nemate zakazanih treninga</h3>
+            <h3 v-if="customerFutureTrainings.length!=0">Zakazani treninzi</h3>
+            
+            <table v-if="customerFutureTrainings">
+                <tr>
+                    <th>Naziv traninga</th>
+                    <th>Naziv centra</th>
+                    <th>Datum treninga</th>
+                    <th>Cena treninga</th>
+                </tr>
+                <tr v-for="history in customerFutureTrainings">
+                    <td>{{history.training.title}}</td>
+                    <td>{{history.training.center.centerTitle}}</td>
+                    <td><pre>{{dateReformater(history.date)}}</pre></td>
+                    <td v-if="history.training.price===0">Trening nema doplatu.</td>
+                    <td v-if="history.training.price!=0">{{history.training.price}}</td>
+                </tr>
+            </table>
         </div>
-        <button v-if="edit==0" @click="edit=1">Izmeni podatke</button>
-        <button v-if="edit==1" @click="this.cancelEdit">Otkazi izmene</button>
-        <button v-if="edit==1" @click="this.updateUser">Primeni izmene</button>
+
+        <div v-if="this.$router.app.login=='COACH'">
+            <h3 v-if="coachPastTrainings.length===0">Nemate prethodnih treninga</h3>
+            <h3 v-if="coachPastTrainings.length!=0">Prethodni treninzi</h3>
+            <table v-if="coachPastTrainings">
+                <tr>
+                    <th>Naziv traninga</th>
+                    <th>Naziv centra</th>
+                    <th>Datum treninga</th>
+                    <th>Cena treninga</th>
+                </tr>
+                <tr v-for="history in coachPastTrainings">
+                    <td>{{history.training.title}}</td>
+                    <td>{{history.training.center.centerTitle}}</td>
+                    <td><pre>{{dateReformater(history.date)}}</pre></td>
+                    <td v-if="history.training.price===0">Trening nema doplatu.</td>
+                    <td v-if="history.training.price!=0">{{history.training.price}}</td>
+                </tr>
+            </table>
+
+            <h3 v-if="coachFutureTrainings.length===0">Nemate zakazanih treninga</h3>
+            <h3 v-if="coachFutureTrainings.length!=0">Zakazani treninzi</h3>
+            <table v-if="coachFutureTrainings">
+                <tr>
+                    <th>Naziv traninga</th>
+                    <th>Naziv centra</th>
+                    <th>Datum treninga</th>
+                    <th>Cena treninga</th>
+                </tr>
+                <tr v-for="history in coachFutureTrainings">
+                    <td>{{history.training.title}}</td>
+                    <td>{{history.training.center.centerTitle}}</td>
+                    <td><pre>{{dateReformater(history.date)}}</pre></td>
+                    <td v-if="history.training.price===0">Trening nema doplatu.</td>
+                    <td v-if="history.training.price!=0">{{history.training.price}}</td>
+                </tr>
+            </table>
+        </div>
+
     </div>
     `,
     mounted(){
@@ -84,6 +166,47 @@ Vue.component("profile",{
                 
             }
         });
+        if(this.$router.app.login ==="CUSTOMER"){
+            axios.get('rest/getHistoryCustomer',{
+                params:{
+                    username:this.$router.app.username
+                }
+            })
+            .then(
+                response=>{
+                    response.data.forEach((item, index) =>{
+                        var trainingDate = this.trainingDateAnalizer(item);
+                        if(trainingDate === "PAST"){
+                            this.customerPastTrainings.push(item);
+                        }
+                        else{
+                            this.customerFutureTrainings.push(item);
+                        }
+                    })
+                }
+            )
+        }
+        if(this.$router.app.login ==="COACH"){
+            axios.get('rest/getHistoryCoach',{
+                params:{
+                    username:this.$router.app.username
+                }
+            })
+            .then(
+                response=>{
+                    response.data.forEach((item, index) =>{
+                        var trainingDate = this.trainingDateAnalizer(item);
+                        if(trainingDate === "PAST"){
+                            this.coachPastTrainings.push(item);
+                        }
+                        else{
+                            this.coachFutureTrainings.push(item);
+                        }
+                    })
+                }
+            )
+        }
+        
     },
     methods:{
         fillUserData: function(){
@@ -167,7 +290,15 @@ Vue.component("profile",{
                 case "COACH":
                     return "Trener";
             }
-		},
+        },
+        trainingTypeToString: function(type){
+            switch(type){
+                case "GROUP":
+                    return "Grupni trening";
+                case "PERSONAL":
+                    return "Personalni trening";
+            }
+        },
         resetEditFields: function(){
             this.copyUser();
             this.editManager = this.manager;
@@ -256,6 +387,49 @@ Vue.component("profile",{
                         setTimeout(() => {  router.push(`/`) }, 5000);
                     }
                 });
+        },
+        cancelTraining:function(trainingHistory){        
+            if(this.canTrainingBeModified(trainingHistory)){
+                axios.post("rest/cancelTraining", trainingHistory.HistoryId)
+                .then(res=>{
+                    if(res.data==="FAILIURE"){
+                        this.feedback="Otkazivanje treninga neuspesno!";
+                    }
+                    else{
+                        this.feedback="Trening uspesno otkazan";
+                        setTimeout(() => {  router.push(`/`) }, 1500);
+                    }
+                });
+            }
+            else{
+                this.feedback="Trening nije moguce otkazati, neophodno je otkazati najmanje 2 dana pre pocetka";
+            }
+            
+        },
+        trainingDateAnalizer: function(training){
+            if(this.trainingDateConverter(training) < new Date()){
+                return "PAST";
+            }
+            else{
+                return "FUTURE";
+            }
+        },
+        trainingDateConverter: function(training){
+            var currentDateDate = training.date.split("T")[0].split("-");
+            var currentDateTime = training.date.split("T")[1].split(":");
+            return new Date(currentDateDate[0],currentDateDate[1]-1,currentDateDate[2],currentDateTime[0],currentDateTime[1],0,0);
+        },
+        canTrainingBeModified: function(training){
+            var trainingDate = this.trainingDateConverter(training);
+            trainingDate.setDate(trainingDate.getDate()-2);
+            if(new Date() < trainingDate){
+                return true;
+            }
+            return false;
+        },
+        dateReformater: function(dateString){
+            var date = dateString.split("T");
+            return date[0] + "\n" + date[1];
         }
     }
 });
