@@ -55,7 +55,7 @@ Vue.component("profile",{
             <p>Cena clanarine: {{customer.membershipCost}}</p>
             <p>Poeni lojalnosti(bodovi): {{customer.loyalityPoints}}</p>
             <p>Tip kupca: {{customer.type}}</p>
-            <p v-if="customer.visitedCenters==null">Niste posetili ni jedan sportski centar</p>
+            <h3 v-if="customer.visitedCenters==null">Niste posetili ni jedan sportski centar</h3>
             <table v-if="customer.visitedCenters!=null">
             <tr>
                 <th>Logo</th>
@@ -76,40 +76,71 @@ Vue.component("profile",{
             </table>
             <h3 v-if="customerPastTrainings.length===0">Nemate prethodno posecenih treninga</h3>
             <h3 v-if="customerPastTrainings.length!=0">Prethodno poseceni treninzi</h3>
-            <div v-for="history in customerPastTrainings">
-                <p>Naziv traninga: {{history.training.title}}</p>
-                <p>Naziv centra:{{history.training.center.centerTitle}}</p>
-                <p>Datum treninga:{{history.date}}</p>
-            </div>
+
+            <table v-if="customerPastTrainings">
+                <tr>
+                    <th>Naziv traninga</th>
+                    <th>Naziv centra</th>
+                    <th>Datum treninga</th>
+                    <th>Cena treninga</th>
+                </tr>
+                <tr v-for="history in customerPastTrainings">
+                    <td>{{history.training.title}}</td>
+                    <td>{{history.training.center.centerTitle}}</td>
+                    <td><pre>{{dateReformater(history.date)}}</pre></td>
+                </tr>
+            </table>
 
             <h3 v-if="customerFutureTrainings.length===0">Nemate zakazanih treninga</h3>
             <h3 v-if="customerFutureTrainings.length!=0">Zakazani treninzi</h3>
-            <div v-for="history in customerFutureTrainings">
-                <p>Naziv traninga: {{history.training.title}}</p>
-                <p>Naziv centra:{{history.training.center.centerTitle}}</p>
-                <p>Datum treninga:{{history.date}}</p>
-            </div>
+            
+            <table v-if="customerFutureTrainings">
+                <tr>
+                    <th>Naziv traninga</th>
+                    <th>Naziv centra</th>
+                    <th>Datum treninga</th>
+                    <th>Cena treninga</th>
+                </tr>
+                <tr v-for="history in customerFutureTrainings">
+                    <td>{{history.training.title}}</td>
+                    <td>{{history.training.center.centerTitle}}</td>
+                    <td><pre>{{dateReformater(history.date)}}</pre></td>
+                </tr>
+            </table>
         </div>
 
         <div v-if="this.$router.app.login=='COACH'">
             <h3 v-if="coachPastTrainings.length===0">Nemate prethodnih treninga</h3>
             <h3 v-if="coachPastTrainings.length!=0">Prethodni treninzi</h3>
-            <div v-for="history in coachPastTrainings">
-                <p>Naziv traninga: {{history.training.title}}</p>
-                <p>Tip treninga: {{trainingTypeToString(history.training.type)}}</p>
-                <p>Naziv centra:{{history.training.center.centerTitle}}</p>
-                <p>Datum treninga:{{history.date}}</p>
-            </div>
+            <table v-if="coachPastTrainings">
+                <tr>
+                    <th>Naziv traninga</th>
+                    <th>Naziv centra</th>
+                    <th>Datum treninga</th>
+                    <th>Cena treninga</th>
+                </tr>
+                <tr v-for="history in coachPastTrainings">
+                    <td>{{history.training.title}}</td>
+                    <td>{{history.training.center.centerTitle}}</td>
+                    <td><pre>{{dateReformater(history.date)}}</pre></td>
+                </tr>
+            </table>
 
             <h3 v-if="coachFutureTrainings.length===0">Nemate zakazanih treninga</h3>
             <h3 v-if="coachFutureTrainings.length!=0">Zakazani treninzi</h3>
-            <div v-for="history in coachFutureTrainings">
-                <p>Naziv traninga: {{history.training.title}}</p>
-                <p>Tip treninga: {{trainingTypeToString(history.training.type)}}</p>
-                <p>Naziv centra:{{history.training.center.centerTitle}}</p>
-                <p>Datum treninga:{{history.date}}</p>
-                <button v-if="history.training.type ==='PERSONAL'" @click="cancelTraining(history)"> otkazi trening </button>
-            </div>
+            <table v-if="coachFutureTrainings">
+                <tr>
+                    <th>Naziv traninga</th>
+                    <th>Naziv centra</th>
+                    <th>Datum treninga</th>
+                    <th>Cena treninga</th>
+                </tr>
+                <tr v-for="history in coachFutureTrainings">
+                    <td>{{history.training.title}}</td>
+                    <td>{{history.training.center.centerTitle}}</td>
+                    <td><pre>{{dateReformater(history.date)}}</pre></td>
+                </tr>
+            </table>
         </div>
 
     </div>
@@ -387,6 +418,10 @@ Vue.component("profile",{
                 return true;
             }
             return false;
+        },
+        dateReformater: function(dateString){
+            var date = dateString.split("T");
+            return date[0] + "\n" + date[1];
         }
     }
 });

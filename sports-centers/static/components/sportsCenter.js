@@ -22,15 +22,25 @@ Vue.component("center",{
             <p>Adresa: {{locationToString(center.location)}}
             <p>Prosecna ocena: {{center.grade}}</p>
             <p>Radno vreme: {{workHoursToString(center.workHours)}}</p>
+            
+
+            <table v-if="trainigsList">
+                <tr>
+                    <th>Slicica traninga</th>
+                    <th>Opis treninga</th>
+                    <th>Ime trenera</th>
+                    <th>Cena treninga</th>
+                </tr>
+                <tr v-for="training in trainigsList">
+                    <td><img v-bind:src="'data:image/png;base64,' + training.imagePath" width="70" height="80"/></td>
+                    <td>{{training.description}}</td>
+                    <td>{{training.coach.name}}</td>
+                </tr>
+            </table>
+            
             <button  v-if="!addNew" v-on:click="flipAddFlag">Dodavanje novog treninga</button>
             <button  v-if="addNew" v-on:click="cancelAdd">Odustani od dodavanja</button>
-            <div v-if="trainigsList" v-for="training in trainigsList">
-                <p>Naziv: {{training.title}}</p>
-                <p>Tip Treninga: {{trainingTypeToString(training.type)}}</p>
-                <p>Trajanje Treninga: {{training.durationMins}}</p>
-                <p>Kratak opis: {{training.description}}</p>
-                <p>Trener: {{training.coach.name}}</p>
-            </div>
+
             <div v-if="addNew">
                 <label for="title">Naziv treninga</label>
                 <input type="text" name="title" v-model="newTraining.title"></input>
