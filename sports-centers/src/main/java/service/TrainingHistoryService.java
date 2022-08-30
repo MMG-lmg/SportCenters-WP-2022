@@ -37,6 +37,15 @@ public class TrainingHistoryService implements InterfaceBase<TrainingHistory>{
 		}
 		return retVal;
 	}
+	public Collection<TrainingHistory> getForCenter(String centerId){
+		Collection<TrainingHistory> retVal = new ArrayList<TrainingHistory>();
+		for(TrainingHistory history : repo.getAll()) {
+			if(history.getTraining().getCenter().getCenterId().equals(centerId)) {
+				retVal.add(history);
+			}
+		}
+		return retVal;
+	}
 	@Override
 	public TrainingHistory getById(String id) {
 		// TODO Auto-generated method stub

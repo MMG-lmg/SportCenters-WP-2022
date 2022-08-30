@@ -7,7 +7,8 @@ Vue.component("center",{
             coaches:null,
             image:null,
             newTraining:{trainingId:"",title:"",type:"PERSONAL",centerId:"",durationMins:0,coachId:"",description:"",imagePath:"",price:0},
-            trainigsList:null
+            trainigsList:null,
+            trainingHistory:null
         }
     },
     template:`
@@ -36,6 +37,22 @@ Vue.component("center",{
                     <td>{{training.coach.name}}</td>
                     <td v-if="training.price===0">Trening nema doplatu.</td>
                     <td v-if="training.price!=0">{{training.price}}</td>
+                </tr>
+            </table>
+
+            <table v-if="trainingHistory">
+                <tr>
+                    <th>Naziv traninga</th>
+                    <th>Naziv centra</th>
+                    <th>Datum treninga</th>
+                    <th>Cena treninga</th>
+                </tr>
+                <tr v-for="history in trainingHistory">
+                    <td>{{history.training.title}}</td>
+                    <td>{{history.training.center.centerTitle}}</td>
+                    <td><pre>{{dateReformater(history.date)}}</pre></td>
+                    <td v-if="history.training.price===0">Trening nema doplatu.</td>
+                    <td v-if="history.training.price!=0">{{history.training.price}}</td>
                 </tr>
             </table>
             
@@ -95,6 +112,7 @@ Vue.component("center",{
             console.log(response.data);
             if(response.data!="FAILIURE"){
                 this.center = response.data;
+
                 axios.get('rest/getTrainingsForCenter',{
                     params:{
                         centerId: this.center.centerId,
@@ -104,7 +122,18 @@ Vue.component("center",{
                     response=>{
                        this.trainigsList=response.data;
                     }
-                )
+                );
+
+                axios.get('rest/getHistoryCenter',{
+                    params:{
+                        centerId: this.center.centerId,
+                    }
+                })
+                .then(
+                    response=>{
+                       this.trainingHistory=response.data;
+                    }
+                );
             }
             else{
                 console.log("else");
@@ -199,5 +228,9 @@ Vue.component("center",{
                     return "Personalni trening";
             }
         },
+        dateReformater: function(dateString){
+            var date = dateString.split("T");
+            return date[0] + "\n" + date[1];
+        }
     }
 });

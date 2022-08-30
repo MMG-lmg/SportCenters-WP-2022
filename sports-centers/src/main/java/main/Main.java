@@ -89,6 +89,7 @@ public class Main {
     	TrainingHistoryController.addTrainingHistory();
     	TrainingHistoryController.getTrainingHistoryByCustomerUsername();
     	TrainingHistoryController.getTrainingHistoryByCoachUsername();
+    	TrainingHistoryController.getTrainingHistoryByCenterId();
     	TrainingHistoryController.cancelTraining();
     	/*TrainingService service = new TrainingService();
     	SportsCenterService centerService = new SportsCenterService();
