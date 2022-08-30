@@ -41,6 +41,16 @@ public class MembershipService implements InterfaceBase<Membership>{
 		}
 		return null;
 	}
+	
+	public Collection<Membership> getActive(){
+		Collection<Membership> retVal = new ArrayList<Membership>();
+		for(Membership membership : this.getAll()) {
+			if(membership.getStatus().equals(MembershipStatus.ACTIVE)) {
+				retVal.add(membership);
+			}
+		}
+		return retVal;
+	}
 	@Override
 	public void create(Membership item) {
 		String id = generateId();
