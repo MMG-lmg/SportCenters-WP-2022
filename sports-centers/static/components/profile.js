@@ -77,7 +77,7 @@ Vue.component("profile",{
             <h3 v-if="customerPastTrainings.length===0">Nemate prethodno posecenih treninga</h3>
             <h3 v-if="customerPastTrainings.length!=0">Prethodno poseceni treninzi</h3>
 
-            <table v-if="customerPastTrainings">
+            <table v-if="customerPastTrainings.length!=0">
                 <tr>
                     <th>Naziv traninga</th>
                     <th>Naziv centra</th>
@@ -96,7 +96,7 @@ Vue.component("profile",{
             <h3 v-if="customerFutureTrainings.length===0">Nemate zakazanih treninga</h3>
             <h3 v-if="customerFutureTrainings.length!=0">Zakazani treninzi</h3>
             
-            <table v-if="customerFutureTrainings">
+            <table v-if="customerFutureTrainings.length!=0">
                 <tr>
                     <th>Naziv traninga</th>
                     <th>Naziv centra</th>
@@ -116,7 +116,7 @@ Vue.component("profile",{
         <div v-if="this.$router.app.login=='COACH'">
             <h3 v-if="coachPastTrainings.length===0">Nemate prethodnih treninga</h3>
             <h3 v-if="coachPastTrainings.length!=0">Prethodni treninzi</h3>
-            <table v-if="coachPastTrainings">
+            <table v-if="coachPastTrainings.length!=0">
                 <tr>
                     <th>Naziv traninga</th>
                     <th>Naziv centra</th>
@@ -134,7 +134,7 @@ Vue.component("profile",{
 
             <h3 v-if="coachFutureTrainings.length===0">Nemate zakazanih treninga</h3>
             <h3 v-if="coachFutureTrainings.length!=0">Zakazani treninzi</h3>
-            <table v-if="coachFutureTrainings">
+            <table v-if="coachFutureTrainings.length!=0" >
                 <tr>
                     <th>Naziv traninga</th>
                     <th>Naziv centra</th>
@@ -177,12 +177,24 @@ Vue.component("profile",{
                     response.data.forEach((item, index) =>{
                         var trainingDate = this.trainingDateAnalizer(item);
                         if(trainingDate === "PAST"){
-                            this.customerPastTrainings.push(item);
+                            //this.customerPastTrainings.push(item);
                         }
                         else{
                             this.customerFutureTrainings.push(item);
                         }
                     })
+                }
+            )
+            axios.get('rest/getHistoryCustomerDate',{
+                params:{
+                    username:this.$router.app.username
+                }
+            })
+            .then(
+                response=>{
+                    if(response.data !=null || response.data!="FAILIURE"){
+                        this.customerPastTrainings = response.data;
+                    }  
                 }
             )
         }

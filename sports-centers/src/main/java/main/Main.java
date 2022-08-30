@@ -91,6 +91,7 @@ public class Main {
     	
     	TrainingHistoryController.addTrainingHistory();
     	TrainingHistoryController.getTrainingHistoryByCustomerUsername();
+    	TrainingHistoryController.getTrainingHistoryByCustomerDateLimited();
     	TrainingHistoryController.getTrainingHistoryByCoachUsername();
     	TrainingHistoryController.getTrainingHistoryByCenterId();
     	TrainingHistoryController.cancelTraining();
