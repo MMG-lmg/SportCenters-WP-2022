@@ -76,7 +76,11 @@ Vue.component("register",{
                 axios.post("rest/addCustomer", this.customer)
                 .then(res =>{
                     if(res.data ==="FAILIURE"){
-                        //TODO when validation gets implemented on back
+                        this.error = "Registracija neuspesna";
+                    }
+                    if(res.data ==="FAILIURE_USERNAME"){
+                        this.error = "Korisnicko ime vec postoji molimo odaberite novo";
+                        return;
                     }
                     else{
                         this.feedbackPopup = true;

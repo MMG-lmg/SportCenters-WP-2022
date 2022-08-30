@@ -8,6 +8,7 @@ Vue.component("registerManager",{
             emptyFlag:true,
             feedbackPopup:false,
             availableCenters:null,
+            error:""
         }
     },
     template:`
@@ -95,7 +96,10 @@ Vue.component("registerManager",{
                 axios.post("rest/addManager", this.manager)
                 .then(res =>{
                     if(res.data ==="FAILIURE"){
-                        //TODO when validation gets implemented on back
+                       this.error="Greska menadzer nije dodat";
+                    }
+                    if(res.data ==="FAILIURE_USERNAME"){
+                        this.error="Korisnik sa postojecim korisnickim imenom postoji, odaberite drugo";
                     }
                     else{
                         this.feedbackPopup = true;
