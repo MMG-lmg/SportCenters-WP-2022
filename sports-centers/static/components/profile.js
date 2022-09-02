@@ -15,6 +15,11 @@ Vue.component("profile",{
             customerFutureTrainings:[],
             coachPastTrainings:[],
             coachFutureTrainings:[],
+            filteredPastTrainings:null,
+            filteredFutureTrainings:null,
+            centerSearch:'',
+            dateSearch:['',''],
+            priceSearch:[0,999999],
         }
     },
     template:`
@@ -51,6 +56,7 @@ Vue.component("profile",{
         <div v-if="this.$router.app.login=='MENAGER'">
             <p>Naziv Sportskog Centra: {{manager.sportsCenterTitle}}</p>
         </div>
+        <button v-if="this.$router.app.login=='CUSTOMER' || this.$router.app.login=='COACH'" v-on:click=resetSearch>Ponisti pretragu</button>
         <div v-if="this.$router.app.login=='CUSTOMER'">
             <p>Cena clanarine: {{customer.membershipCost}}</p>
             <p>Poeni lojalnosti(bodovi): {{customer.loyalityPoints}}</p>
@@ -76,15 +82,26 @@ Vue.component("profile",{
             </table>
             <h3 v-if="customerPastTrainings.length===0">Nemate prethodno posecenih treninga</h3>
             <h3 v-if="customerPastTrainings.length!=0">Prethodno poseceni treninzi</h3>
-
+            
             <table v-if="customerPastTrainings.length!=0">
                 <tr>
                     <th>Naziv traninga</th>
-                    <th>Naziv centra</th>
-                    <th>Datum treninga</th>
-                    <th>Cena treninga</th>
+                    <th>
+                        <p>Naziv centra</p> <br>
+                        <input type="text" v-model="centerSearch" v-on:keyup="searchByCenter">
+                    </th>
+                    <th>
+                        <p>Datum treninga</p> <br>
+                        <input ref="dateInput0" type="date" v-model="dateSearch[0]" @change="searchByDate">
+                        <input ref="dateInput1" type="date" v-model="dateSearch[1]" @change="searchByDate">
+                    </th>
+                    <th>
+                        <p>Cena treninga</p>
+                        <input ref="priceInput0" type="number" v-model="priceSearch[0]" @change="searchByPrice">
+                        <input ref="priceInput1" type="number" v-model="priceSearch[1]" @change="searchByPrice">   
+                    </th>
                 </tr>
-                <tr v-for="history in customerPastTrainings">
+                <tr v-for="history in filteredPastTrainings">
                     <td>{{history.training.title}}</td>
                     <td>{{history.training.center.centerTitle}}</td>
                     <td><pre>{{dateReformater(history.date)}}</pre></td>
@@ -103,7 +120,7 @@ Vue.component("profile",{
                     <th>Datum treninga</th>
                     <th>Cena treninga</th>
                 </tr>
-                <tr v-for="history in customerFutureTrainings">
+                <tr v-for="history in filteredFutureTrainings">
                     <td>{{history.training.title}}</td>
                     <td>{{history.training.center.centerTitle}}</td>
                     <td><pre>{{dateReformater(history.date)}}</pre></td>
@@ -119,11 +136,22 @@ Vue.component("profile",{
             <table v-if="coachPastTrainings.length!=0">
                 <tr>
                     <th>Naziv traninga</th>
-                    <th>Naziv centra</th>
-                    <th>Datum treninga</th>
-                    <th>Cena treninga</th>
+                    <th>
+                        <p>Naziv centra</p>
+                        <input type="text" v-model="centerSearch" v-on:keyup="searchByCenter">
+                    </th>
+                <th>
+                    <p>Datum treninga</p> <br>
+                    <input type="date" v-model="dateSearch[0]" @change="searchByDate">
+                    <input type="date" v-model="dateSearch[1]" @change="searchByDate">
+                </th>
+                <th>
+                    <p>Cena treninga</p>
+                    <input type="number" v-model="priceSearch[0]" @change="searchByPrice">
+                    <input type="number" v-model="priceSearch[1]" @change="searchByPrice">   
+                </th>
                 </tr>
-                <tr v-for="history in coachPastTrainings">
+                <tr v-for="history in filteredPastTrainings">
                     <td>{{history.training.title}}</td>
                     <td>{{history.training.center.centerTitle}}</td>
                     <td><pre>{{dateReformater(history.date)}}</pre></td>
@@ -141,7 +169,7 @@ Vue.component("profile",{
                     <th>Datum treninga</th>
                     <th>Cena treninga</th>
                 </tr>
-                <tr v-for="history in coachFutureTrainings">
+                <tr v-for="history in filteredFutureTrainings">
                     <td>{{history.training.title}}</td>
                     <td>{{history.training.center.centerTitle}}</td>
                     <td><pre>{{dateReformater(history.date)}}</pre></td>
@@ -183,6 +211,7 @@ Vue.component("profile",{
                             this.customerFutureTrainings.push(item);
                         }
                     })
+                    this.filteredFutureTrainings = this.customerFutureTrainings;
                 }
             )
             axios.get('rest/getHistoryCustomerDate',{
@@ -194,6 +223,7 @@ Vue.component("profile",{
                 response=>{
                     if(response.data !=null || response.data!="FAILIURE"){
                         this.customerPastTrainings = response.data;
+                        this.filteredPastTrainings = this.customerPastTrainings;
                     }  
                 }
             )
@@ -214,7 +244,9 @@ Vue.component("profile",{
                         else{
                             this.coachFutureTrainings.push(item);
                         }
-                    })
+                    });
+                    this.filteredPastTrainings =  this.coachPastTrainings;
+                    this.coachFutureTrainings = this.coachFutureTrainings;
                 }
             )
         }
@@ -322,7 +354,6 @@ Vue.component("profile",{
             this.resetEditFields();
         },
         copyUser: function(){
-            /* user:{userName:"",password:"",name:"",gender:"",dateOfBirth:"",role:""},*/ 
             this.editUser.userName = this.user.userName;
             this.editUser.name = this.user.name;
             this.editUser.gender = this.user.gender;
@@ -426,6 +457,10 @@ Vue.component("profile",{
                 return "FUTURE";
             }
         },
+        basicDateConverter: function(stringDate){
+            var dateData = stringDate.split("-");
+            return new Date(dateData[0],dateData[1]-1,dateData[2],0,0,0,0);
+        },
         trainingDateConverter: function(training){
             var currentDateDate = training.date.split("T")[0].split("-");
             var currentDateTime = training.date.split("T")[1].split(":");
@@ -442,6 +477,78 @@ Vue.component("profile",{
         dateReformater: function(dateString){
             var date = dateString.split("T");
             return date[0] + "\n" + date[1];
+        },
+        dateComparatorBetween:function(date,dateRange){
+            if(date > dateRange[0] && date < dateRange[1]){
+                return true;
+            }
+            return false;
+        },
+        searchByCenter:function(){
+            if(this.centerSearch!=''){
+                if(this.$router.app.login ==="CUSTOMER"){
+                    this.filteredPastTrainings = this.customerPastTrainings.filter(item =>
+                        item.training.center.centerTitle.toLowerCase().includes(this.centerSearch.toLowerCase())
+                    );
+                    this.filteredFutureTrainings = this.customerFutureTrainings.filter(item =>
+                        item.training.center.centerTitle.toLowerCase().includes(this.centerSearch.toLowerCase())
+                    );
+                }
+                else{
+                    this.filteredPastTrainings = this.coachPastTrainings.filter(item =>
+                        item.training.center.centerTitle.toLowerCase().includes(this.centerSearch.toLowerCase())
+                    );
+                    this.filteredFutureTrainings = this.coachFutureTrainings.filter(item =>
+                        item.training.center.centerTitle.toLowerCase().includes(this.centerSearch.toLowerCase())
+                    );
+                }
+            }
+        },
+        searchByPrice:function(){
+            if(this.priceSearch[0]!=null && this.priceSearch[1]!=null){
+                if(this.$router.app.login ==="CUSTOMER"){
+                    this.filteredPastTrainings = this.customerPastTrainings.filter(item =>
+                        item.training.price >= this.priceSearch[0] && item.training.price <= this.priceSearch[1]);   
+                    this.filteredFutureTrainings = this.customerFutureTrainings.filter(item =>
+                        item.training.price >= this.priceSearch[0] && item.training.price <= this.priceSearch[1]); 
+                }
+                else{
+                    this.filteredPastTrainings = this.coachPastTrainings.filter(item =>
+                        item.training.price >= this.priceSearch[0] && item.training.price <= this.priceSearch[1]);   
+                    this.filteredFutureTrainings = this.coachFutureTrainings.filter(item =>
+                        item.training.price >= this.priceSearch[0] && item.training.price <= this.priceSearch[1]); 
+                }
+                  
+            }
+        },
+        searchByDate:function(){
+            if(this.dateSearch[0]!='' && this.dateSearch[1]!=''){
+                if(this.$router.app.login ==="CUSTOMER"){
+                    this.filteredPastTrainings = this.customerPastTrainings.filter(item =>
+                        this.dateComparatorBetween(this.trainingDateConverter(item),[this.basicDateConverter(this.dateSearch[0]), this.basicDateConverter(this.dateSearch[1])]));
+                    this.filteredFutureTrainings = this.customerFutureTrainings.filter(item =>
+                        this.dateComparatorBetween(this.trainingDateConverter(item),[this.basicDateConverter(this.dateSearch[0]), this.basicDateConverter(this.dateSearch[1])]));
+                }
+                else{
+                    this.filteredPastTrainings = this.coachPastTrainings.filter(item =>
+                        this.dateComparatorBetween(this.trainingDateConverter(item),[this.basicDateConverter(this.dateSearch[0]), this.basicDateConverter(this.dateSearch[1])]));
+                    this.filteredFutureTrainings = this.coachFutureTrainings.filter(item =>
+                        this.dateComparatorBetween(this.trainingDateConverter(item),[this.basicDateConverter(this.dateSearch[0]), this.basicDateConverter(this.dateSearch[1])]));
+                }
+            }
+        },
+        resetSearch: function(){
+            this.centerSearch='';
+            this.dateSearch =['',''];
+            this.priceSearch =[0,999999];
+            if(this.$router.app.login ==="CUSTOMER"){
+                this.filteredPastTrainings = this.customerPastTrainings;
+                this.filteredFutureTrainings = this.customerFutureTrainings;
+            }
+            else{
+                this.filteredPastTrainings = this.coachPastTrainings;
+                this.filteredFutureTrainings = this.coachFutureTrainings;
+            }
         }
     }
 });
