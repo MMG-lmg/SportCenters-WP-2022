@@ -3,7 +3,8 @@
     "HistoryId": "6iZdKQ5H",
     "date": "2022-08-27T19:45:00",
     "training": {
-      "trainingId": "iFtPuOwW"
+      "trainingId": "iFtPuOwW",
+      "price": 0.0
     },
     "customer": {
       "userName": "perica94"
@@ -16,7 +17,8 @@
     "HistoryId": "mLriNY6a",
     "date": "2022-09-10T14:09:00",
     "training": {
-      "trainingId": "GB0jhT7s"
+      "trainingId": "GB0jhT7s",
+      "price": 300.0
     },
     "customer": {
       "userName": "perica94"
@@ -29,7 +31,8 @@
     "HistoryId": "yp8va4Cu",
     "date": "2022-04-20T09:55:00",
     "training": {
-      "trainingId": "9tnBqQ3D"
+      "trainingId": "9tnBqQ3D",
+      "price": 0.0
     },
     "customer": {
       "userName": "perica94"
@@ -42,13 +45,42 @@
     "HistoryId": "Iqm7gKMG",
     "date": "2022-08-08T09:49:00",
     "training": {
-      "trainingId": "GB0jhT7s"
+      "trainingId": "GB0jhT7s",
+      "price": 300.0
     },
     "customer": {
       "userName": "perica94"
     },
     "coach": {
       "userName": "aha"
+    }
+  },
+  "ZfeEhHPZ": {
+    "HistoryId": "ZfeEhHPZ",
+    "date": "2022-11-03T10:58:00",
+    "training": {
+      "trainingId": "73xygpML",
+      "price": 0.0
+    },
+    "customer": {
+      "userName": "perica94"
+    },
+    "coach": {
+      "userName": "aha"
+    }
+  },
+  "ow7XAqec": {
+    "HistoryId": "ow7XAqec",
+    "date": "2022-10-20T10:56:00",
+    "training": {
+      "trainingId": "9tnBqQ3D",
+      "price": 0.0
+    },
+    "customer": {
+      "userName": "perica94"
+    },
+    "coach": {
+      "userName": "mirkoTrener"
     }
   }
 }

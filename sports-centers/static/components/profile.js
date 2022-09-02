@@ -20,6 +20,11 @@ Vue.component("profile",{
             centerSearch:'',
             dateSearch:['',''],
             priceSearch:[0,999999],
+            sortCenter:0,
+            sortPrice:0,
+            sortDate:0,
+            typeSearch:"",
+            typeTrainingSearch:"",
         }
     },
     template:`
@@ -57,6 +62,23 @@ Vue.component("profile",{
             <p>Naziv Sportskog Centra: {{manager.sportsCenterTitle}}</p>
         </div>
         <button v-if="this.$router.app.login=='CUSTOMER' || this.$router.app.login=='COACH'" v-on:click=resetSearch>Ponisti pretragu</button>
+        <div>
+            <h3>Filteri</h3>
+            <label for="center">Tip Centra</label> 
+            <select  name="center" ref="typeCombo" v-model="typeSearch" @change="filterByType">
+                <option disabled value="">Svi</option>
+                <option value="center">Sportski centar</option>
+                <option value="gym">Teretana</option>
+                <option value="pool">Bazen</option>
+                <option value="dance">Plesni studio</option>
+            </select>
+            <label for="type">Tip Treninga</label> 
+            <select  name="type" ref="typeTrainingCombo" v-model="typeTrainingSearch" @change="filterByTrainingType">
+                <option disabled value="">Svi</option>
+                <option value="personal">Personalni</option>
+                <option value="group">Grupni</option>
+            </select>
+        </div>
         <div v-if="this.$router.app.login=='CUSTOMER'">
             <p>Cena clanarine: {{customer.membershipCost}}</p>
             <p>Poeni lojalnosti(bodovi): {{customer.loyalityPoints}}</p>
@@ -87,16 +109,16 @@ Vue.component("profile",{
                 <tr>
                     <th>Naziv traninga</th>
                     <th>
-                        <p>Naziv centra</p> <br>
+                        <p @click="sortByCenter">Naziv centra</p> <br>
                         <input type="text" v-model="centerSearch" v-on:keyup="searchByCenter">
                     </th>
                     <th>
-                        <p>Datum treninga</p> <br>
+                        <p @click="sortByDate">Datum treninga</p> <br>
                         <input ref="dateInput0" type="date" v-model="dateSearch[0]" @change="searchByDate">
                         <input ref="dateInput1" type="date" v-model="dateSearch[1]" @change="searchByDate">
                     </th>
                     <th>
-                        <p>Cena treninga</p>
+                        <p @click="sortByPrice">Cena treninga</p>
                         <input ref="priceInput0" type="number" v-model="priceSearch[0]" @change="searchByPrice">
                         <input ref="priceInput1" type="number" v-model="priceSearch[1]" @change="searchByPrice">   
                     </th>
@@ -537,10 +559,173 @@ Vue.component("profile",{
                 }
             }
         },
+        sortByCenter: function(){
+            if(!this.sortCenter){
+                this.sortByCenterAsc();
+                this.sortCenter = 1;
+            }
+            else{
+                this.sortByCenterDesc();
+                this.sortCenter = 0;
+            }
+        },
+        sortByCenterAsc: function(){
+            function compare(a,b){
+                if(a.training.center.centerTitle.toLowerCase() < b.training.center.centerTitle.toLowerCase())
+                    return -1;
+                if(a.training.center.centerTitle.toLowerCase() > b.training.center.centerTitle.toLowerCase())
+                    return 1;
+                return 0;
+            }
+            this.filteredPastTrainings.sort(compare);
+            this.filteredFutureTrainings.sort(compare);
+        },
+        sortByCenterDesc: function(){
+            function compare(a,b){
+                if(a.training.center.centerTitle.toLowerCase() < b.training.center.centerTitle.toLowerCase())
+                    return 1;
+                if(a.training.center.centerTitle.toLowerCase() > b.training.center.centerTitle.toLowerCase())
+                    return -1;
+                return 0;
+            }
+            this.filteredPastTrainings.sort(compare);
+            this.filteredFutureTrainings.sort(compare);
+        },
+        sortByPrice:function(){
+            if(!this.sortPrice){
+                this.sortByPriceAsc();
+                this.sortPrice = 1;
+            }
+            else{
+                this.sortByPriceDesc();
+                this.sortPrice = 0;
+            }
+        },
+        sortByPriceAsc:function(){
+            function compare(a,b){
+                if(a.training.price <  b.training.price )
+                    return -1;
+                if(a.training.price >  b.training.price )
+                    return 1;
+                return 0;
+            }
+            this.filteredPastTrainings.sort(compare);
+            this.filteredFutureTrainings.sort(compare);
+        },
+        sortByPriceDesc:function(){
+            function compare(a,b){
+                if(a.training.price <  b.training.price )
+                    return 1;
+                if(a.training.price >  b.training.price )
+                    return -1;
+                return 0;
+            }
+            this.filteredPastTrainings.sort(compare);
+            this.filteredFutureTrainings.sort(compare);
+        },
+        sortByDate:function(){
+            if(!this.sortDate){
+                this.sortByDateAsc();
+                this.sortDate = 1;
+            }
+            else{
+                this.sortByDateDesc();
+                this.sortDate = 0;
+            }
+        },
+        sortByDateAsc:function(){
+            trainingDateConverter = this.trainingDateConverter;
+            function compare(a,b){
+                if(trainingDateConverter(a) <  trainingDateConverter(b))
+                    return -1;
+                if(trainingDateConverter(a) >  trainingDateConverter(b))
+                    return 1;
+                return 0;
+            }
+            this.filteredPastTrainings.sort(compare);
+            this.filteredFutureTrainings.sort(compare);
+        },
+        sortByDateDesc:function(){
+            trainingDateConverter = this.trainingDateConverter;
+            function compare(a,b){
+                if(trainingDateConverter(a) <  trainingDateConverter(b))
+                    return 1;
+                if(trainingDateConverter(a) >  trainingDateConverter(b))
+                    return -1;
+                return 0;
+            }
+            this.filteredPastTrainings.sort(compare);
+            this.filteredFutureTrainings.sort(compare);
+        },
+        filterByType: function(){
+            if(this.$router.app.login ==="CUSTOMER"){
+                if(this.typeSearch === "center"){
+                    this.filteredPastTrainings = this.customerPastTrainings.filter(item => item.training.center.type === "SPORTS_CENTER");
+                    this.filteredFutureTrainings = this.customerFutureTrainings.filter(item => item.training.center.type === "SPORTS_CENTER");
+                }
+                else if(this.typeSearch === "gym"){
+                    this.filteredPastTrainings = this.customerPastTrainings.filter(item => item.training.center.type === "GYM");
+                    this.filteredFutureTrainings = this.customerFutureTrainings.filter(item => item.training.center.type === "GYM");
+                }
+                else if(this.typeSearch === "pool"){
+                    this.filteredPastTrainings = this.customerPastTrainings.filter(item => item.training.center.type === "POOL");
+                    this.filteredFutureTrainings = this.customerFutureTrainings.filter(item => item.training.center.type === "POOL");
+                }
+                else if(this.typeSearch === "dance"){
+                    this.filteredPastTrainings = this.customerPastTrainings.filter(item => item.training.center.type === "DANCE_STUDIO");
+                    this.filteredFutureTrainings = this.customerFutureTrainings.filter(item => item.training.center.type === "DANCE_STUDIO");
+                }
+            }
+            else{
+                if(this.typeSearch === "center"){
+                    this.filteredPastTrainings = this.coachPastTrainings.filter(item => item.training.center.type === "SPORTS_CENTER");
+                    this.filteredFutureTrainings = this.coachFutureTrainings.filter(item => item.training.center.type === "SPORTS_CENTER");
+                }
+                else if(this.typeSearch === "gym"){
+                    this.filteredPastTrainings = this.coachPastTrainings.filter(item => item.training.center.type === "GYM");
+                    this.filteredFutureTrainings = this.coachFutureTrainings.filter(item => item.training.center.type === "GYM");
+                }
+                else if(this.typeSearch === "pool"){
+                    this.filteredPastTrainings = this.coachPastTrainings.filter(item => item.training.center.type === "POOL");
+                    this.filteredFutureTrainings = this.coachFutureTrainings.filter(item => item.training.center.type === "POOL");
+                }
+                else if(this.typeSearch === "dance"){
+                    this.filteredPastTrainings = this.coachPastTrainings.filter(item => item.training.center.type === "DANCE_STUDIO");
+                    this.filteredFutureTrainings = this.coachFutureTrainings.filter(item => item.training.center.type === "DANCE_STUDIO");
+                }
+            }
+			
+        },
+        filterByTrainingType: function(){
+            if(this.$router.app.login ==="CUSTOMER"){
+                if(this.typeTrainingSearch === "personal"){
+                    this.filteredPastTrainings = this.customerPastTrainings.filter(item => item.training.type === "PERSONAL");
+                    this.filteredFutureTrainings = this.customerFutureTrainings.filter(item => item.training.type === "PERSONAL");
+                }
+                else if(this.typeTrainingSearch === "group"){
+                    this.filteredPastTrainings = this.customerPastTrainings.filter(item => item.training.type === "GROUP");
+                    this.filteredFutureTrainings = this.customerFutureTrainings.filter(item => item.training.center.type === "GROUP");
+                }
+            }
+            else{
+                if(this.typeTrainingSearch === "personal"){
+                    this.filteredPastTrainings = this.coachPastTrainings.filter(item => item.training.type === "PERSONAL");
+                    this.filteredFutureTrainings = this.coachFutureTrainings.filter(item => item.training.type === "PERSONAL");
+                }
+                else if(this.typeTrainingSearch === "group"){
+                    this.filteredPastTrainings = this.coachPastTrainings.filter(item => item.training.type === "GROUP");
+                    this.filteredFutureTrainings = this.coachFutureTrainings.filter(item => item.training.center.type === "GROUP");
+                }
+            }
+        },
         resetSearch: function(){
             this.centerSearch='';
             this.dateSearch =['',''];
             this.priceSearch =[0,999999];
+            this.$refs.typeCombo.value="";
+            this.$refs.typeTrainingCombo.value="";
+            this.typeSearch="";
+            this.typeTrainingSearch="";
             if(this.$router.app.login ==="CUSTOMER"){
                 this.filteredPastTrainings = this.customerPastTrainings;
                 this.filteredFutureTrainings = this.customerFutureTrainings;
