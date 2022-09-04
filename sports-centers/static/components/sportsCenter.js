@@ -4,11 +4,13 @@ Vue.component("center",{
             center:null,
             error:"",
             addNew:0,
+            editExisting:0,
             coaches:null,
             image:null,
             newTraining:{trainingId:"",title:"",type:"PERSONAL",centerId:"",durationMins:0,coachId:"",description:"",imagePath:"",price:0},
             trainigsList:null,
-            trainingHistory:null
+            trainingHistory:null,
+            editTraining:null,
         }
     },
     template:`
@@ -30,6 +32,7 @@ Vue.component("center",{
                     <th>Opis treninga</th>
                     <th>Ime trenera</th>
                     <th>Cena treninga</th>
+                    <th></th>
                 </tr>
                 <tr v-for="training in trainigsList">
                     <td><img v-bind:src="'data:image/png;base64,' + training.imagePath" width="70" height="80"/></td>
@@ -37,6 +40,7 @@ Vue.component("center",{
                     <td>{{training.coach.name}}</td>
                     <td v-if="training.price===0">Trening nema doplatu.</td>
                     <td v-if="training.price!=0">{{training.price}}</td>
+                    <td><button @click="loadEditTraining(training)">Izmeni</button></td> 
                 </tr>
             </table>
 
@@ -85,6 +89,30 @@ Vue.component("center",{
 
             <button  v-if="!addNew" v-on:click="flipAddFlag">Dodavanje novog treninga</button>
             <button  v-if="addNew" v-on:click="cancelAdd">Odustani od dodavanja</button>
+
+
+            <div v-if="editExisting">
+            <label for="title">Naziv treninga</label>
+            <input type="text" name="title" v-model="editTraining.title" disabled></input>
+            <br>
+            <label for="type">Tip treninga:</label>
+            <select ref="typeCombo" name="type" v-model="editTraining.type" disabled>
+                <option value="PERSONAL" selected>Personalni</option>
+                <option value="GROUP">Grupni</option>
+            </select>
+            <label for="duration">Trajanje treninga</label>
+            <input type="number" name="duration" v-model="editTraining.durationMins"></input>
+            <label for="coach">Trener</label>
+            <input type="text" name="coach" v-model="editTraining.coach.name" disabled></input>
+            <label for="description">Opis treninga</label>
+            <textarea  name="description" v-model="editTraining.description" rows="5" cols="40"></textarea>
+            <label for="price">Cena treninga:(opciono)</label>
+            <input type="number" name="price" v-model="editTraining.price"></input>
+            <button v-on:click="comitEditTraining"> Izmeni </button>
+        </div>
+
+        <button  v-if="editExisting" v-on:click="cancelEdit">Odustani od izmene</button>
+
         </div>
 
     </div>
@@ -170,12 +198,27 @@ Vue.component("center",{
         workHoursToString: function(hours){
             return hours[0] +" : "+ hours[1];
         },
+        emptyFieldsCheck:function(){
+            if(this.newTraining.title==null || this.newTraining.title=='' || this.newTraining.imagePath == null || this.newTraining.imagePath == '' || this.newTraining.coachId == null || this.newTraining.coachId == ''){
+                this.error= "Nisu sva obavezna polja popunjena";
+                return false;
+            }
+            return true;
+        },
         flipAddFlag: function(){
             this.addNew=!this.addNew;
+        },
+        flipEditFlag:function(){
+            this.editExisting = !this.editExisting;
         },
         cancelAdd:function(){
             this.newTraining = {trainingId:"",title:"",centerId:"",durationMins:0,coachId:"",description:"",imagePath:""};
             this.addNew = 0;
+            this.removeImage();
+        },
+        cancelEdit:function(){
+            this.editTraining = null,
+            this.editExisting = 0;
         },
         onFileInput: function(e){
             var patternFileExtension = /\.([0-9a-z]+)(?:[\?#]|$)/i;
@@ -205,20 +248,45 @@ Vue.component("center",{
             this.$refs.imgUpload.value = null;
         },
         addTraining: function(){
-            this.newTraining.centerId = this.center.centerId;
-            this.newTraining.imagePath = this.image.split(",")[1];
-            axios.post("rest/addTraining",this.newTraining).then(
+            if(this.emptyFieldsCheck){
+                this.newTraining.centerId = this.center.centerId;
+                this.newTraining.imagePath = this.image.split(",")[1];
+                axios.post("rest/addTraining",this.newTraining).then(
+                    res=>{
+                        if(res.data==="FAILIURE"){
+                            this.error="Dodavanja treninga, neuspesno!";
+                        }
+                        else if(res.data==="FAILIURE_NAME"){
+                            this.error="Ime treninga vec postoji molimo odaberite drugo!";
+                            return;
+                        }
+                        else{
+                            this.error="Uspesna izmena i dodavanja povratak na pocetnu";
+                            setTimeout(() => {  router.push(`/`) }, 5000);
+                        }
+                        
+                    }
+                )
+            }
+        },
+        comitEditTraining:function(){
+            axios.post('rest/editTraining',this.editTraining)
+            .then(
                 res=>{
                     if(res.data==="FAILIURE"){
-                        this.error="Dodavanja treninga, neuspesno!";
+                        this.error="Izmena treninga, neuspesno!";
                     }
                     else{
-                        this.error="Uspesna izmena i dodavanja povratak na pocetnu";
-                        setTimeout(() => {  router.push(`/`) }, 5000);
+                        this.error="Uspesna izmena, povratak na pocetnu";
+                        setTimeout(() => {  router.push(`/`) }, 1500);
                     }
                     
                 }
             )
+        },
+        loadEditTraining:function(training){
+            this.flipEditFlag();
+            this.editTraining = training;
         },
         trainingTypeToString: function(type){
             switch(type){

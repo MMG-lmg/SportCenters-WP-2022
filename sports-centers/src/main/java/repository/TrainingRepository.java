@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import beans.Coach;
 import beans.SportsCenter;
 import beans.Training;
 import beans.User;
@@ -24,9 +25,11 @@ public class TrainingRepository implements RepositoryBase<Training> {
 	private HashMap<String,Training> trainingList;
 	private String path = "data";
 	private SportsCenterRepository sportsRepo;
+	private CoachRepository coachRepo;
 	public TrainingRepository() {
 		trainingList = new HashMap<String,Training>();
 		sportsRepo = new SportsCenterRepository();
+		coachRepo = new CoachRepository();
 	}
 	public TrainingRepository(String path) {
 		this.path=path;
@@ -125,7 +128,6 @@ public class TrainingRepository implements RepositoryBase<Training> {
 	}
 	public void syncData() {
 		Collection<SportsCenter> centers = sportsRepo.getAll();
-		
 		trainingList.forEach((id, training) ->{ 
 			for(SportsCenter center : centers) {
 				if(center.getCenterId().equals(training.getCenter().getCenterId())) {

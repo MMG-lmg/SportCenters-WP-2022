@@ -6,8 +6,10 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Timer;
 
 import beans.Address;
 import beans.CenterStatus;
@@ -39,14 +41,14 @@ import service.SportsCenterService;
 import service.TrainingService;
 import service.UserService;
 import spark.Spark;
+import util.MembershipChecker;
 
 public class Main {
     public static void main(String[] args) throws IOException {
     	port(8080);
-        //get("/hello", (req, res) -> "test12,12");
     	
     	staticFiles.externalLocation(new File("./static").getCanonicalPath());
-    	
+   
     	UserController.login();
     	UserController.logout();
     	UserController.isLoggedIn();
@@ -76,6 +78,7 @@ public class Main {
     	SportsCenterController.addCenter();
     	
     	TrainingController.addTraining();
+    	TrainingController.editTraining();
     	TrainingController.getTraining();
     	TrainingController.getTrainingsForCenter();
     	
@@ -88,15 +91,14 @@ public class Main {
     	
     	TrainingHistoryController.addTrainingHistory();
     	TrainingHistoryController.getTrainingHistoryByCustomerUsername();
+    	TrainingHistoryController.getTrainingHistoryByCustomerDateLimited();
     	TrainingHistoryController.getTrainingHistoryByCoachUsername();
     	TrainingHistoryController.getTrainingHistoryByCenterId();
     	TrainingHistoryController.cancelTraining();
-    	/*TrainingService service = new TrainingService();
-    	SportsCenterService centerService = new SportsCenterService();
-    	SportsCenter center = centerService.getById("PhdugsAF");
-    	CoachService coachService = new CoachService();
-    	Coach coach = coachService.getById("mirkoTrener");
-    	service.create(new Training("","Draganovi tegovi",center,120,coach,"Dizite kod Dragana",""));
-    	*/
+    	
+    	Timer membershipTimer = new Timer();
+    	ZoneId defaultZoneId = ZoneId.systemDefault();
+    	new MembershipChecker().run();//run on startup and at midnight every night (if its running)
+    	membershipTimer.schedule(new MembershipChecker(), Date.from(LocalDate.now().atStartOfDay(defaultZoneId).toInstant()), 86400000); //86400000ms = 24h
     }
 }

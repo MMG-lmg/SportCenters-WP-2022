@@ -47,6 +47,12 @@ public class TrainingHistoryController {
 			return gson.toJson(service.getForCustomer(req.queryParams("username")));
 		});
 	}
+	public static void getTrainingHistoryByCustomerDateLimited() {
+		get("rest/getHistoryCustomerDate",(req,res)->{
+			res.type("application/json");
+			return gson.toJson(service.getForCustomerDateLimited(req.queryParams("username")));
+		});
+	}
 	
 	public static void getTrainingHistoryByCoachUsername() {
 		get("rest/getHistoryCoach",(req,res)->{

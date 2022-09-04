@@ -1,5 +1,7 @@
 package service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -23,6 +25,16 @@ public class TrainingHistoryService implements InterfaceBase<TrainingHistory>{
 		Collection<TrainingHistory> retVal = new ArrayList<TrainingHistory>();
 		for(TrainingHistory history : repo.getAll()) {
 			if(history.getCustomer().getUserName().equals(username)) {
+				retVal.add(history);
+			}
+		}
+		return retVal;
+	}
+	public Collection<TrainingHistory> getForCustomerDateLimited(String username){
+		Collection<TrainingHistory> source = this.getForCustomer(username);
+		Collection<TrainingHistory> retVal = new ArrayList<TrainingHistory>();
+		for(TrainingHistory history : source) {
+			if(!history.getDate().isBefore(LocalDateTime.now().minusMonths(1)) && !history.getDate().isAfter(LocalDateTime.now())) {
 				retVal.add(history);
 			}
 		}

@@ -18,6 +18,7 @@ import beans.UserRole;
 import service.ManagerService;
 import service.SportsCenterService;
 import spark.Session;
+import util.DuplicateUsernameCheck;
 import util.LocalDateAdapterDeserializer;
 import util.LocalDateAdapterSerializer;
 
@@ -30,10 +31,11 @@ public class ManagerController {
 		post("rest/addManager", (req,res) -> {
 			res.type("application/json");			
 			ManagerDTO dto = gson.fromJson(req.body(), ManagerDTO.class);
+			if(DuplicateUsernameCheck.isDuplicate(dto.getUserName())) {
+				return "FAILIURE_USERNAME";
+			}
 			Manager manager = dto.convertDTO(centersService.getAll());
 			service.create(manager);
-			//TODO implement some validations in service and add casting exceptions
-			//catch them here, return FAILIURE.
 			return "SUCCESS";
 		});
 	}

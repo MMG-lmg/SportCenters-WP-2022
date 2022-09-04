@@ -13,6 +13,7 @@ import beans.Customer;
 import beans.Manager;
 import service.CustomerService;
 import spark.Session;
+import util.DuplicateUsernameCheck;
 import util.LocalDateAdapterDeserializer;
 import util.LocalDateAdapterSerializer;
 
@@ -25,9 +26,10 @@ public class CustomerContoller {
 		post("rest/addCustomer", (req,res) ->{
 			res.type("application/json");
 			Customer customer = gson.fromJson(req.body(), Customer.class);
+			if(DuplicateUsernameCheck.isDuplicate(customer.getUserName())) {
+				return "FAILIURE_USERNAME";
+			}
 			service.create(customer);
-			//TODO implement some validations in service and add casting exceptions
-			//catch them here, return FAILIURE.
 			return "SUCCESS";
 		});
 	}

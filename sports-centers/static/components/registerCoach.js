@@ -6,12 +6,14 @@ Vue.component("registerCoach",{
             error:"",
             passFlag:true,
             emptyFlag:true,
-            feedbackPopup:false
+            feedbackPopup:false,
+            error:""
         }
     },
     template:`
     <div>
         <h3>Prijava</h3>
+        <p>{{error}}</p>
         <form>
             <label for="username">Korisnicko ime:</label><br>
             <input type="text" v-model="coach.userName" name="username"><br>
@@ -85,7 +87,10 @@ Vue.component("registerCoach",{
                 axios.post("rest/addCoach", this.coach)
                 .then(res =>{
                     if(res.data ==="FAILIURE"){
-                        //TODO when validation gets implemented on back
+                        this.error="Greska trener nije dodat";
+                    }
+                    if(res.data ==="FAILIURE_USERNAME"){
+                        this.error="Korisnik sa postojecim korisnickim imenom postoji, odaberite drugo";
                     }
                     else{
                         this.feedbackPopup = true;

@@ -14,6 +14,7 @@ import beans.Manager;
 import service.CoachService;
 import service.ManagerService;
 import spark.Session;
+import util.DuplicateUsernameCheck;
 import util.LocalDateAdapterDeserializer;
 import util.LocalDateAdapterSerializer;
 import util.LocalDateTimeAdapterDeserialiser;
@@ -27,9 +28,10 @@ public class CoachController {
 		post("rest/addCoach", (req,res) -> {
 			res.type("application/json");
 			Coach coach = gson.fromJson(req.body(), Coach.class);
+			if(DuplicateUsernameCheck.isDuplicate(coach.getUserName())) {
+				return "FAILIURE_USERNAME";
+			}
 			service.create(coach);
-			//TODO implement some validations in service and add casting exceptions
-			//catch them here, return FAILIURE.
 			return "SUCCESS";
 		});
 	}
