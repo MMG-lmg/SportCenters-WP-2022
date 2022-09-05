@@ -1,6 +1,7 @@
 package controller;
 
 import java.time.LocalDate;
+import java.util.Collection;
 
 import static spark.Spark.get;
 import static spark.Spark.post;
@@ -29,6 +30,16 @@ public class MembershipController {
 			return "FAILIURE";
 		});
 	}
+	public static void getActiveMemberships() {
+		get("rest/Membership/getAllActive",(req,res) ->{
+			Collection<Membership> activeMemberships = service.getActive();
+			if(activeMemberships!=null) {
+				return gson.toJson(activeMemberships);
+			}
+			return "FAILIURE";
+		});
+	}
+	
 	public static void getActiveMembershipForUsername() {
 		get("rest/Membership/getActive",(req,res) ->{
 			res.type("application/json");

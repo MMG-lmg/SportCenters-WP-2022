@@ -11,6 +11,11 @@ Vue.component("center",{
             trainigsList:null,
             trainingHistory:null,
             editTraining:null,
+            selectedTraining:null,
+            visitingCustomer:null,
+            allCustomers:null,
+            activeMemberships:null,
+            confirmButtonCheck:0,
         }
     },
     template:`
@@ -32,17 +37,29 @@ Vue.component("center",{
                     <th>Opis treninga</th>
                     <th>Ime trenera</th>
                     <th>Cena treninga</th>
-                    <th></th>
+                    <th>Izmena treninga</th>
                 </tr>
-                <tr v-for="training in trainigsList">
+                <tr v-for="training in trainigsList" @click="trainingSelected(training)">
                     <td><img v-bind:src="'data:image/png;base64,' + training.imagePath" width="70" height="80"/></td>
                     <td>{{training.description}}</td>
                     <td>{{training.coach.name}}</td>
                     <td v-if="training.price===0">Trening nema doplatu.</td>
                     <td v-if="training.price!=0">{{training.price}}</td>
-                    <td><button @click="loadEditTraining(training)">Izmeni</button></td> 
+                    <td><button @click="loadEditTraining(training)">Izmeni</button></td>
                 </tr>
             </table>
+
+            <div v-if="selectedTraining">
+                <h3>Poseta treninga</h3>
+                <img v-if="selectedTraining" v-bind:src="'data:image/png;base64,' + selectedTraining.imagePath" width="70" height="80"/></td>
+                <p>{{selectedTraining.title}}</p>
+                <p>{{selectedTraining.description}}</p>
+                <label for="customer">Korisnik</label>
+                <select v-model="visitingCustomer" name="customer" @change="checkCustomerMembership">
+                    <option v-for="customer in allCustomers" :value="customer.userName">{{customer.userName}}-{{customer.name}}</option>
+                </select>
+                <button @click="visitCenter" :disabled="!confirmButtonCheck">Potvrdi</button>
+            </div>
 
             <table v-if="trainingHistory">
                 <tr>
@@ -59,7 +76,6 @@ Vue.component("center",{
                     <td v-if="history.training.price!=0">{{history.training.price}}</td>
                 </tr>
             </table>
-            
             <div v-if="addNew">
                 <label for="title">Naziv treninga</label>
                 <input type="text" name="title" v-model="newTraining.title"></input>
@@ -92,28 +108,27 @@ Vue.component("center",{
 
 
             <div v-if="editExisting">
-            <label for="title">Naziv treninga</label>
-            <input type="text" name="title" v-model="editTraining.title" disabled></input>
-            <br>
-            <label for="type">Tip treninga:</label>
-            <select ref="typeCombo" name="type" v-model="editTraining.type" disabled>
-                <option value="PERSONAL" selected>Personalni</option>
-                <option value="GROUP">Grupni</option>
-            </select>
-            <label for="duration">Trajanje treninga</label>
-            <input type="number" name="duration" v-model="editTraining.durationMins"></input>
-            <label for="coach">Trener</label>
-            <input type="text" name="coach" v-model="editTraining.coach.name" disabled></input>
-            <label for="description">Opis treninga</label>
-            <textarea  name="description" v-model="editTraining.description" rows="5" cols="40"></textarea>
-            <label for="price">Cena treninga:(opciono)</label>
-            <input type="number" name="price" v-model="editTraining.price"></input>
-            <button v-on:click="comitEditTraining"> Izmeni </button>
+                <label for="title">Naziv treninga</label>
+                <input type="text" name="title" v-model="editTraining.title" disabled></input>
+                <br>
+                <label for="type">Tip treninga:</label>
+                <select ref="typeCombo" name="type" v-model="editTraining.type" disabled>
+                    <option value="PERSONAL" selected>Personalni</option>
+                    <option value="GROUP">Grupni</option>
+                </select>
+                <label for="duration">Trajanje treninga</label>
+                <input type="number" name="duration" v-model="editTraining.durationMins"></input>
+                <label for="coach">Trener</label>
+                <input type="text" name="coach" v-model="editTraining.coach.name" disabled></input>
+                <label for="description">Opis treninga</label>
+                <textarea  name="description" v-model="editTraining.description" rows="5" cols="40"></textarea>
+                <label for="price">Cena treninga:(opciono)</label>
+                <input type="number" name="price" v-model="editTraining.price"></input>
+                <button v-on:click="comitEditTraining"> Izmeni </button>
+            </div>
         </div>
 
         <button  v-if="editExisting" v-on:click="cancelEdit">Odustani od izmene</button>
-
-        </div>
 
     </div>
     `,
@@ -174,7 +189,16 @@ Vue.component("center",{
                 this.coaches = response.data;
             }
         });
-        
+        axios.get('rest/getCustomers').then(response=>{
+            if(response.data != null){
+                this.allCustomers = response.data;
+            }
+        });
+        axios.get('rest/Membership/getAllActive').then(response=>{
+            if(response.data != null){
+                this.activeMemberships = response.data;
+            }
+        });
         
     },
     methods:{
@@ -299,6 +323,59 @@ Vue.component("center",{
         dateReformater: function(dateString){
             var date = dateString.split("T");
             return date[0] + "\n" + date[1];
+        },
+        checkCustomerMembership: function(){
+            this.confirmButtonCheck = 0;
+            this.activeMemberships.forEach(item=>{
+                if(item.customer.userName  === this.visitingCustomer){
+                    this.confirmButtonCheck = 1;
+                    return;
+                }
+            });
+            if(this.confirmButtonCheck !=1){
+                this.error = "Odabrani korisnik nema aktivnu clanarinu";
+                setTimeout(() => {  
+                    this.visitingCustomer=null; 
+                    this.selectedTraining=null;
+                    this.error = null;
+                }, 1500);
+            }
+            
+        },
+        trainingSelected: function(seleceted){
+            this.confirmButtonCheck = 0;
+            this.selectedTraining = seleceted;
+        },
+        visitCenter: function(){
+            axios.post('rest/addTrainingHistory',{
+                historyId:"",
+                date: this.getCurrentDateISO(),
+                trainingId: this.selectedTraining.trainingId,
+                customerId: this.visitingCustomer,
+                coachId: this.selectedTraining.coach.userName
+                }
+            )
+            .then(
+                res=>{
+                    if(res.data==="FAILIURE"){
+                        this.error="Upis nove posete treninga je nesupesan!";
+                    }
+                    else{
+                        this.error="Uspesan unos";
+                        setTimeout(() => {  
+                            this.visitingCustomer=null; 
+                            this.selectedTraining=null;
+                            this.error = null; 
+                        }, 1500);
+                    }
+                    
+                }
+            )
+        },
+        getCurrentDateISO: function(){
+            //2022-08-26T13:47
+            var now = new Date();
+            return now.getFullYear()+"-"+(now.getMonth()+1)+"-"+now.getDate()+"T"+now.getHours()+":"+now.getMinutes();
         }
     }
 });

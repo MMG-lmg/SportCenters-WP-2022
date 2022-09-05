@@ -90,6 +90,7 @@ public class Main {
     	
     	MembershipController.addMembership();
     	MembershipController.getActiveMembershipForUsername();
+    	MembershipController.getActiveMemberships();
     	
     	TrainingHistoryController.addTrainingHistory();
     	TrainingHistoryController.getTrainingHistoryByCustomerUsername();

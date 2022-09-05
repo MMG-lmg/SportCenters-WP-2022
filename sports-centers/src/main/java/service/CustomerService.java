@@ -1,14 +1,17 @@
 package service;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import beans.Customer;
+import beans.SportsCenter;
 import repository.CustomerRepository;
 
 public class CustomerService implements InterfaceBase<Customer>{
 
 	private CustomerRepository repo;
-	
+	private SportsCenterService centerService;
 	public CustomerService() {
 		repo = new CustomerRepository();
 	}
@@ -16,7 +19,6 @@ public class CustomerService implements InterfaceBase<Customer>{
 	public Collection<Customer> getAll() {
 		return repo.getAll();
 	}
-
 	@Override
 	public Customer getById(String id) {
 		return repo.getById(id);
@@ -52,5 +54,15 @@ public class CustomerService implements InterfaceBase<Customer>{
 		Customer customer = repo.getById(id);
 		customer.setLoyalityPoints(points);
 		repo.update(id, customer);
+	}
+	public void visitCenter(String id, String centerId) {
+		centerService = new SportsCenterService();
+		Customer customer = repo.getById(id);
+		SportsCenter center = centerService.getById(centerId);
+		if(!customer.getVisitedCenters().contains(center)){
+			List<SportsCenter> visitedCenters = customer.getVisitedCenters();
+			visitedCenters.add(center);
+			customer.setVisitedCenters(visitedCenters);
+		}
 	}
 }

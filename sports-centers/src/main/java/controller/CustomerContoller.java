@@ -67,4 +67,13 @@ public class CustomerContoller {
 			}
 		});
 	}
+	public static void visitedCenter() {
+		post("rest/editCustomer", (req,res)->{
+			res.type("application/json");
+			req.body(); //.xyz
+			service.visitCenter(null, null);
+			return "SUCCESS";
+		});
+		
+	}
 }
