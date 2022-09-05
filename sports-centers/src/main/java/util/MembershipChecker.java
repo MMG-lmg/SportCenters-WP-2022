@@ -2,6 +2,7 @@ package util;
 
 import beans.Membership;
 import beans.MembershipStatus;
+import service.CustomerService;
 import service.MembershipService;
 
 import java.time.LocalDate;
@@ -11,11 +12,10 @@ public class MembershipChecker extends TimerTask{
 
 	@Override
 	public void run() {
-		MembershipService service = new MembershipService();
-		for(Membership membership : service.getActive()) {
+		MembershipService membershipService = new MembershipService();
+		for(Membership membership : membershipService.getActive()) {
 			if(membership.getValidDue().isBefore(LocalDate.now())) {
-				membership.setStatus(MembershipStatus.INACTIVE);
-				service.update(membership.getMembershipId(), membership);
+				membershipService.terminateExistingMembership(membership);
 			}
 		}
 	}

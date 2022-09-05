@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import beans.Customer;
+import beans.CustomerType;
 import beans.Membership;
 import beans.MembershipStatus;
 import repository.MembershipRepository;
@@ -57,7 +58,7 @@ public class MembershipService implements InterfaceBase<Membership>{
 		item.setMembershipId(id);
 		checkExistingMemberships(item.getCustomer().getUserName());
 		repo.create(id, item);
-		updateCustomerPrice(item.getCustomer(),item.getPrice());
+		customerService.updateCustomerPrice(item.getCustomer().getUserName(),item.getPrice());
 	}
 
 	@Override
@@ -99,9 +100,7 @@ public class MembershipService implements InterfaceBase<Membership>{
 			terminateExistingMembership(active);
 		}	
 	}
-	private void terminateExistingMembership(Membership active) {
-		active.setStatus(MembershipStatus.INACTIVE);
-		repo.update(active.getMembershipId(), active);
+	public void terminateExistingMembership(Membership active) {
 		double gainedPoints = active.getPrice()/1000.0 * active.getUsedVisits();
 		double lostPoints = 0;
 		if(active.getNumOfVisits()/3.0 > active.getUsedVisits()) {
@@ -112,9 +111,17 @@ public class MembershipService implements InterfaceBase<Membership>{
 			finalPoints = 0;
 		}
 		customerService.saveLoyalityPoints(active.getCustomer().getUserName(), finalPoints);
-	}
-	private void updateCustomerPrice(Customer customer, double price) {
-		customer.setMembershipCost(price);
-		customerService.update(customer.getUserName(), customer);
+		customerService.calculateType(active.getCustomer().getUserName());
+		
+		Customer upToDateCustomer = customerService.getById(active.getCustomer().getUserName());
+		CustomerType customersType = upToDateCustomer.getType();
+		if(customersType !=null) {
+			double priceBeforeDiscount = active.getPrice();
+			double discountedPrice = priceBeforeDiscount-(priceBeforeDiscount*customersType.getDiscount()/100);
+			active.setPrice(discountedPrice);
+			customerService.updateCustomerPrice(upToDateCustomer.getUserName(), discountedPrice);
+		}
+		active.setStatus(MembershipStatus.INACTIVE);
+		repo.update(active.getMembershipId(), active);
 	}
 }
