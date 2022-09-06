@@ -70,7 +70,7 @@ public class MembershipRepository implements RepositoryBase<Membership>{
 		
 	}
 	private void readData() {
-		Gson gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(LocalDate.class, new LocalDateAdapterDeserializer()).registerTypeAdapter(LocalDate.class, new LocalDateAdapterSerializer()).setExclusionStrategies(new CustomerExclusionStrategy()).create();
+		Gson gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(LocalDate.class, new LocalDateAdapterDeserializer()).registerTypeAdapter(LocalDate.class, new LocalDateAdapterSerializer()).setExclusionStrategies(new CustomerExclusionStrategy(), new UserExclusionStrategy()).create();
 		BufferedReader in = null;
 		try {
 			File file = new File(this.path + "/memberships.json");
@@ -98,7 +98,7 @@ public class MembershipRepository implements RepositoryBase<Membership>{
 		}
 	}
 	private void writeData() {
-		Gson gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(LocalDate.class, new LocalDateAdapterDeserializer()).registerTypeAdapter(LocalDate.class, new LocalDateAdapterSerializer()).setExclusionStrategies(new CustomerExclusionStrategy()).create();
+		Gson gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(LocalDate.class, new LocalDateAdapterDeserializer()).registerTypeAdapter(LocalDate.class, new LocalDateAdapterSerializer()).setExclusionStrategies(new CustomerExclusionStrategy() ,new UserExclusionStrategy()).create();
 		BufferedWriter out = null;
 		try {
 			File file = new File(this.path + "/memberships.json");

@@ -57,8 +57,15 @@ public class MembershipService implements InterfaceBase<Membership>{
 		String id = generateId();
 		item.setMembershipId(id);
 		checkExistingMemberships(item.getCustomer().getUserName());
+		Customer upToDateCustomer = customerService.getById(item.getCustomer().getUserName());
+		CustomerType customersType = upToDateCustomer.getType();
+		if(customersType !=null) {
+			double priceBeforeDiscount = item.getPrice();
+			double discountedPrice = priceBeforeDiscount-(priceBeforeDiscount*customersType.getDiscount()/100);
+			item.setPrice(discountedPrice);
+			customerService.updateCustomerPrice(upToDateCustomer.getUserName(), discountedPrice);
+		}
 		repo.create(id, item);
-		customerService.updateCustomerPrice(item.getCustomer().getUserName(),item.getPrice());
 	}
 
 	@Override
@@ -96,7 +103,7 @@ public class MembershipService implements InterfaceBase<Membership>{
 	}
 	private void checkExistingMemberships(String username) {
 		Membership active = this.getActiveByUsername(username);
-		if(!active.equals(null)) {
+		if(active != null) {
 			terminateExistingMembership(active);
 		}	
 	}
@@ -107,20 +114,12 @@ public class MembershipService implements InterfaceBase<Membership>{
 			lostPoints = active.getPrice()/1000.0*133*4;
 		}
 		double finalPoints = gainedPoints - lostPoints;
-		if(finalPoints < 0) {
+		if(active.getCustomer().getLoyalityPoints()+finalPoints < 0) {
 			finalPoints = 0;
 		}
-		customerService.saveLoyalityPoints(active.getCustomer().getUserName(), finalPoints);
+		customerService.saveLoyalityPoints(active.getCustomer().getUserName(), active.getCustomer().getLoyalityPoints()+finalPoints);
 		customerService.calculateType(active.getCustomer().getUserName());
 		
-		Customer upToDateCustomer = customerService.getById(active.getCustomer().getUserName());
-		CustomerType customersType = upToDateCustomer.getType();
-		if(customersType !=null) {
-			double priceBeforeDiscount = active.getPrice();
-			double discountedPrice = priceBeforeDiscount-(priceBeforeDiscount*customersType.getDiscount()/100);
-			active.setPrice(discountedPrice);
-			customerService.updateCustomerPrice(upToDateCustomer.getUserName(), discountedPrice);
-		}
 		active.setStatus(MembershipStatus.INACTIVE);
 		repo.update(active.getMembershipId(), active);
 	}

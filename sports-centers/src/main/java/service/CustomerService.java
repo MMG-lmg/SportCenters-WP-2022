@@ -76,12 +76,13 @@ public class CustomerService implements InterfaceBase<Customer>{
 	public void calculateType(String id) {
 		Customer customer = repo.getById(id);
 		CustomerTypeService typeService = new CustomerTypeService();
-		ArrayList<CustomerType> types = (ArrayList<CustomerType>) typeService.getAll();
+		ArrayList<CustomerType> types = new ArrayList<CustomerType>(typeService.getAll());
 		Collections.sort(types, new CustomerTypeSorter());
 		for(CustomerType type : types) {
 			if(customer.getLoyalityPoints() > type.getPointsNeeded()) {
 				customer.setType(type);
 				this.update(customer.getUserName(),customer);
+				break;
 			}
 		}
 	}

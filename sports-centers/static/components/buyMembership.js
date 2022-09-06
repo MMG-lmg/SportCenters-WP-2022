@@ -73,16 +73,16 @@ Vue.component("buyMembership",{
         selectedOffer: function(offer){
             this.newMembership = offer;
             let currentDate =new Date();
-            this.newMembership.payDate = currentDate.getFullYear() +"-"+currentDate.getMonth()+"-"+currentDate.getDate();
+            this.newMembership.payDate = currentDate.getFullYear() +"-"+(currentDate.getMonth()+1)+"-"+currentDate.getDate();
             switch(this.newMembership.type){
                 case "ANNUAL":
-                    this.newMembership.validDue = currentDate.getFullYear()+1 +"-"+currentDate.getMonth()+"-"+currentDate.getDate();
+                    this.newMembership.validDue = currentDate.getFullYear()+1 +"-"+(currentDate.getMonth()+1)+"-"+currentDate.getDate();
                     break;
                 case "MONTHLY":
-                    this.newMembership.validDue = currentDate.getFullYear() +"-"+ (currentDate.getMonth()+1) +"-"+currentDate.getDate();
+                    this.newMembership.validDue = currentDate.getFullYear() +"-"+ (currentDate.getMonth()+2) +"-"+currentDate.getDate();
                     break;
                 case "WEEKLY":
-                    this.newMembership.validDue = currentDate.getFullYear() +"-"+currentDate.getMonth()+"-"+ (currentDate.getDate()+7);
+                    this.newMembership.validDue = currentDate.getFullYear() +"-"+(currentDate.getMonth()+1)+"-"+ (currentDate.getDate()+7);
                     break;
             }
             this.newMembership.status = "ACTIVE";
