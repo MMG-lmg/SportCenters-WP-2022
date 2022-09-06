@@ -88,8 +88,8 @@ Vue.component("centers",{
 	    	</tr>
 		</table>
 		<div>
-			<button v-if="!userLogedIn" v-on:click="routeToLogin"> Prijava </button>
-			<button v-if="!userLogedIn" v-on:click="routeToRegister"> Registracija </button>
+			<button v-if="!userLogedIn" class="btn btn-primary loginbutton" v-on:click="routeToLogin"> Prijava </button>
+			<button v-if="!userLogedIn" class="btn btn-primary loginbutton" v-on:click="routeToRegister"> Registracija </button>
 			<p v-if="userLogedIn">
 				Dobrodosli, {{loggedUserName}}, {{loggedUserType}}
 			</p>
