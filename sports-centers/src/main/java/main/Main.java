@@ -17,6 +17,7 @@ import beans.CenterTypes;
 import beans.Coach;
 import beans.Customer;
 import beans.CustomerType;
+import beans.CustomerTypeNames;
 import beans.Gender;
 import beans.Location;
 import beans.Manager;
@@ -36,6 +37,7 @@ import controller.UserController;
 import repository.CustomerRepository;
 import repository.UserRepository;
 import service.CoachService;
+import service.CustomerTypeService;
 import service.ManagerService;
 import service.SportsCenterService;
 import service.TrainingService;
@@ -88,6 +90,7 @@ public class Main {
     	
     	MembershipController.addMembership();
     	MembershipController.getActiveMembershipForUsername();
+    	MembershipController.getActiveMemberships();
     	
     	TrainingHistoryController.addTrainingHistory();
     	TrainingHistoryController.getTrainingHistoryByCustomerUsername();
@@ -95,6 +98,12 @@ public class Main {
     	TrainingHistoryController.getTrainingHistoryByCoachUsername();
     	TrainingHistoryController.getTrainingHistoryByCenterId();
     	TrainingHistoryController.cancelTraining();
+    	
+    	CustomerTypeService service = new CustomerTypeService();
+    	
+    	/*service.create(new CustomerType("",CustomerTypeNames.BRONZE,3,1500));
+    	service.create(new CustomerType("",CustomerTypeNames.SILVER,5,2500));
+    	service.create(new CustomerType("",CustomerTypeNames.GOLD,10,3500));*/
     	
     	Timer membershipTimer = new Timer();
     	ZoneId defaultZoneId = ZoneId.systemDefault();

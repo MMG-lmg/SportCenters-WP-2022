@@ -87,6 +87,6 @@ Vue.component("scheduleTraining",{
                 return true;
             }
             return false;
-        }
+        },
     }
 })

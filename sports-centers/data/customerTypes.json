@@ -1,0 +1,20 @@
+{
+  "TBeQVxva": {
+    "id": "TBeQVxva",
+    "type": "BRONZE",
+    "discount": 3.0,
+    "pointsNeeded": 1500
+  },
+  "2cQAmLnR": {
+    "id": "2cQAmLnR",
+    "type": "SILVER",
+    "discount": 5.0,
+    "pointsNeeded": 2500
+  },
+  "LZgkRMnY": {
+    "id": "LZgkRMnY",
+    "type": "GOLD",
+    "discount": 10.0,
+    "pointsNeeded": 3500
+  }
+}

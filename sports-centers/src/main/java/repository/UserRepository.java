@@ -60,7 +60,7 @@ public class UserRepository implements RepositoryBase<User>{
 		readData();
 	}
 	private void readData() {
-		Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapterDeserializer()).create();
+		Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapterDeserializer()).addDeserializationExclusionStrategy(new CustomerExclusionStrategy()).create();
 		BufferedReader in = null;
 		try {
 			File file = new File(this.path + "/users.json");
@@ -89,7 +89,7 @@ public class UserRepository implements RepositoryBase<User>{
 	}
 	
 	private void writeData() {
-		Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().registerTypeAdapter(LocalDate.class, new LocalDateAdapterSerializer()).create();
+		Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().registerTypeAdapter(LocalDate.class, new LocalDateAdapterSerializer()).addSerializationExclusionStrategy(new CustomerExclusionStrategy()).create();
 		BufferedWriter out = null;
 		try {
 			File file = new File(this.path + "/users.json");

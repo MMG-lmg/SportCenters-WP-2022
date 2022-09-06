@@ -98,7 +98,9 @@ Vue.component("centers",{
 			<button v-if="loggedUserType == 'ADMIN'" v-on:click="routeToRegisterManager"> Prijava menadzera </button>
 			<button v-if="loggedUserType == 'ADMIN'" v-on:click="routeToProfilesPanel"> Prikaz svih korisnika </button>
 			<button v-if="loggedUserType == 'ADMIN'" v-on:click="routeToAddCenter"> Dodavanje novog centra </button>
+			<button v-if="loggedUserType == 'ADMIN'" v-on:click="routeToMembershipOffers"> Prikaz ponuda clanarina </button>
 			<button v-if="loggedUserType == 'MENAGER'" v-on:click="routeToManagerCenter"> Prikaz centra </button>
+			<button v-if="loggedUserType == 'CUSTOMER'" v-on:click="routeToBuyMembership"> Kupovina clanarine</button>
 		</div>
 		<button v-if="userLogedIn" v-on:click="routeToProfile"> Profil </button>
 	</div>
@@ -157,6 +159,12 @@ Vue.component("centers",{
 		},
 		routeToAddCenter(){
 			router.push(`/admin/addCenter`);
+		},
+		routeToBuyMembership(){
+			router.push(`/customer/buyMembership`);
+		},
+		routeToMembershipOffers(){
+			router.push(`/admin/offers`);
 		},
 		logout(){
 			this.loggedUserType = "";
