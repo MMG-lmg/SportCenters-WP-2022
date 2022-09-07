@@ -15,6 +15,8 @@ import com.google.gson.reflect.TypeToken;
 import beans.Manager;
 import beans.SportsCenter;
 import beans.User;
+import util.ExclusionStrategies.SportsCenterExclusionStrategy;
+import util.ExclusionStrategies.UserExclusionStrategy;
 
 public class ManagerRepository implements RepositoryBase<Manager>{
 	private UserRepository userRepo;

@@ -24,6 +24,9 @@ import util.LocalDateAdapterDeserializer;
 import util.LocalDateAdapterSerializer;
 import util.LocalDateTimeAdapterDeserialiser;
 import util.LocalDateTimeAdapterSerialiser;
+import util.ExclusionStrategies.CoachExclusionStrategy;
+import util.ExclusionStrategies.CustomerExclusionStrategy;
+import util.ExclusionStrategies.TrainingExclusionStrategy;
 
 public class TrainingHistoryRepository implements RepositoryBase<TrainingHistory> {
 	
@@ -81,7 +84,7 @@ public class TrainingHistoryRepository implements RepositoryBase<TrainingHistory
 		
 	}
 	private void readData() {
-		Gson gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapterDeserialiser()).setExclusionStrategies(new CustomerExclusionStrategy(), new CoachExclusionStrategy(), new TrainingExclusionStrategy()).create();
+		Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new CustomerExclusionStrategy(), new CoachExclusionStrategy(), new TrainingExclusionStrategy()).registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapterDeserialiser()).registerTypeAdapter(LocalDate.class, new LocalDateAdapterDeserializer()).create();
 		BufferedReader in = null;
 		try {
 			File file = new File(this.path + "/trainingHistories.json");
@@ -109,7 +112,7 @@ public class TrainingHistoryRepository implements RepositoryBase<TrainingHistory
 		}
 	}
 	private void writeData() {
-		Gson gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapterSerialiser()).setExclusionStrategies(new CustomerExclusionStrategy(), new CoachExclusionStrategy(), new TrainingExclusionStrategy()).create();
+		Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new CustomerExclusionStrategy(), new CoachExclusionStrategy(), new TrainingExclusionStrategy()).registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapterSerialiser()).registerTypeAdapter(LocalDate.class, new LocalDateAdapterSerializer()).create();
 		BufferedWriter out = null;
 		try {
 			File file = new File(this.path + "/trainingHistories.json");

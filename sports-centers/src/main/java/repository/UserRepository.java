@@ -16,6 +16,7 @@ import com.google.gson.reflect.TypeToken;
 import beans.User;
 import util.LocalDateAdapterDeserializer;
 import util.LocalDateAdapterSerializer;
+import util.ExclusionStrategies.CustomerExclusionStrategy;
 
 public class UserRepository implements RepositoryBase<User>{
 	private HashMap<String,User> usersList;

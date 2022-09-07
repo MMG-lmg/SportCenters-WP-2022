@@ -18,6 +18,8 @@ import beans.Customer;
 import beans.Membership;
 import util.LocalDateAdapterDeserializer;
 import util.LocalDateAdapterSerializer;
+import util.ExclusionStrategies.CustomerExclusionStrategy;
+import util.ExclusionStrategies.UserExclusionStrategy;
 
 public class MembershipRepository implements RepositoryBase<Membership>{
 	private HashMap<String,Membership> membershipList;

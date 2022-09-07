@@ -17,11 +17,24 @@ Vue.component("centers",{
 		}
 	},
 	template:`
-	<div>
-		<h3> Sportski centri </h3>
+	<div>	
+		<div class="navbar navbar-light bg-light">
+			<h3> Sportski centri </h3>
+			<button v-if="!userLogedIn" class="btn btn-primary loginbutton" v-on:click="routeToLogin"> Prijava </button>
+			<button v-if="!userLogedIn" class="btn btn-primary loginbutton" v-on:click="routeToRegister"> Registracija </button>
+			<button v-if="userLogedIn" v-on:click="logout"> Odjava </button>
+			<button v-if="loggedUserType == 'ADMIN'" v-on:click="routeToRegisterCoach"> Prijava trenera </button>
+			<button v-if="loggedUserType == 'ADMIN'" v-on:click="routeToRegisterManager"> Prijava menadzera </button>
+			<button v-if="loggedUserType == 'ADMIN'" v-on:click="routeToProfilesPanel"> Prikaz svih korisnika </button>
+			<button v-if="loggedUserType == 'ADMIN'" v-on:click="routeToAddCenter"> Dodavanje novog centra </button>
+			<button v-if="loggedUserType == 'ADMIN'" v-on:click="routeToMembershipOffers"> Prikaz ponuda clanarina </button>
+			<button v-if="loggedUserType == 'MENAGER'" v-on:click="routeToManagerCenter"> Prikaz centra </button>
+			<button v-if="loggedUserType == 'CUSTOMER'" v-on:click="routeToBuyMembership"> Kupovina clanarine</button>
+			<button v-if="userLogedIn" v-on:click="routeToProfile"> Profil </button>
+		</div>
 		<button v-on:click=resetSearch>Ponisti pretragu</button>
 		<button v-on:click=filterOpened>Filtriraj samo otvorene</button>
-		<table border = "1">
+		<table class="container-md" border = "1">
 			<tr>
 				<th>Logo</th>
 				<th>
@@ -87,22 +100,9 @@ Vue.component("centers",{
 				</td>
 	    	</tr>
 		</table>
-		<div>
-			<button v-if="!userLogedIn" class="btn btn-primary loginbutton" v-on:click="routeToLogin"> Prijava </button>
-			<button v-if="!userLogedIn" class="btn btn-primary loginbutton" v-on:click="routeToRegister"> Registracija </button>
-			<p v-if="userLogedIn">
+		<p v-if="userLogedIn">
 				Dobrodosli, {{loggedUserName}}, {{loggedUserType}}
 			</p>
-			<button v-if="userLogedIn" v-on:click="logout"> Odjava </button>
-			<button v-if="loggedUserType == 'ADMIN'" v-on:click="routeToRegisterCoach"> Prijava trenera </button>
-			<button v-if="loggedUserType == 'ADMIN'" v-on:click="routeToRegisterManager"> Prijava menadzera </button>
-			<button v-if="loggedUserType == 'ADMIN'" v-on:click="routeToProfilesPanel"> Prikaz svih korisnika </button>
-			<button v-if="loggedUserType == 'ADMIN'" v-on:click="routeToAddCenter"> Dodavanje novog centra </button>
-			<button v-if="loggedUserType == 'ADMIN'" v-on:click="routeToMembershipOffers"> Prikaz ponuda clanarina </button>
-			<button v-if="loggedUserType == 'MENAGER'" v-on:click="routeToManagerCenter"> Prikaz centra </button>
-			<button v-if="loggedUserType == 'CUSTOMER'" v-on:click="routeToBuyMembership"> Kupovina clanarine</button>
-		</div>
-		<button v-if="userLogedIn" v-on:click="routeToProfile"> Profil </button>
 	</div>
 	`,
 	mounted(){

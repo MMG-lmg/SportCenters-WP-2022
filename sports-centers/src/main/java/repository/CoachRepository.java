@@ -20,6 +20,7 @@ import beans.User;
 import util.LocalDateAdapterDeserializer;
 import util.LocalDateTimeAdapterDeserialiser;
 import util.LocalDateTimeAdapterSerialiser;
+import util.ExclusionStrategies.UserExclusionStrategy;
 
 public class CoachRepository implements RepositoryBase<Coach>{
 	

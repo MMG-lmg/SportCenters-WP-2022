@@ -96,9 +96,9 @@ Vue.component("profile",{
             <tr v-for="(sc, index) in customer.visitedCenters">
                 <td><img v-bind:src="'data:image/png;base64,' + sc.logoPath" width="50" height="60"/></td>
                 <td>{{sc.centerTitle}}</td>
-                <td>{{typeToString(sc)}}</td>
-                <td>{{statusToString(sc)}}</td>
-                <td>{{locationToString(sc)}}</td>
+                <td>{{centerTypeToString(sc)}}</td>
+                <td>{{centerStatusToString(sc)}}</td>
+                <td>{{centerLocationToString(sc)}}</td>
                 <td>{{sc.grade}}</td>
             </tr>
             </table>
@@ -357,6 +357,25 @@ Vue.component("profile",{
                     return "Trener";
             }
         },
+        centerLocationToString: function(sc){
+			return sc.location.latitude +","+ sc.location.longitude +"\n"
+			+sc.location.address.street +","+ sc.location.address.streetNumber +"\n"
+			+sc.location.address.city
+		},
+		centerTypeToString: function(sc){
+			var retVal;
+			if(sc.type ==="POOL") retVal = "Bazen";
+			else if(sc.type ==="GYM") retVal = "Teretana";
+			else if(sc.type === "DANCE_STUDIO") retVal = "Plesni studio";
+			else if(sc.type ==="SPORTS_CENTER") retVal = "Sportski centar";
+			return retVal;
+		},
+		centerStatusToString: function(sc){
+			var retVal;
+			if(sc.status ==="OPEN") retVal = "Otvoreno";
+			else retVal="Zatvoreno";
+			return retVal;
+		},
         trainingTypeToString: function(type){
             switch(type){
                 case "GROUP":
