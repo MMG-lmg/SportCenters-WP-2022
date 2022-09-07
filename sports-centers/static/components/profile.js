@@ -3,12 +3,12 @@ Vue.component("profile",{
         return{
             user:{userName:"",password:"",name:"",gender:"",dateOfBirth:"",role:""},
             customer:{membershipCost:0,visitedCenters:null,loyalityPoints: 0,type:null},
-            manager:{sportsCenterTitle:""},
+            manager:{sportsCenter:""},
             coach:{pastTrainings:null},
             edit:0,
             editUser:{userName:"",password:"",name:"",gender:"",dateOfBirth:"",role:""},
             editCustomer:{membershipCost:0,visitedCenters:null,loyalityPoints: 0,type:null},
-            editManager:{sportsCenterTitle:""},
+            editManager:{sportsCenterId:""},
             editCoach:{pastTrainings:null},
             feedback:"",
             customerPastTrainings:[],
@@ -59,7 +59,7 @@ Vue.component("profile",{
         <button v-if="edit==1" @click="this.updateUser">Primeni izmene</button>
 
         <div v-if="this.$router.app.login=='MENAGER'">
-            <p>Naziv Sportskog Centra: {{manager.sportsCenterTitle}}</p>
+            <p>Naziv Sportskog Centra: {{manager.sportsCenter.centerTitle}}</p>
         </div>
         <button v-if="this.$router.app.login=='CUSTOMER' || this.$router.app.login=='COACH'" v-on:click=resetSearch>Ponisti pretragu</button>
         <div>
@@ -303,7 +303,7 @@ Vue.component("profile",{
                                     this.user.gender=response.data.gender;
                                     this.user.dateOfBirth=response.data.dateOfBirth;
                                     this.user.role=response.data.role;
-                                    this.manager.sportsCenterTitle = response.data.SportCenterTitle;
+                                    this.manager.sportsCenter = response.data.center;
                                     this.resetEditFields();
                                 });
                         break;
@@ -460,7 +460,7 @@ Vue.component("profile",{
         },
         updateManager: function(){
             var managerDTO = {userName:this.editUser.userName,password:this.editUser.password,name:this.editUser.name,
-                gender:this.editUser.gender,dateOfBirth:this.editUser.dateOfBirth,role:this.editUser.role,sportsCenterTitle:this.editManager.sportsCenterTitle};
+                gender:this.editUser.gender,dateOfBirth:this.editUser.dateOfBirth,role:this.editUser.role,sportsCenterId:this.manager.sportsCenter.centerId};
                 axios.post("rest/editManager",managerDTO)
                 .then(res=>{
                     if(res.data==="FAILIURE"){

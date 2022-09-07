@@ -10,14 +10,14 @@ import beans.User;
 import beans.UserRole;
 
 public class ManagerDTO extends User{
-	private String SportCenterTitle;
+	private String sportsCenterId;
 
-	public String getSportCenterTitle() {
-		return SportCenterTitle;
+	public String getSportsCenterId() {
+		return sportsCenterId;
 	}
 
-	public void setSportCenterTitle(String sportCenterTitle) {
-		SportCenterTitle = sportCenterTitle;
+	public void setSportsCenterId(String sportCenterId) {
+		this.sportsCenterId = sportCenterId;
 	}
 
 	public ManagerDTO() {
@@ -26,14 +26,14 @@ public class ManagerDTO extends User{
 	}
 
 	public ManagerDTO(String userName, String password, String name, Gender gender, LocalDate dateOfBirth,
-			UserRole role, String SportCenterTitle) {
+			UserRole role, String sportCenterId) {
 		super(userName, password, name, gender, dateOfBirth, role);
-		this.SportCenterTitle = SportCenterTitle;
+		this.sportsCenterId = sportCenterId;
 		// TODO Auto-generated constructor stub
 	}
 	public Manager convertDTO(Collection<SportsCenter> centers) {
 		for(SportsCenter sportsCenter : centers) {
-			if(sportsCenter.getCenterTitle().equals(this.getSportCenterTitle())) {
+			if(sportsCenter.getCenterId().equals(this.getSportsCenterId())) {
 				return new Manager(this.getUserName(),this.getPassword(),this.getName(),this.getGender(),this.getDateOfBirth(),this.getRole(),sportsCenter);
 			}
 		}
@@ -48,10 +48,10 @@ public class ManagerDTO extends User{
 		dto.setGender(manager.getGender());
 		dto.setRole(manager.getRole());
 		if(manager.getCenter()!=null) {
-			dto.setSportCenterTitle(manager.getCenter().getCenterTitle());
+			dto.setSportsCenterId(manager.getCenter().getCenterTitle());
 		}
 		else {
-			dto.setSportCenterTitle("Nema");
+			dto.setSportsCenterId("Nema");
 		}
 		return dto;
 	}

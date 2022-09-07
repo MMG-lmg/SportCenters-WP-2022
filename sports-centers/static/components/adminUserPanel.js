@@ -67,7 +67,8 @@ Vue.component("profiles",{
                     <td>{{manager.gender}}</td>
                     <td>{{manager.dateOfBirth}}</td>
                     <td>{{manager.role}}</td>
-                    <td>{{manager.SportCenterTitle}}</td>
+                    <td v-if="manager.center">{{manager.center.centerTitle}}</td>
+                    <td v-if="!manager.center">-</td>
                 </tr>
             </table>
         <h1>Treneri</h1>
@@ -107,7 +108,8 @@ Vue.component("profiles",{
                 <td>{{customer.role}}</td>
                 <td>{{customer.membershipCost}}</td>
                 <td>{{customer.loyalityPoints}}</td>
-                <td>{{customer.type}}</td>
+                <td v-if="customer.type">{{customer.type.type}}</td>
+                <td v-if="!customer.type">-</td>
             </tr>
         </table>
     </div>
