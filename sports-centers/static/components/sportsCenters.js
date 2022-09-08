@@ -20,7 +20,7 @@ Vue.component("centers",{
 	<div>	
 		<nav class="navbar navbar-expand-xl navbar-light background-Green">
 			<div class="container-fluid">
-				<a class="navbar-brand"  @click="routeToHome"><strong>Sportski centri<strong></a>
+				<a class="navbar-brand"  @click="routeToHome"><strong>Sportski centri</strong></a>
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
@@ -127,33 +127,47 @@ Vue.component("centers",{
 					<th>
 						Radno Vreme
 					</th>
+					<th>
+						Vise
+					</th>
 				</tr>
-				<tr v-for="(sc, index) in filteredCenters" v-bind:data-id="sc.centerId"  v-on:click="rowClicked($event)" >
+				<tr class="pe-1 ps-1" v-for="(sc, index) in filteredCenters">
 					<td v-if="!sc.expand"><img v-bind:src="'data:image/png;base64,' + sc.logoPath" width="50" height="60"/></td>
 					<td v-if="!sc.expand">{{sc.centerTitle}}</td>
 					<td v-if="!sc.expand">{{typeToString(sc)}}</td>
 					<td v-if="!sc.expand">{{locationToString(sc)}}</td>
 					<td v-if="!sc.expand" >{{sc.grade}}</td>
 					<td v-if="!sc.expand">{{sc.workHours[0]}}-{{sc.workHours[1]}}</td>
-					<td v-if="sc.expand" colspan="6">
+					<td v-if="!sc.expand"> <button class="btn btn-primary mb-1 button-green" v-bind:data-id="sc.centerId" v-on:click="rowClicked($event)">Vise</button> </td>
+					<td v-if="sc.expand" colspan="7">
 						<div>
 							<h3>{{sc.centerTitle}}</h3>
 							<img v-bind:src="'data:image/png;base64,' + sc.logoPath" width="70" height="80"/>
-							<p>Naziv:{{sc.centerTitle}}</p>
-							<p>Tip:{{typeToString(sc)}}</p>
-							<p>Lokacija:{{locationToString(sc)}}</p>
-							<p>Status:{{statusToString(sc)}}</p>
-							<p>Prosecna ocena:{{sc.grade}}</p>
-							<div v-if="sc.trainings!='FAILIURE'" v-for="training in sc.trainings">
-								<p>{{training.title}}</p>
-								<img v-bind:src="'data:image/png;base64,' + training.imagePath" width="30" height="35"/>
-								<p>{{training.description}}</p>
-								<p>{{trainingTypeToString(training.type)}}</p>
-								<p>{{training.coach.name}}</p>
-								<button v-if="loggedUserType=='CUSTOMER' && training.type=='PERSONAL'"  @click="scheduleTraining(training)">Zakazi trening</button>
-								<p v-if="training.type!='PERSONAL'">Samo personalni treninzi se mogu zakazati</p>
+							<button class="btn btn-primary image-button-small mb-1 button-green float-end" v-bind:data-id="sc.centerId" v-on:click="rowClicked($event)">
+								<img src="img/close.png" class="img-fluid" alt="Search">
+							</button>
+							<p><strong>Naziv:</strong>{{sc.centerTitle}}</p>
+							<p><strong>Tip:</strong>{{typeToString(sc)}}</p>
+							<p><strong>Lokacija:</strong>{{locationToString(sc)}}</p>
+							<p><strong>Status:</strong>{{statusToString(sc)}}</p>
+							<p><strong>Prosecna ocena:</strong>{{sc.grade}}</p>
+
+							<button class="btn btn-primary mb-1 button-green" v-if="sc.trainings!='FAILIURE'" type="button" data-bs-toggle="collapse" v-bind:data-bs-target="'#'+sc.centerId" aria-expanded="false" v-bind:aria-controls="sc.centerId">
+								<span>Treninzi</span>
+							</button>
+
+							<div class="collapse" v-bind:id="sc.centerId">
+								<div class="border border-secondary  p-3" v-if="sc.trainings!='FAILIURE'" v-for="training in sc.trainings">
+									<h3>{{training.title}}</h3>
+									<img v-bind:src="'data:image/png;base64,' + training.imagePath" width="30" height="35"/>
+									<p><strong>Opis treninga:</strong> {{training.description}}</p>
+									<p><strong>Tip treninga:</strong> {{trainingTypeToString(training.type)}}</p>
+									<p><strong>Trener:</strong> {{training.coach.name}}</p>
+									<button class="btn btn-primary mb-1 button-green" v-if="loggedUserType=='CUSTOMER' && training.type=='PERSONAL'"  @click="scheduleTraining(training)">Zakazi trening</button>
+									<p v-if="training.type!='PERSONAL'">Samo personalni treninzi se mogu zakazati</p>
+								</div>
 							</div>
-							
+
 							<p v-if="sc.trainings=='FAILIURE'">Sportski centar jos uvek nema treninge</p>
 						</div>
 					</td>
