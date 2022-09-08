@@ -18,91 +18,148 @@ Vue.component("centers",{
 	},
 	template:`
 	<div>	
-		<div class="navbar navbar-light bg-light">
-			<h3> Sportski centri </h3>
-			<button v-if="!userLogedIn" class="btn btn-primary loginbutton" v-on:click="routeToLogin"> Prijava </button>
-			<button v-if="!userLogedIn" class="btn btn-primary loginbutton" v-on:click="routeToRegister"> Registracija </button>
-			<button v-if="userLogedIn" v-on:click="logout"> Odjava </button>
-			<button v-if="loggedUserType == 'ADMIN'" v-on:click="routeToRegisterCoach"> Prijava trenera </button>
-			<button v-if="loggedUserType == 'ADMIN'" v-on:click="routeToRegisterManager"> Prijava menadzera </button>
-			<button v-if="loggedUserType == 'ADMIN'" v-on:click="routeToProfilesPanel"> Prikaz svih korisnika </button>
-			<button v-if="loggedUserType == 'ADMIN'" v-on:click="routeToAddCenter"> Dodavanje novog centra </button>
-			<button v-if="loggedUserType == 'ADMIN'" v-on:click="routeToMembershipOffers"> Prikaz ponuda clanarina </button>
-			<button v-if="loggedUserType == 'MENAGER'" v-on:click="routeToManagerCenter"> Prikaz centra </button>
-			<button v-if="loggedUserType == 'CUSTOMER'" v-on:click="routeToBuyMembership"> Kupovina clanarine</button>
-			<button v-if="userLogedIn" v-on:click="routeToProfile"> Profil </button>
-		</div>
-		<button v-on:click=resetSearch>Ponisti pretragu</button>
-		<button v-on:click=filterOpened>Filtriraj samo otvorene</button>
-		<table class="container-md" border = "1">
-			<tr>
-				<th>Logo</th>
-				<th>
-				<a v-on:click=sortByName>Naziv</a>
-				<input ref="titleField" type="text" v-model="nameSearch" v-on:keyup="searchByName"></input>
-				</th>
-				<th>
-					<p>Tip</p> 
-	    			<select ref="typeCombo" v-model="typeSearch" @change="searchByType">
-	    				<option disabled value="">Svi</option>
-						<option value="center">Sportski centar</option>
-						<option value="gym">Teretana</option>
-						<option value="pool">Bazen</option>
-						<option value="dance">Plesni studio</option>
-					</select>
-				</th>
-				<th>
-					<p v-on:click=sortByAddress>Adresa</p> 
-					<input ref="addressField" type="text" v-model="addressSearch" v-on:keyup="searchByAddress"></input>
-				</th>
-    			<th>
-    				<p v-on:click=sortByGrade>ProsecnaOcena</p> 
-	    			<select ref="gradeCombo" v-model="gradeSearch" @change="searchByGrade">
-	    				<option disabled value="">Svi</option>
-						<option value="1">1+</option>
-						<option value="2">2+</option>
-						<option value="3">3+</option>
-						<option value="4">4+</option>
-					</select>
-				</th>
-				<th>
-					<p>Radno Vreme</p>
-				</th>
-	    	</tr>
-	    	<tr v-for="(sc, index) in filteredCenters" v-bind:data-id="sc.centerId"  v-on:click="rowClicked($event)" >
-	    		<td v-if="!sc.expand"><img v-bind:src="'data:image/png;base64,' + sc.logoPath" width="50" height="60"/></td>
-	    		<td v-if="!sc.expand">{{sc.centerTitle}}</td>
-				<td v-if="!sc.expand">{{typeToString(sc)}}</td>
-				<td v-if="!sc.expand">{{locationToString(sc)}}</td>
-				<td v-if="!sc.expand" >{{sc.grade}}</td>
-				<td v-if="!sc.expand">{{sc.workHours[0]}}-{{sc.workHours[1]}}</td>
-				<td v-if="sc.expand" colspan="6">
-					<div>
-						<h3>{{sc.centerTitle}}</h3>
-						<img v-bind:src="'data:image/png;base64,' + sc.logoPath" width="70" height="80"/>
-						<p>Naziv:{{sc.centerTitle}}</p>
-						<p>Tip:{{typeToString(sc)}}</p>
-						<p>Lokacija:{{locationToString(sc)}}</p>
-						<p>Status:{{statusToString(sc)}}</p>
-						<p>Prosecna ocena:{{sc.grade}}</p>
-						<div v-if="sc.trainings!='FAILIURE'" v-for="training in sc.trainings">
-							<p>{{training.title}}</p>
-							<img v-bind:src="'data:image/png;base64,' + training.imagePath" width="30" height="35"/>
-							<p>{{training.description}}</p>
-							<p>{{trainingTypeToString(training.type)}}</p>
-							<p>{{training.coach.name}}</p>
-							<button v-if="loggedUserType=='CUSTOMER' && training.type=='PERSONAL'"  @click="scheduleTraining(training)">Zakazi trening</button>
-							<p v-if="training.type!='PERSONAL'">Samo personalni treninzi se mogu zakazati</p>
-						</div>
-						
-						<p v-if="sc.trainings=='FAILIURE'">Sportski centar jos uvek nema treninge</p>
+		<nav class="navbar navbar-expand-xl navbar-light background-Green">
+			<div class="container-fluid">
+				<a class="navbar-brand"  @click="routeToHome"><strong>Sportski centri<strong></a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+		
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item active">
+							<a class="nav-link cursor-pointer"  @click="routeToHome">Pocetna</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link cursor-pointer" v-if="!userLogedIn" v-on:click="routeToLogin">Prijava</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link cursor-pointer"  v-if="!userLogedIn" v-on:click="routeToRegister">Registracija</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link cursor-pointer"  v-if="userLogedIn" v-on:click="logout">Odjava</a>
+						</li>
+						<li v-if="loggedUserType == 'ADMIN'" class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle cursor-pointer" data-bs-toggle="dropdown" role="button" aria-expanded="false">Prijave</a>
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item cursor-pointer" v-if="loggedUserType == 'ADMIN'" v-on:click="routeToRegisterCoach"> Prijava trenera </a></li>
+								<li><a class="dropdown-item cursor-pointer" v-if="loggedUserType == 'ADMIN'" v-on:click="routeToRegisterManager"> Prijava menadzera </a></li>
+								<li><a class="dropdown-item cursor-pointer" v-if="loggedUserType == 'ADMIN'" v-on:click="routeToAddCenter"> Prijava novog centra </a></li>
+							</ul>	
+						</li>
+						<li class="nav-item cursor-pointer">
+							<a class="nav-link"  v-if="loggedUserType == 'ADMIN'" v-on:click="routeToMembershipOffers"> Prikaz ponuda clanarina</a>
+						</li>
+						<li class="nav-item cursor-pointer">
+							<a class="nav-link"  v-if="loggedUserType == 'ADMIN'" v-on:click="routeToProfilesPanel"> Prikaz svih korisnika</a>
+						</li>
+						<li class="nav-item cursor-pointer">
+							<a class="nav-link"  v-if="loggedUserType == 'MENAGER'" v-on:click="routeToManagerCenter"> Prikaz centra </a>
+						</li>
+						<li class="nav-item cursor-pointer">
+							<a class="nav-link"  v-if="loggedUserType == 'CUSTOMER'" v-on:click="routeToBuyMembership"> Kupovina clanarine</a>
+						</li>
+						<li class="nav-item cursor-pointer">
+							<a class="nav-link"  v-if="userLogedIn" v-on:click="routeToProfile"> Profil-{{loggedUserName}}</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		
+		<div class="container pt-1 pb-1">
+			<button class="btn btn-primary image-button-small float-end	mb-1 button-green" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch">
+				<img src="img/magnifying-glass.png" class="img-fluid" alt="Search">
+			</button>
+			<div class="collapse" id="collapseSearch">
+				<h3 class="m-1">Pretraga</h3>
+				<div class="d-lg-flex mt-2 mb-2">	
+					<div class=" input-group m-1">	
+						<span class="input-group-text">Naziv:</span>
+						<input name="searchName" class="form-control" ref="titleField" type="text" v-model="nameSearch" v-on:keyup="searchByName"></input>
+					</div>	
+					<div class="input-group m-1">
+						<span class="input-group-text">Tip:</span>
+						<select class="form-select" name="searchType" ref="typeCombo" v-model="typeSearch" @change="searchByType">
+								<option disabled value="">Svi</option>
+								<option value="center">Sportski centar</option>
+								<option value="gym">Teretana</option>
+								<option value="pool">Bazen</option>
+								<option value="dance">Plesni studio</option>
+						</select>
 					</div>
-				</td>
-	    	</tr>
-		</table>
-		<p v-if="userLogedIn">
-				Dobrodosli, {{loggedUserName}}, {{loggedUserType}}
-			</p>
+					<div class="input-group m-1">
+						<span class="input-group-text">Adresa:</span>
+						<input name="searchAddress" class="form-control" ref="addressField" type="text" v-model="addressSearch" v-on:keyup="searchByAddress"></input>
+					</div>
+					<div class="input-group m-1">
+						<span class="input-group-text" id="basic-addon1">Prosecna ocena:</span>
+						<select class="form-select" name="searchGrade" ref="gradeCombo" v-model="gradeSearch" @change="searchByGrade">
+								<option disabled value="">Svi</option>
+								<option value="1">1+</option>
+								<option value="2">2+</option>
+								<option value="3">3+</option>
+								<option value="4">4+</option>
+						</select>
+					</div>
+				</div>
+				<button class="btn btn-primary button-green" v-on:click=resetSearch>Ponisti pretragu</button>
+				<button class="btn btn-primary button-green" v-on:click=filterOpened>Filtriraj samo otvorene</button>
+				
+			</div>
+		</div>
+		<div class="container pt-1 pb-1">
+			<table class="table">
+				<tr>
+					<th>Logo</th>
+					<th v-on:click=sortByName>
+						Naziv
+					</th>
+					<th>
+						Tip 
+					</th>
+					<th v-on:click=sortByAddress>
+						Adresa 
+					</th>
+					<th v-on:click=sortByGrade>
+						ProsecnaOcena
+					</th>
+					<th>
+						Radno Vreme
+					</th>
+				</tr>
+				<tr v-for="(sc, index) in filteredCenters" v-bind:data-id="sc.centerId"  v-on:click="rowClicked($event)" >
+					<td v-if="!sc.expand"><img v-bind:src="'data:image/png;base64,' + sc.logoPath" width="50" height="60"/></td>
+					<td v-if="!sc.expand">{{sc.centerTitle}}</td>
+					<td v-if="!sc.expand">{{typeToString(sc)}}</td>
+					<td v-if="!sc.expand">{{locationToString(sc)}}</td>
+					<td v-if="!sc.expand" >{{sc.grade}}</td>
+					<td v-if="!sc.expand">{{sc.workHours[0]}}-{{sc.workHours[1]}}</td>
+					<td v-if="sc.expand" colspan="6">
+						<div>
+							<h3>{{sc.centerTitle}}</h3>
+							<img v-bind:src="'data:image/png;base64,' + sc.logoPath" width="70" height="80"/>
+							<p>Naziv:{{sc.centerTitle}}</p>
+							<p>Tip:{{typeToString(sc)}}</p>
+							<p>Lokacija:{{locationToString(sc)}}</p>
+							<p>Status:{{statusToString(sc)}}</p>
+							<p>Prosecna ocena:{{sc.grade}}</p>
+							<div v-if="sc.trainings!='FAILIURE'" v-for="training in sc.trainings">
+								<p>{{training.title}}</p>
+								<img v-bind:src="'data:image/png;base64,' + training.imagePath" width="30" height="35"/>
+								<p>{{training.description}}</p>
+								<p>{{trainingTypeToString(training.type)}}</p>
+								<p>{{training.coach.name}}</p>
+								<button v-if="loggedUserType=='CUSTOMER' && training.type=='PERSONAL'"  @click="scheduleTraining(training)">Zakazi trening</button>
+								<p v-if="training.type!='PERSONAL'">Samo personalni treninzi se mogu zakazati</p>
+							</div>
+							
+							<p v-if="sc.trainings=='FAILIURE'">Sportski centar jos uvek nema treninge</p>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
 	</div>
 	`,
 	mounted(){
@@ -135,6 +192,9 @@ Vue.component("centers",{
 				this.loggedUserName = this.$router.app.username;
 				this.userLogedIn = true;
 			}
+		},
+		routeToHome(){
+			router.push(`/`);
 		},
 		routeToLogin(){
 			router.push(`/login`);
