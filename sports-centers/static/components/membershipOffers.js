@@ -9,10 +9,58 @@ Vue.component("membershipOffers",{
             this.price = price;
             this.dailyVisits = dailyVisits;*/
             newOffer:{membershipOfferId:"",description:"",type:null,price:0.0,numOfVisits:0},
+            loggedUserType:"",
+			loggedUserName:"",
+            userLogedIn: false,
         }
     },
     template:`
         <div>
+            <nav class="navbar navbar-expand-xl navbar-light background-Green">
+                <div class="container-fluid">
+                    <a class="navbar-brand"  @click="routeToHome"><strong>Sportski centri</strong></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+            
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item active">
+                                <a class="nav-link cursor-pointer"  @click="routeToHome">Pocetna</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link cursor-pointer" v-if="!userLogedIn" v-on:click="routeToLogin">Prijava</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link cursor-pointer"  v-if="!userLogedIn" v-on:click="routeToRegister">Registracija</a>
+                            </li>
+                            <li v-if="loggedUserType == 'ADMIN'" class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle cursor-pointer" data-bs-toggle="dropdown" role="button" aria-expanded="false">Prijave</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item cursor-pointer" v-if="loggedUserType == 'ADMIN'" v-on:click="routeToRegisterCoach"> Prijava trenera </a></li>
+                                    <li><a class="dropdown-item cursor-pointer" v-if="loggedUserType == 'ADMIN'" v-on:click="routeToRegisterManager"> Prijava menadzera </a></li>
+                                    <li><a class="dropdown-item cursor-pointer" v-if="loggedUserType == 'ADMIN'" v-on:click="routeToAddCenter"> Prijava novog centra </a></li>
+                                </ul>	
+                            </li>
+                            <li class="nav-item cursor-pointer">
+                                <a class="nav-link"  v-if="loggedUserType == 'ADMIN'" v-on:click="routeToMembershipOffers"> Prikaz ponuda clanarina</a>
+                            </li>
+                            <li class="nav-item cursor-pointer">
+                                <a class="nav-link"  v-if="loggedUserType == 'ADMIN'" v-on:click="routeToProfilesPanel"> Prikaz svih korisnika</a>
+                            </li>
+                            <li class="nav-item cursor-pointer">
+                                <a class="nav-link"  v-if="loggedUserType == 'MENAGER'" v-on:click="routeToManagerCenter"> Prikaz centra </a>
+                            </li>
+                            <li class="nav-item cursor-pointer">
+                                <a class="nav-link"  v-if="loggedUserType == 'CUSTOMER'" v-on:click="routeToBuyMembership"> Kupovina clanarine</a>
+                            </li>
+                            <li class="nav-item cursor-pointer">
+                                <a class="nav-link"  v-if="userLogedIn" v-on:click="routeToProfile"> Profil-{{loggedUserName}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
             <div class="container pt-1 pb-1">
                 <h3>Postojece ponude</h3>
                 <div class="d-flex flex-wrap">
@@ -75,6 +123,9 @@ Vue.component("membershipOffers",{
                 if(this.$router.app.login!="ADMIN"){
                     router.push(`/403`);
                 }
+                this.loggedUserType = this.$router.app.login;
+				this.loggedUserName = this.$router.app.username;
+                this.userLogedIn = true;
             }
         });
 
@@ -89,6 +140,39 @@ Vue.component("membershipOffers",{
         });
     },
     methods:{
+        routeToHome(){
+			router.push(`/`);
+		},
+		routeToLogin(){
+			router.push(`/login`);
+		},
+		routeToRegister(){
+			router.push(`/register`);
+		},
+		routeToRegisterCoach(){
+			router.push(`/register/coach`);
+		},
+		routeToRegisterManager(){
+			router.push(`/register/manager`);
+		},
+		routeToProfile(){
+			router.push(`/profile`);
+		},
+		routeToProfilesPanel(){
+			router.push(`/admin/profiles`);
+		},
+		routeToManagerCenter(){
+			router.push(`/manager/center`);
+		},
+		routeToAddCenter(){
+			router.push(`/admin/addCenter`);
+		},
+		routeToBuyMembership(){
+			router.push(`/customer/buyMembership`);
+		},
+		routeToMembershipOffers(){
+			router.push(`/admin/offers`);
+		},
         typeToString: function(type){
             switch (type){
                 case "ANNUAL":
