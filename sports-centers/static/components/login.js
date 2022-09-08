@@ -7,7 +7,7 @@ Vue.component("login",{
     },
     template:`
         <div>
-            <div class="d-flex flex-column align-items-center justify-content-center">
+            <div class="d-flex flex-column align-items-center justify-content-center mt-5">
                 <h3>Prijava</h3>
                 <form>
                     <div class=" input-group mt-2">	

@@ -13,30 +13,54 @@ Vue.component("membershipOffers",{
     },
     template:`
         <div>
-            <p>{{feedback}}</p>
-            <h3>Postojece ponude</h3>
-            <div v-if="listedOffers" v-for="offer in listedOffers">
-                <p>{{offer.membershipOfferId}}</p>
-                <p>Opis:{{offer.description}}</p>
-                <p>{{offer.type}},Broj poseta:{{offer.numOfVisits}}</p>
-                <p>Cena:{{offer.price}}</p>
-            </div>
-            <button v-if="add==false" @click="add=true">Dodavanje ponude</button>
-            <div v-if="add==true">
-                <label for="desc">Opis:</label>
-                <input type="text" name="desc" v-model="newOffer.description"/>
-                <label for="type">Tip:</label>
-                <select name="type" v-model="newOffer.type">
-                    <option value="ANNUAL">Godisnja</option>
-                    <option value="MONTHLY">Mesecna</option>
-                    <option value="WEEKLY">Nedeljna</option>
-                </select>
-                <label for="price">Cena:</label>
-                <input type="number" name="price" v-model="newOffer.price"/>
-                <label for="visits">Broj poseta:</label>
-                <input type="number" name="visits" v-model="newOffer.numOfVisits"/>
-                <button @click="this.addOffer">Dodaj</button>
-                <button @click="this.cancelAdd">Odustani</button>
+            <div class="container pt-1 pb-1">
+                <h3>Postojece ponude</h3>
+                <div class="d-flex flex-wrap">
+                    <div class="background-Green m-2 p-2 w-25 rounded text-truncate" v-if="listedOffers" v-for="offer in listedOffers">
+                        <p>{{offer.membershipOfferId}}</p>
+                        <p class="text-wrap">Opis:{{offer.description}}</p>
+                        <p>Tip:{{typeToString(offer.type)}}</p>
+                        <p>Broj poseta:{{offer.numOfVisits}}</p>
+                        <p>Cena:{{offer.price}}</p>
+                    </div>
+                </div>
+                <button class="btn btn-primary mb-1 button-green" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAdd" aria-expanded="false" aria-controls="collapseAdd">
+				    <span>Dodavanje ponude</span>
+			    </button>
+                <div class="collapse" id="collapseAdd">
+                    <h3 class="m-1">Dodavanje</h3>
+                    <div class="d-lg-flex mt-2 mb-2">
+                        <div class=" input-group m-1">	
+                            <span class="input-group-text">Opis:</span>
+                            <input type="text" name="desc" v-model="newOffer.description" class="form-control"></input>
+                        </div>	
+
+                        <div class=" input-group m-1">	
+                            <span class="input-group-text">Tip:</span>
+                            <select name="type" class="form-select" v-model="newOffer.type">
+                                <option value="ANNUAL">Godisnja</option>
+                                <option value="MONTHLY">Mesecna</option>
+                                <option value="WEEKLY">Nedeljna</option>
+                            </select>
+                        </div>
+                        
+                        <div class=" input-group m-1">	
+                            <span class="input-group-text">Cena:</span>
+                            <input type="text" name="price" v-model="newOffer.price" class="form-control"></input>
+                        </div>
+
+                        <div class=" input-group m-1">	
+                            <span class="input-group-text">Broj poseta:</span>
+                            <input type="number" name="visits" v-model="newOffer.numOfVisits" class="form-control"></input>
+                        </div>
+                    </div>
+                        <button class="btn btn-primary button-green" @click="this.addOffer">Dodaj</button>
+                        <button class="btn btn-primary button-green" data-bs-toggle="collapse" data-bs-target="#collapseAdd" aria-expanded="false" aria-controls="collapseAdd" @click="this.cancelAdd">Odustani</button>
+                </div>
+                <div v-if="feedback" class="alert alert-warning alert-dismissible fade show mt-2" role="alert">
+                    <p>{{feedback}}</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
             </div>
         </div>
     `,
@@ -65,6 +89,17 @@ Vue.component("membershipOffers",{
         });
     },
     methods:{
+        typeToString: function(type){
+            switch (type){
+                case "ANNUAL":
+                    return "Godisnja";
+                case "MONTHLY":
+                    return "Mesecna";
+                case "WEEKLY":
+                    return "Nedeljna";
+            }
+                
+        },
         addOffer: function(){
             axios.post('rest/Membership/Offers/add',this.newOffer)
             .then(res=>{
