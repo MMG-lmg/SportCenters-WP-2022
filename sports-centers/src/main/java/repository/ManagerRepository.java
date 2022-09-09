@@ -36,11 +36,15 @@ public class ManagerRepository implements RepositoryBase<Manager>{
 	}
 	@Override
 	public Collection<Manager> getAll() {
+		readData();
+		syncData();
 		return managerList.values();
 	}
 
 	@Override
 	public Manager getById(String id) {
+		readData();
+		syncData();
 		return managerList.get(id);
 	}
 

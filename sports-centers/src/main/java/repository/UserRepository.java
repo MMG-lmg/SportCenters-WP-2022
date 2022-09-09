@@ -17,6 +17,7 @@ import beans.User;
 import util.LocalDateAdapterDeserializer;
 import util.LocalDateAdapterSerializer;
 import util.ExclusionStrategies.CustomerExclusionStrategy;
+import util.ExclusionStrategies.SportsCenterExclusionStrategy;
 
 public class UserRepository implements RepositoryBase<User>{
 	private HashMap<String,User> usersList;

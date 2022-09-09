@@ -120,7 +120,8 @@ Vue.component("profile",{
             <button class="btn btn-primary button-green" v-if="edit==1" @click="this.updateUser">Primeni izmene</button>
 
             <div v-if="this.$router.app.login=='MENAGER'">
-                <p>Naziv Sportskog Centra: {{manager.sportsCenter.centerTitle}}</p>
+                <p v-if="manager.sportsCenter">Naziv Sportskog Centra: {{manager.sportsCenter.centerTitle}}</p>
+                <p v-if="manager.sportsCenter==null">Naziv Sportskog Centra: - </p>
             </div>
             <div v-if="this.$router.app.login=='CUSTOMER'">
                 <p>Cena clanarine: {{customer.membershipCost}}</p>

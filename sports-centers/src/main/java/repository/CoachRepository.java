@@ -39,11 +39,15 @@ public class CoachRepository implements RepositoryBase<Coach>{
 	}
 	@Override
 	public Collection<Coach> getAll() {
+		readData();
+		syncData();
 		return coachList.values();
 	}
 
 	@Override
 	public Coach getById(String id) {
+		readData();
+		syncData();
 		return coachList.get(id);
 	}
 

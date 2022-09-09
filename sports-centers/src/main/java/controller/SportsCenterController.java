@@ -66,8 +66,7 @@ public class SportsCenterController{
 			res.type("application/json");
 			SportsCenter center = gson.fromJson(req.body(), SportsCenter.class);
 			center.setLogoPath(ImageBase64Converter.decode(center.getLogoPath(), path, center.getCenterTitle()));
-			service.create(center);
-			return "SUCCESS";
+			return service.createCenter(center);
 		});
 	}
 }
