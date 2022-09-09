@@ -18,7 +18,7 @@ Vue.component("membershipOffers",{
         <div>
             <nav class="navbar navbar-expand-xl navbar-light background-Green">
                 <div class="container-fluid">
-                    <a class="navbar-brand"  @click="routeToHome"><strong>Sportski centri</strong></a>
+                    <a class="navbar-brand logo-hover"  @click="routeToHome"><strong>Sportski centri</strong></a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -34,6 +34,9 @@ Vue.component("membershipOffers",{
                             <li class="nav-item">
                                 <a class="nav-link cursor-pointer"  v-if="!userLogedIn" v-on:click="routeToRegister">Registracija</a>
                             </li>
+                            <li class="nav-item">
+							    <a class="nav-link cursor-pointer"  v-if="userLogedIn" v-on:click="logout">Odjava</a>
+						    </li>
                             <li v-if="loggedUserType == 'ADMIN'" class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle cursor-pointer" data-bs-toggle="dropdown" role="button" aria-expanded="false">Prijave</a>
                                 <ul class="dropdown-menu">
@@ -172,6 +175,15 @@ Vue.component("membershipOffers",{
 		},
 		routeToMembershipOffers(){
 			router.push(`/admin/offers`);
+        },
+        logout(){
+			this.loggedUserType = "";
+			this.loggedUserName ="";
+			this.$router.app.login ="";
+			this.$router.app.username="";
+			this.userLogedIn = false;
+            axios.get('rest/logout');
+            this.routeToHome();
 		},
         typeToString: function(type){
             switch (type){

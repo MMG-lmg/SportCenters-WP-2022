@@ -7,10 +7,20 @@
       "price": 0.0
     },
     "customer": {
-      "userName": "perica94"
+      "userName": "perica94",
+      "password": "vic",
+      "name": "Petar",
+      "gender": "MALE",
+      "dateOfBirth": "1994-01-01",
+      "role": "CUSTOMER"
     },
     "coach": {
-      "userName": "zoranaTrener"
+      "userName": "zoranaTrener",
+      "password": "zoka",
+      "name": "Zorana Markovic",
+      "gender": "FEMALE",
+      "dateOfBirth": "2000-12-04",
+      "role": "COACH"
     }
   },
   "mLriNY6a": {
@@ -21,10 +31,44 @@
       "price": 300.0
     },
     "customer": {
-      "userName": "perica94"
+      "userName": "perica94",
+      "password": "vic",
+      "name": "Petar",
+      "gender": "MALE",
+      "dateOfBirth": "1994-01-01",
+      "role": "CUSTOMER"
     },
     "coach": {
-      "userName": "aha"
+      "userName": "aha",
+      "password": "aha",
+      "name": "aha",
+      "gender": "MALE",
+      "dateOfBirth": "2022-06-27",
+      "role": "COACH"
+    }
+  },
+  "Y8KYvxta": {
+    "HistoryId": "Y8KYvxta",
+    "date": "2022-09-09T10:00:00",
+    "training": {
+      "trainingId": "73xygpML",
+      "price": 0.0
+    },
+    "customer": {
+      "userName": "perica94",
+      "password": "vic",
+      "name": "Petar",
+      "gender": "MALE",
+      "dateOfBirth": "1994-01-01",
+      "role": "CUSTOMER"
+    },
+    "coach": {
+      "userName": "aha",
+      "password": "aha",
+      "name": "aha",
+      "gender": "MALE",
+      "dateOfBirth": "2022-06-27",
+      "role": "COACH"
     }
   },
   "zYtKgAvN": {
@@ -35,10 +79,20 @@
       "price": 150.0
     },
     "customer": {
-      "userName": "perica94"
+      "userName": "perica94",
+      "password": "vic",
+      "name": "Petar",
+      "gender": "MALE",
+      "dateOfBirth": "1994-01-01",
+      "role": "CUSTOMER"
     },
     "coach": {
-      "userName": "mirkoTrener"
+      "userName": "mirkoTrener",
+      "password": "1234",
+      "name": "mirko mirkovic",
+      "gender": "MALE",
+      "dateOfBirth": "1995-06-14",
+      "role": "COACH"
     }
   },
   "yp8va4Cu": {
@@ -49,10 +103,20 @@
       "price": 0.0
     },
     "customer": {
-      "userName": "perica94"
+      "userName": "perica94",
+      "password": "vic",
+      "name": "Petar",
+      "gender": "MALE",
+      "dateOfBirth": "1994-01-01",
+      "role": "CUSTOMER"
     },
     "coach": {
-      "userName": "mirkoTrener"
+      "userName": "mirkoTrener",
+      "password": "1234",
+      "name": "mirko mirkovic",
+      "gender": "MALE",
+      "dateOfBirth": "1995-06-14",
+      "role": "COACH"
     }
   },
   "Iqm7gKMG": {
@@ -63,10 +127,20 @@
       "price": 300.0
     },
     "customer": {
-      "userName": "perica94"
+      "userName": "perica94",
+      "password": "vic",
+      "name": "Petar",
+      "gender": "MALE",
+      "dateOfBirth": "1994-01-01",
+      "role": "CUSTOMER"
     },
     "coach": {
-      "userName": "aha"
+      "userName": "aha",
+      "password": "aha",
+      "name": "aha",
+      "gender": "MALE",
+      "dateOfBirth": "2022-06-27",
+      "role": "COACH"
     }
   },
   "ZfeEhHPZ": {
@@ -77,10 +151,20 @@
       "price": 0.0
     },
     "customer": {
-      "userName": "perica94"
+      "userName": "perica94",
+      "password": "vic",
+      "name": "Petar",
+      "gender": "MALE",
+      "dateOfBirth": "1994-01-01",
+      "role": "CUSTOMER"
     },
     "coach": {
-      "userName": "aha"
+      "userName": "aha",
+      "password": "aha",
+      "name": "aha",
+      "gender": "MALE",
+      "dateOfBirth": "2022-06-27",
+      "role": "COACH"
     }
   },
   "ow7XAqec": {
@@ -91,10 +175,20 @@
       "price": 0.0
     },
     "customer": {
-      "userName": "perica94"
+      "userName": "perica94",
+      "password": "vic",
+      "name": "Petar",
+      "gender": "MALE",
+      "dateOfBirth": "1994-01-01",
+      "role": "CUSTOMER"
     },
     "coach": {
-      "userName": "mirkoTrener"
+      "userName": "mirkoTrener",
+      "password": "1234",
+      "name": "mirko mirkovic",
+      "gender": "MALE",
+      "dateOfBirth": "1995-06-14",
+      "role": "COACH"
     }
   }
 }

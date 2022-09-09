@@ -20,7 +20,7 @@ Vue.component("centers",{
 	<div>	
 		<nav class="navbar navbar-expand-xl navbar-light background-Green">
 			<div class="container-fluid">
-				<a class="navbar-brand"  @click="routeToHome"><strong>Sportski centri</strong></a>
+				<a class="navbar-brand logo-hover"  @click="routeToHome"><strong>Sportski centri</strong></a>
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
@@ -112,16 +112,16 @@ Vue.component("centers",{
 			<table class="table">
 				<tr>
 					<th>Logo</th>
-					<th v-on:click=sortByName>
+					<th class="table-header-hover" v-on:click=sortByName>
 						Naziv
 					</th>
 					<th>
 						Tip 
 					</th>
-					<th v-on:click=sortByAddress>
+					<th class="table-header-hover" v-on:click=sortByAddress>
 						Adresa 
 					</th>
-					<th v-on:click=sortByGrade>
+					<th class="table-header-hover" v-on:click=sortByGrade>
 						ProsecnaOcena
 					</th>
 					<th>

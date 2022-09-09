@@ -25,182 +25,271 @@ Vue.component("profile",{
             sortDate:0,
             typeSearch:"",
             typeTrainingSearch:"",
+            loggedUserType:"",
+			loggedUserName:"",
+            userLogedIn: false,
         }
     },
     template:`
     <div>
-        <h3>Dobrodosli {{user.userName}}</h3>
-        <p>{{feedback}}</p>
-        <div>
-        <label for="uName">Korisnicko ime:</label>
-        <input type="text" name="uName" v-model="editUser.userName" disabled/>
-        </div>
-        <div>
-        <label for="name">Ime:</label>
-        <input type="text" name="name" v-model="editUser.name" :disabled="edit == 0"/>
-        </div>
-        <div>
-        <label for="gender">Pol:</label>
-        <select name="gender" v-model="editUser.gender" :disabled="edit == 0">
-            <option :selected="editUser.gender=='MALE'" value="MALE">Muski</option>
-            <option :selected="editUser.gender=='FEMALE'" value="FEMALE" >Zenski</option>
-        </select>
-        </div>
-        <div>
-        <label for="date">Datum rodjenja:</label>
-        <input type="date" name="date" v-model="editUser.dateOfBirth" :disabled="edit == 0"/>
-        </div>
-        <div>
-        <p>Uloga: {{roleToString(editUser.role)}}</p>
-        </div>
+        <nav class="navbar navbar-expand-xl navbar-light background-Green">
+            <div class="container-fluid">
+                <a class="navbar-brand logo-hover"  @click="routeToHome"><strong>Sportski centri</strong></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-        <button v-if="edit==0" @click="edit=1">Izmeni podatke</button>
-        <button v-if="edit==1" @click="this.cancelEdit">Otkazi izmene</button>
-        <button v-if="edit==1" @click="this.updateUser">Primeni izmene</button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link cursor-pointer"  @click="routeToHome">Pocetna</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link cursor-pointer" v-if="!userLogedIn" v-on:click="routeToLogin">Prijava</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link cursor-pointer"  v-if="!userLogedIn" v-on:click="routeToRegister">Registracija</a>
+                        </li>
+                        <li class="nav-item">
+							<a class="nav-link cursor-pointer"  v-if="userLogedIn" v-on:click="logout">Odjava</a>
+						</li>
+                        <li v-if="loggedUserType == 'ADMIN'" class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle cursor-pointer" data-bs-toggle="dropdown" role="button" aria-expanded="false">Prijave</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item cursor-pointer" v-if="loggedUserType == 'ADMIN'" v-on:click="routeToRegisterCoach"> Prijava trenera </a></li>
+                                <li><a class="dropdown-item cursor-pointer" v-if="loggedUserType == 'ADMIN'" v-on:click="routeToRegisterManager"> Prijava menadzera </a></li>
+                                <li><a class="dropdown-item cursor-pointer" v-if="loggedUserType == 'ADMIN'" v-on:click="routeToAddCenter"> Prijava novog centra </a></li>
+                            </ul>	
+                        </li>
+                        <li class="nav-item cursor-pointer">
+                            <a class="nav-link"  v-if="loggedUserType == 'ADMIN'" v-on:click="routeToMembershipOffers"> Prikaz ponuda clanarina</a>
+                        </li>
+                        <li class="nav-item cursor-pointer">
+                            <a class="nav-link"  v-if="loggedUserType == 'ADMIN'" v-on:click="routeToProfilesPanel"> Prikaz svih korisnika</a>
+                        </li>
+                        <li class="nav-item cursor-pointer">
+                            <a class="nav-link"  v-if="loggedUserType == 'MENAGER'" v-on:click="routeToManagerCenter"> Prikaz centra </a>
+                        </li>
+                        <li class="nav-item cursor-pointer">
+                            <a class="nav-link"  v-if="loggedUserType == 'CUSTOMER'" v-on:click="routeToBuyMembership"> Kupovina clanarine</a>
+                        </li>
+                        <li class="nav-item cursor-pointer">
+                            <a class="nav-link"  v-if="userLogedIn" v-on:click="routeToProfile"> Profil-{{loggedUserName}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container pt-1 pb-1">
+            <h3>Dobrodosli {{user.userName}}</h3>
+            <div v-if="feedback" class="alert alert-warning mt-2" role="alert">
+                <p>{{feedback}}</p>
+            </div>
+            <div class="d-lg-flex mt-2 mb-2">
+                <div class=" input-group m-1">	
+                    <span class="input-group-text">Korisnicko ime:</span>
+                    <input type="text" class="form-control" name="uName" v-model="editUser.userName" disabled/>
+                </div>
 
-        <div v-if="this.$router.app.login=='MENAGER'">
-            <p>Naziv Sportskog Centra: {{manager.sportsCenter.centerTitle}}</p>
+                <div  class=" input-group m-1">
+                    <span class="input-group-text">Ime:</span>
+                    <input type="text" name="name" class="form-control" v-model="editUser.name" :disabled="edit == 0"/>
+                </div>
+
+                <div  class=" input-group m-1">
+                    <span class="input-group-text">Pol:</span>
+                    <select name="gender" class="form-select" v-model="editUser.gender" :disabled="edit == 0">
+                        <option :selected="editUser.gender=='MALE'" value="MALE">Muski</option>
+                        <option :selected="editUser.gender=='FEMALE'" value="FEMALE" >Zenski</option>
+                    </select>
+                </div>
+
+                <div  class=" input-group m-1">
+                    <span class="input-group-text">Datum rodjenja:</span>
+                    <input type="date" class="form-control" name="date" v-model="editUser.dateOfBirth" :disabled="edit == 0"/>
+                </div>
+
+                <div  class=" input-group m-1">
+                    <span class="input-group-text">Uloga:</span>
+                    <input type="text" name="role" class="form-control" v-model="editUser.role" disabled/>
+                </div>
+            </div>
+
+            <button class="btn btn-primary button-green" v-if="edit==0" @click="edit=1">Izmeni podatke</button>
+            <button class="btn btn-primary button-green" v-if="edit==1" @click="this.cancelEdit">Otkazi izmene</button>
+            <button class="btn btn-primary button-green" v-if="edit==1" @click="this.updateUser">Primeni izmene</button>
+
+            <div v-if="this.$router.app.login=='MENAGER'">
+                <p>Naziv Sportskog Centra: {{manager.sportsCenter.centerTitle}}</p>
+            </div>
+            <div v-if="this.$router.app.login=='CUSTOMER'">
+                <p>Cena clanarine: {{customer.membershipCost}}</p>
+                <p>Poeni lojalnosti(bodovi): {{customer.loyalityPoints}}</p>
+                <p v-if="customer.type">Tip kupca: {{customer.type}}</p>
+                <p v-if="!customer.type">Tip kupca: -</p>
+            </div>
+            <div class= "pt-1 pb-1" v-if="this.$router.app.login=='CUSTOMER' || this.$router.app.login=='COACH'">
+                <button class="btn btn-primary image-button-small float-end	mb-1 button-green" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch">
+                    <img src="img/magnifying-glass.png" class="img-fluid" alt="Search">
+                </button>
+                <div class="collapse" id="collapseSearch">
+                    <h3 class="m-1">Pretraga</h3>
+                    <div class=" input-group m-1">	
+                        <span class="input-group-text">Tip centra:</span>
+                        <select class="form-select" name="center" ref="typeCombo" v-model="typeSearch">
+                            <option disabled value="">Svi</option>
+                            <option value="center">Sportski centar</option>
+                            <option value="gym">Teretana</option>
+                            <option value="pool">Bazen</option>
+                            <option value="dance">Plesni studio</option>
+                        </select>
+                    </div>
+                    
+                    <div class=" input-group m-1">	
+                        <span class="input-group-text">Naziv centra:</span>
+                        <input class="form-control" type="text" v-model="centerSearch" v-on:keyup="searchByCenter">
+                    </div>
+                    
+                    <div class=" input-group m-1">	
+                        <span class="input-group-text">Datum od:</span>
+                        <input class="form-control" ref="dateInput0" type="date" v-model="dateSearch[0]">
+                        <span class="input-group-text">Datum do:</span>
+                        <input class="form-control" ref="dateInput1" type="date" v-model="dateSearch[1]">
+                    </div>
+                    
+                    <div class=" input-group m-1">	
+                        <span class="input-group-text">Cena od:</span>
+                        <input  class="form-control" ref="priceInput0" type="number" v-model="priceSearch[0]">
+                        <span class="input-group-text">Cena do:</span>
+                        <input  class="form-control" ref="priceInput1" type="number" v-model="priceSearch[1]">   
+                    </div>
+                    
+                    <div class=" input-group m-1">
+                        <span class="input-group-text">Tip Treninga:</span>
+                        <select class="form-select" name="type" ref="typeTrainingCombo" v-model="typeTrainingSearch">
+                            <option disabled value="">Svi</option>
+                            <option value="personal">Personalni</option>
+                            <option value="group">Grupni</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary button-green" @click="startSearch">Pretrazi</button>
+                    <button class="btn btn-primary button-green" v-on:click=resetSearch>Ponisti pretragu</button>
+                </div>
+            </div>
+            <div v-if="this.$router.app.login=='CUSTOMER'">
+                <h3  v-if="customer.visitedCenters!=null">Poseceni centri</h3>
+                <h3 v-if="customer.visitedCenters==null">Niste posetili ni jedan sportski centar</h3>
+                <table class="table" v-if="customer.visitedCenters!=null">
+                    <tr>
+                        <th>Logo</th>
+                        <th>Naziv</th>
+                        <th>Tip</th>
+                        <th>Status</th>
+                        <th>Adresa</th>
+                        <th>ProsecnaOcena</th>
+                    </tr>
+                    <tr v-for="(sc, index) in customer.visitedCenters">
+                        <td><img v-bind:src="'data:image/png;base64,' + sc.logoPath" width="50" height="60"/></td>
+                        <td>{{sc.centerTitle}}</td>
+                        <td>{{centerTypeToString(sc)}}</td>
+                        <td>{{centerStatusToString(sc)}}</td>
+                        <td>{{centerLocationToString(sc)}}</td>
+                        <td>{{sc.grade}}</td>
+                    </tr>
+                </table>
+                <h3 v-if="customerPastTrainings.length===0">Nemate prethodno posecenih treninga</h3>
+                <h3 v-if="customerPastTrainings.length!=0">Prethodno poseceni treninzi</h3>
+                
+                <table class="table" v-if="customerPastTrainings.length!=0">
+                    <tr>
+                        <th>
+                            <p>Naziv traninga</p>
+                        </th>
+                        <th class="table-header-hover">
+                            <p @click="sortByCenter">Naziv centra</p>
+                        </th>
+                        <th class="table-header-hover">
+                            <p @click="sortByDate">Datum treninga</p>
+                        </th>
+                        <th class="table-header-hover">
+                            <p @click="sortByPrice">Cena treninga</p>
+                        </th>
+                    </tr>
+                    <tr v-for="history in filteredPastTrainings">
+                        <td>{{history.training.title}}</td>
+                        <td>{{history.training.center.centerTitle}}</td>
+                        <td><pre>{{dateReformater(history.date)}}</pre></td>
+                        <td v-if="history.training.price===0">Trening nema doplatu.</td>
+                        <td v-if="history.training.price!=0">{{history.training.price}}</td>
+                    </tr>
+                </table>
+
+                <h3 v-if="customerFutureTrainings.length===0">Nemate zakazanih treninga</h3>
+                <h3 v-if="customerFutureTrainings.length!=0">Zakazani treninzi</h3>
+                
+                <table class="table" v-if="customerFutureTrainings.length!=0">
+                    <tr>
+                        <th>Naziv traninga</th>
+                        <th>Naziv centra</th>
+                        <th>Datum treninga</th>
+                        <th>Cena treninga</th>
+                    </tr>
+                    <tr v-for="history in filteredFutureTrainings">
+                        <td>{{history.training.title}}</td>
+                        <td>{{history.training.center.centerTitle}}</td>
+                        <td><pre>{{dateReformater(history.date)}}</pre></td>
+                        <td v-if="history.training.price===0">Trening nema doplatu.</td>
+                        <td v-if="history.training.price!=0">{{history.training.price}}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div v-if="this.$router.app.login=='COACH'">
+                <h3 v-if="coachPastTrainings.length===0">Nemate prethodnih treninga</h3>
+                <h3 v-if="coachPastTrainings.length!=0">Prethodni treninzi</h3>
+                <table class="table" v-if="coachPastTrainings.length!=0">
+                    <tr>
+                        <th>
+                            <p>Naziv traninga</p>
+                        </th>
+                        <th class="table-header-hover">
+                            <p @click="sortByCenter">Naziv centra</p>
+                        </th>
+                        <th class="table-header-hover">
+                            <p @click="sortByDate">Datum treninga</p>
+                        </th>
+                        <th class="table-header-hover">
+                            <p @click="sortByPrice">Cena treninga</p>
+                        </th>
+                    </tr>
+                    <tr v-for="history in filteredPastTrainings">
+                        <td>{{history.training.title}}</td>
+                        <td>{{history.training.center.centerTitle}}</td>
+                        <td><pre>{{dateReformater(history.date)}}</pre></td>
+                        <td v-if="history.training.price===0">Trening nema doplatu.</td>
+                        <td v-if="history.training.price!=0">{{history.training.price}}</td>
+                    </tr>
+                </table>
+
+                <h3 v-if="coachFutureTrainings.length===0">Nemate zakazanih treninga</h3>
+                <h3 v-if="coachFutureTrainings.length!=0">Zakazani treninzi</h3>
+                <table class="table" v-if="coachFutureTrainings.length!=0" >
+                    <tr>
+                        <th>Naziv traninga</th>
+                        <th>Naziv centra</th>
+                        <th>Datum treninga</th>
+                        <th>Cena treninga</th>
+                    </tr>
+                    <tr v-for="history in filteredFutureTrainings">
+                        <td>{{history.training.title}}</td>
+                        <td>{{history.training.center.centerTitle}}</td>
+                        <td><pre>{{dateReformater(history.date)}}</pre></td>
+                        <td v-if="history.training.price===0">Trening nema doplatu.</td>
+                        <td v-if="history.training.price!=0">{{history.training.price}}</td>
+                    </tr>
+                </table>
+            </div>
         </div>
-        <button v-if="this.$router.app.login=='CUSTOMER' || this.$router.app.login=='COACH'" v-on:click=resetSearch>Ponisti pretragu</button>
-        <div>
-            <h3>Filteri</h3>
-            <label for="center">Tip Centra</label> 
-            <select  name="center" ref="typeCombo" v-model="typeSearch" @change="filterByType">
-                <option disabled value="">Svi</option>
-                <option value="center">Sportski centar</option>
-                <option value="gym">Teretana</option>
-                <option value="pool">Bazen</option>
-                <option value="dance">Plesni studio</option>
-            </select>
-            <label for="type">Tip Treninga</label> 
-            <select  name="type" ref="typeTrainingCombo" v-model="typeTrainingSearch" @change="filterByTrainingType">
-                <option disabled value="">Svi</option>
-                <option value="personal">Personalni</option>
-                <option value="group">Grupni</option>
-            </select>
-        </div>
-        <div v-if="this.$router.app.login=='CUSTOMER'">
-            <p>Cena clanarine: {{customer.membershipCost}}</p>
-            <p>Poeni lojalnosti(bodovi): {{customer.loyalityPoints}}</p>
-            <p>Tip kupca: {{customer.type}}</p>
-            <h3 v-if="customer.visitedCenters==null">Niste posetili ni jedan sportski centar</h3>
-            <table v-if="customer.visitedCenters!=null">
-            <tr>
-                <th>Logo</th>
-                <th>Naziv</th>
-                <th>Tip</th>
-                <th>Status</th>
-                <th>Adresa</th>
-                <th>ProsecnaOcena</th>
-            </tr>
-            <tr v-for="(sc, index) in customer.visitedCenters">
-                <td><img v-bind:src="'data:image/png;base64,' + sc.logoPath" width="50" height="60"/></td>
-                <td>{{sc.centerTitle}}</td>
-                <td>{{centerTypeToString(sc)}}</td>
-                <td>{{centerStatusToString(sc)}}</td>
-                <td>{{centerLocationToString(sc)}}</td>
-                <td>{{sc.grade}}</td>
-            </tr>
-            </table>
-            <h3 v-if="customerPastTrainings.length===0">Nemate prethodno posecenih treninga</h3>
-            <h3 v-if="customerPastTrainings.length!=0">Prethodno poseceni treninzi</h3>
-            
-            <table v-if="customerPastTrainings.length!=0">
-                <tr>
-                    <th>Naziv traninga</th>
-                    <th>
-                        <p @click="sortByCenter">Naziv centra</p> <br>
-                        <input type="text" v-model="centerSearch" v-on:keyup="searchByCenter">
-                    </th>
-                    <th>
-                        <p @click="sortByDate">Datum treninga</p> <br>
-                        <input ref="dateInput0" type="date" v-model="dateSearch[0]" @change="searchByDate">
-                        <input ref="dateInput1" type="date" v-model="dateSearch[1]" @change="searchByDate">
-                    </th>
-                    <th>
-                        <p @click="sortByPrice">Cena treninga</p>
-                        <input ref="priceInput0" type="number" v-model="priceSearch[0]" @change="searchByPrice">
-                        <input ref="priceInput1" type="number" v-model="priceSearch[1]" @change="searchByPrice">   
-                    </th>
-                </tr>
-                <tr v-for="history in filteredPastTrainings">
-                    <td>{{history.training.title}}</td>
-                    <td>{{history.training.center.centerTitle}}</td>
-                    <td><pre>{{dateReformater(history.date)}}</pre></td>
-                    <td v-if="history.training.price===0">Trening nema doplatu.</td>
-                    <td v-if="history.training.price!=0">{{history.training.price}}</td>
-                </tr>
-            </table>
-
-            <h3 v-if="customerFutureTrainings.length===0">Nemate zakazanih treninga</h3>
-            <h3 v-if="customerFutureTrainings.length!=0">Zakazani treninzi</h3>
-            
-            <table v-if="customerFutureTrainings.length!=0">
-                <tr>
-                    <th>Naziv traninga</th>
-                    <th>Naziv centra</th>
-                    <th>Datum treninga</th>
-                    <th>Cena treninga</th>
-                </tr>
-                <tr v-for="history in filteredFutureTrainings">
-                    <td>{{history.training.title}}</td>
-                    <td>{{history.training.center.centerTitle}}</td>
-                    <td><pre>{{dateReformater(history.date)}}</pre></td>
-                    <td v-if="history.training.price===0">Trening nema doplatu.</td>
-                    <td v-if="history.training.price!=0">{{history.training.price}}</td>
-                </tr>
-            </table>
-        </div>
-
-        <div v-if="this.$router.app.login=='COACH'">
-            <h3 v-if="coachPastTrainings.length===0">Nemate prethodnih treninga</h3>
-            <h3 v-if="coachPastTrainings.length!=0">Prethodni treninzi</h3>
-            <table v-if="coachPastTrainings.length!=0">
-                <tr>
-                    <th>Naziv traninga</th>
-                    <th>
-                        <p>Naziv centra</p>
-                        <input type="text" v-model="centerSearch" v-on:keyup="searchByCenter">
-                    </th>
-                <th>
-                    <p>Datum treninga</p> <br>
-                    <input type="date" v-model="dateSearch[0]" @change="searchByDate">
-                    <input type="date" v-model="dateSearch[1]" @change="searchByDate">
-                </th>
-                <th>
-                    <p>Cena treninga</p>
-                    <input type="number" v-model="priceSearch[0]" @change="searchByPrice">
-                    <input type="number" v-model="priceSearch[1]" @change="searchByPrice">   
-                </th>
-                </tr>
-                <tr v-for="history in filteredPastTrainings">
-                    <td>{{history.training.title}}</td>
-                    <td>{{history.training.center.centerTitle}}</td>
-                    <td><pre>{{dateReformater(history.date)}}</pre></td>
-                    <td v-if="history.training.price===0">Trening nema doplatu.</td>
-                    <td v-if="history.training.price!=0">{{history.training.price}}</td>
-                </tr>
-            </table>
-
-            <h3 v-if="coachFutureTrainings.length===0">Nemate zakazanih treninga</h3>
-            <h3 v-if="coachFutureTrainings.length!=0">Zakazani treninzi</h3>
-            <table v-if="coachFutureTrainings.length!=0" >
-                <tr>
-                    <th>Naziv traninga</th>
-                    <th>Naziv centra</th>
-                    <th>Datum treninga</th>
-                    <th>Cena treninga</th>
-                </tr>
-                <tr v-for="history in filteredFutureTrainings">
-                    <td>{{history.training.title}}</td>
-                    <td>{{history.training.center.centerTitle}}</td>
-                    <td><pre>{{dateReformater(history.date)}}</pre></td>
-                    <td v-if="history.training.price===0">Trening nema doplatu.</td>
-                    <td v-if="history.training.price!=0">{{history.training.price}}</td>
-                </tr>
-            </table>
-        </div>
-
     </div>
     `,
     mounted(){
@@ -213,7 +302,9 @@ Vue.component("profile",{
 				this.$router.app.username = response.data.userName;
                 this.$router.app.login = response.data.role;
                 this.fillUserData();
-                
+                this.loggedUserType = this.$router.app.login;
+				this.loggedUserName = this.$router.app.username;
+				this.userLogedIn = true;
             }
         });
         if(this.$router.app.login ==="CUSTOMER"){
@@ -345,6 +436,48 @@ Vue.component("profile",{
                 }
             }
         },
+        routeToHome(){
+			router.push(`/`);
+		},
+		routeToLogin(){
+			router.push(`/login`);
+		},
+		routeToRegister(){
+			router.push(`/register`);
+		},
+		routeToRegisterCoach(){
+			router.push(`/register/coach`);
+		},
+		routeToRegisterManager(){
+			router.push(`/register/manager`);
+		},
+		routeToProfile(){
+			router.push(`/profile`);
+		},
+		routeToProfilesPanel(){
+			router.push(`/admin/profiles`);
+		},
+		routeToManagerCenter(){
+			router.push(`/manager/center`);
+		},
+		routeToAddCenter(){
+			router.push(`/admin/addCenter`);
+		},
+		routeToBuyMembership(){
+			router.push(`/customer/buyMembership`);
+		},
+		routeToMembershipOffers(){
+			router.push(`/admin/offers`);
+        },
+        logout(){
+			this.loggedUserType = "";
+			this.loggedUserName ="";
+			this.$router.app.login ="";
+			this.$router.app.username="";
+			this.userLogedIn = false;
+            axios.get('rest/logout');
+            this.routeToHome();
+		},
         roleToString: function(role){
             switch(role){
                 case "CUSTOMER":
@@ -524,6 +657,13 @@ Vue.component("profile",{
                 return true;
             }
             return false;
+        },
+        startSearch:function(){
+            this.searchByCenter();
+            this.searchByPrice();
+            this.searchByDate();
+            this.filterByTrainingType();
+            this.filterByType();
         },
         searchByCenter:function(){
             if(this.centerSearch!=''){

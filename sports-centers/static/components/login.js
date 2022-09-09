@@ -16,7 +16,7 @@ Vue.component("login",{
                     </div>
                     <div class=" input-group mt-2">	
 						<span class="input-group-text">Lozinka:</span>
-						<input class="form-control" ref="titleField" type="text" v-model="credentials.password" name="password"></input>
+						<input class="form-control" ref="titleField" type="password" v-model="credentials.password" name="password"></input>
                     </div>
                     <button class="btn btn-primary button-green mt-2" v-on:click="login">Prijava</button>
                 </form>

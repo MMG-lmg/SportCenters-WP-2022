@@ -33,3 +33,15 @@ body{
 .cursor-pointer{
     cursor: pointer;
 }
+.table-header-hover{
+    cursor: pointer;   
+}
+.table-header-hover:hover{
+    color:#85a386;
+}
+.logo-hover{
+    cursor: pointer;   
+}
+.logo-hover:hover{
+    color:white;
+}
