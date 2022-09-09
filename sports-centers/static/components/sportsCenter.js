@@ -16,120 +16,217 @@ Vue.component("center",{
             allCustomers:null,
             activeMemberships:null,
             confirmButtonCheck:0,
+            loggedUserType:"",
+			loggedUserName:"",
+            userLogedIn: false,
+            feedback:null
         }
     },
     template:`
     <div>
-        <p>{{error}}</p>
-        <div v-if="center">
-            <h3>{{center.centerTitle}}</h3>
-            <img v-bind:src="'data:image/png;base64,' + center.logoPath" width="50" height="60"/>
-            <p>Naziv: {{center.centerTitle}}</p>
-            <p>Tip: {{typeToString(center.type)}}</p>
-            <p>Status: {{center.status}}</p>
-            <p>Adresa: {{locationToString(center.location)}}
-            <p>Prosecna ocena: {{center.grade}}</p>
-            <p>Radno vreme: {{workHoursToString(center.workHours)}}</p>
-            
-            <table v-if="trainigsList">
-                <tr>
-                    <th>Slicica traninga</th>
-                    <th>Opis treninga</th>
-                    <th>Ime trenera</th>
-                    <th>Cena treninga</th>
-                    <th>Izmena treninga</th>
-                </tr>
-                <tr v-for="training in trainigsList" @click="trainingSelected(training)">
-                    <td><img v-bind:src="'data:image/png;base64,' + training.imagePath" width="70" height="80"/></td>
-                    <td>{{training.description}}</td>
-                    <td>{{training.coach.name}}</td>
-                    <td v-if="training.price===0">Trening nema doplatu.</td>
-                    <td v-if="training.price!=0">{{training.price}}</td>
-                    <td><button @click="loadEditTraining(training)">Izmeni</button></td>
-                </tr>
-            </table>
+        <nav class="navbar navbar-expand-xl navbar-light background-Green">
+            <div class="container-fluid">
+                <a class="navbar-brand logo-hover"  @click="routeToHome"><strong>Sportski centri</strong></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-            <div v-if="selectedTraining">
-                <h3>Poseta treninga</h3>
-                <img v-if="selectedTraining" v-bind:src="'data:image/png;base64,' + selectedTraining.imagePath" width="70" height="80"/></td>
-                <p>{{selectedTraining.title}}</p>
-                <p>{{selectedTraining.description}}</p>
-                <label for="customer">Korisnik</label>
-                <select v-model="visitingCustomer" name="customer" @change="checkCustomerMembership">
-                    <option v-for="customer in allCustomers" :value="customer.userName">{{customer.userName}}-{{customer.name}}</option>
-                </select>
-                <button @click="visitCenter" :disabled="!confirmButtonCheck">Potvrdi</button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link cursor-pointer"  @click="routeToHome">Pocetna</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link cursor-pointer" v-if="!userLogedIn" v-on:click="routeToLogin">Prijava</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link cursor-pointer"  v-if="!userLogedIn" v-on:click="routeToRegister">Registracija</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link cursor-pointer"  v-if="userLogedIn" v-on:click="logout">Odjava</a>
+                        </li>
+                        <li v-if="loggedUserType == 'ADMIN'" class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle cursor-pointer" data-bs-toggle="dropdown" role="button" aria-expanded="false">Prijave</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item cursor-pointer" v-if="loggedUserType == 'ADMIN'" v-on:click="routeToRegisterCoach"> Prijava trenera </a></li>
+                                <li><a class="dropdown-item cursor-pointer" v-if="loggedUserType == 'ADMIN'" v-on:click="routeToRegisterManager"> Prijava menadzera </a></li>
+                                <li><a class="dropdown-item cursor-pointer" v-if="loggedUserType == 'ADMIN'" v-on:click="routeToAddCenter"> Prijava novog centra </a></li>
+                            </ul>	
+                        </li>
+                        <li class="nav-item cursor-pointer">
+                            <a class="nav-link"  v-if="loggedUserType == 'ADMIN'" v-on:click="routeToMembershipOffers"> Prikaz ponuda clanarina</a>
+                        </li>
+                        <li class="nav-item cursor-pointer">
+                            <a class="nav-link"  v-if="loggedUserType == 'ADMIN'" v-on:click="routeToProfilesPanel"> Prikaz svih korisnika</a>
+                        </li>
+                        <li class="nav-item cursor-pointer">
+                            <a class="nav-link"  v-if="loggedUserType == 'MENAGER'" v-on:click="routeToManagerCenter"> Prikaz centra </a>
+                        </li>
+                        <li class="nav-item cursor-pointer">
+                            <a class="nav-link"  v-if="loggedUserType == 'CUSTOMER'" v-on:click="routeToBuyMembership"> Kupovina clanarine</a>
+                        </li>
+                        <li class="nav-item cursor-pointer">
+                            <a class="nav-link"  v-if="userLogedIn" v-on:click="routeToProfile"> Profil-{{loggedUserName}}</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
+        </nav>
 
-            <table v-if="trainingHistory">
-                <tr>
-                    <th>Naziv traninga</th>
-                    <th>Naziv centra</th>
-                    <th>Datum treninga</th>
-                    <th>Cena treninga</th>
-                </tr>
-                <tr v-for="history in trainingHistory">
-                    <td>{{history.training.title}}</td>
-                    <td>{{history.training.center.centerTitle}}</td>
-                    <td><pre>{{dateReformater(history.date)}}</pre></td>
-                    <td v-if="history.training.price===0">Trening nema doplatu.</td>
-                    <td v-if="history.training.price!=0">{{history.training.price}}</td>
-                </tr>
-            </table>
-            <div v-if="addNew">
-                <label for="title">Naziv treninga</label>
-                <input type="text" name="title" v-model="newTraining.title"></input>
-                <br>
-                <label for="logo">Logo sporskog centra </label>
-                <input type="file" name="logo" ref="imgUpload" @change="onFileInput($event)"></input>
-                <button @click="removeImage">Ukloni logo</button>
-                <img :src="image"></img>
-                <br>
-                <label for="type">Tip treninga:</label>
-                <select ref="typeCombo" name="type" v-model="newTraining.type">
-                    <option value="PERSONAL" selected>Personalni</option>
-                    <option value="GROUP">Grupni</option>
-                </select>
-                <label for="duration">Trajanje treninga</label>
-                <input type="number" name="duration" v-model="newTraining.durationMins"></input>
-                <label for="coach">Trener</label>
-                <select v-model="newTraining.coachId">
-                    <option v-for="coach in coaches" :value="coach.userName">{{coach.userName}}:{{coach.name}}</option>
-                </select>
-                <label for="description">Opis treninga</label>
-                <textarea  name="description" v-model="newTraining.description" rows="5" cols="40"></textarea>
-                <label for="price">Cena treninga:(opciono)</label>
-                <input type="number" name="price" v-model="newTraining.price"></input>
-                <button v-on:click="addTraining"> Dodaj </button>
+        
+
+        <div class="container pt-1 pb-1">
+            <div v-if="error" class="alert alert-warning alert-dismissible fade show mt-2" role="alert">
+                <p>{{error}}</p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
+            <div class="d-flex flex-column" v-if="center">
+                <h3>{{center.centerTitle}}</h3> 
+                <div class="d-lg-flex mt-2 mb-2">
+                    <img class="img-thumbnail w-25" v-bind:src="'data:image/png;base64,' + center.logoPath"/>
+                    <div class=" m-2 d-lg-flex flex-column">
+                        <p>Naziv: {{center.centerTitle}}</p>
+                        <p>Tip: {{typeToString(center.type)}}</p>
+                        <p>Status: {{center.status}}</p>
+                        <p>Adresa: {{locationToString(center.location)}}
+                        <p>Prosecna ocena: {{center.grade}}</p>
+                        <p>Radno vreme: {{workHoursToString(center.workHours)}}</p>
+                    </div>
+                </div> 
+                <div v-if="selectedTraining">
+                    <h3>Poseta treninga</h3>
+                    <img v-if="selectedTraining" v-bind:src="'data:image/png;base64,' + selectedTraining.imagePath" width="70" height="80"/></td>
+                    <p>{{selectedTraining.title}}</p>
+                    <p>{{selectedTraining.description}}</p>
+                    <div class=" input-group m-1">	
+						<span class="input-group-text">Korisnik:</span>
+						<select class="form-select" v-model="visitingCustomer" name="customer" @change="checkCustomerMembership">
+                            <option v-for="customer in allCustomers" :value="customer.userName">{{customer.userName}}-{{customer.name}}</option>
+                        </select>
+					</div>
+                    <button class="btn btn-primary button-green" @click="visitCenter" :disabled="!confirmButtonCheck">Potvrdi</button>
+                </div>         
+                <table class="table" v-if="trainigsList">
+                    <tr>
+                        <th>Slicica traninga</th>
+                        <th>Opis treninga</th>
+                        <th>Ime trenera</th>
+                        <th>Cena treninga</th>
+                        <th>Izmena treninga</th>
+                        <th>Poseta treninga</th>
+                    </tr>
+                    <tr v-for="training in trainigsList">
+                        <td><img v-bind:src="'data:image/png;base64,' + training.imagePath" width="70" height="80"/></td>
+                        <td>{{training.description}}</td>
+                        <td>{{training.coach.name}}</td>
+                        <td v-if="training.price===0">Trening nema doplatu.</td>
+                        <td v-if="training.price!=0">{{training.price}}</td>
+                        <td><button class="btn btn-primary button-green" @click="loadEditTraining(training)">Izmeni</button></td>
+                        <td><button class="btn btn-primary button-green" @click="trainingSelected(training)">Poseta</button></td>
+                    </tr>
+                </table>
 
-            <button  v-if="!addNew" v-on:click="flipAddFlag">Dodavanje novog treninga</button>
-            <button  v-if="addNew" v-on:click="cancelAdd">Odustani od dodavanja</button>
 
+                <table class="table" v-if="trainingHistory">
+                    <tr>
+                        <th>Naziv traninga</th>
+                        <th>Naziv centra</th>
+                        <th>Datum treninga</th>
+                        <th>Cena treninga</th>
+                    </tr>
+                    <tr v-for="history in trainingHistory">
+                        <td>{{history.training.title}}</td>
+                        <td>{{history.training.center.centerTitle}}</td>
+                        <td><pre>{{dateReformater(history.date)}}</pre></td>
+                        <td v-if="history.training.price===0">Trening nema doplatu.</td>
+                        <td v-if="history.training.price!=0">{{history.training.price}}</td>
+                    </tr>
+                </table>
+                <div  class=" d-flex flex-column mt-2 mb-2" v-if="addNew">
+                    <div class=" input-group m-1">	
+                        <span class="input-group-text">Naziv treninga:</span>
+                        <input class="form-control"  type="text" name="title" v-model="newTraining.title"></input>
+                    </div>
+                        
+                    <div class=" input-group m-1">	
+                        <span class="input-group-text">Slicica Treninga:</span>
+                        <input class="form-control" type="file" name="logo" ref="imgUpload" @change="onFileInput($event)"></input>
+                    </div>
 
-            <div v-if="editExisting">
-                <label for="title">Naziv treninga</label>
-                <input type="text" name="title" v-model="editTraining.title" disabled></input>
-                <br>
-                <label for="type">Tip treninga:</label>
-                <select ref="typeCombo" name="type" v-model="editTraining.type" disabled>
-                    <option value="PERSONAL" selected>Personalni</option>
-                    <option value="GROUP">Grupni</option>
-                </select>
-                <label for="duration">Trajanje treninga</label>
-                <input type="number" name="duration" v-model="editTraining.durationMins"></input>
-                <label for="coach">Trener</label>
-                <input type="text" name="coach" v-model="editTraining.coach.name" disabled></input>
-                <label for="description">Opis treninga</label>
-                <textarea  name="description" v-model="editTraining.description" rows="5" cols="40"></textarea>
-                <label for="price">Cena treninga:(opciono)</label>
-                <input type="number" name="price" v-model="editTraining.price"></input>
-                <button v-on:click="comitEditTraining"> Izmeni </button>
+                    <img :src="image" class="w-25"></img>
+                    <button class="btn btn-primary button-green mt-2 align-self-end" @click="removeImage">Ukloni logo</button>
+
+                    <div class=" input-group m-1">	
+                        <span class="input-group-text">Tip treninga:</span>
+                        <select class="form-select" ref="typeCombo" name="type" v-model="newTraining.type">
+                            <option value="PERSONAL" selected>Personalni</option>
+                            <option value="GROUP">Grupni</option>
+                        </select>
+                    </div>
+                
+                    <div class=" input-group m-1">	
+                        <span class="input-group-text">Trajanje treninga:</span>
+                        <input class="form-control" type="number" name="duration" v-model="newTraining.durationMins"></input>
+                    </div>
+
+                    <div class=" input-group m-1">	
+                        <span class="input-group-text">Trener:</span>
+                        <select class="form-select" v-model="newTraining.coachId">
+                            <option v-for="coach in coaches" :value="coach.userName">{{coach.userName}}:{{coach.name}}</option>
+                        </select>
+                    </div>
+
+                    <div class=" input-group m-1">	
+                        <span class="input-group-text">Opis treninga:</span>
+                        <textarea class="form-control" name="description" v-model="newTraining.description" rows="5" cols="40"></textarea>
+                    </div>
+
+                    <div class=" input-group m-1">	
+                        <span class="input-group-text">Cena treninga:(opciono)</span>
+                        <input class="form-control" type="number" name="price" v-model="newTraining.price"></input>
+                    </div>
+                    <button class="btn btn-primary button-green align-self-end" v-on:click="addTraining"> Dodaj </button>
+                </div>
+                <div>
+                
+                <button class="btn btn-primary button-green float-end"  v-if="!addNew" v-on:click="flipAddFlag">Dodavanje novog treninga</button>
+                <button class="btn btn-primary button-green float-end"  v-if="addNew" v-on:click="cancelAdd">Odustani od dodavanja</button>
+
+                </div>
+                <div class=" d-flex flex-column mt-2 mb-2" v-if="editExisting">
+                    <div class=" input-group m-1">	
+                        <span class="input-group-text">Naziv treninga:</span>
+                        <input class="form-control" type="text" name="title" v-model="editTraining.title" disabled></input>
+                    </div>
+                    <div class=" input-group m-1">	
+                        <span class="input-group-text">Tip treninga:</span>
+                        <select class="form-select" ref="typeCombo" name="type" v-model="editTraining.type" disabled>
+                            <option value="PERSONAL" selected>Personalni</option>
+                            <option value="GROUP">Grupni</option>
+                        </select>
+                    </div>
+                    <div class=" input-group m-1">	
+                        <span class="input-group-text">Trajanje treninga:</span>
+                        <input class="form-control" type="number" name="duration" v-model="editTraining.durationMins"></input>
+                    </div>
+                    <div class=" input-group m-1">	
+                        <span class="input-group-text">Trener:</span>
+                        <input class="form-control" type="text" name="coach" v-model="editTraining.coach.name" disabled></input>
+                    </div>
+                    <div class=" input-group m-1">	
+                        <span class="input-group-text">Opis treninga:</span>
+                        <textarea class="form-control" name="description" v-model="editTraining.description" rows="5" cols="40"></textarea>
+                    </div>
+                    <div class=" input-group m-1">	
+                        <span class="input-group-text">Cena treninga:(opciono)</span>
+                        <input class="form-control" type="number" name="price" v-model="editTraining.price"></input>
+                    </div>
+                   
+                </div>
             </div>
+            <button class="btn btn-primary button-green float-end m-1" v-if="editExisting" v-on:click="comitEditTraining"> Izmeni </button>
+            <button class="btn btn-primary button-green float-end m-1" v-if="editExisting" v-on:click="cancelEdit">Odustani od izmene</button>
         </div>
-
-        <button  v-if="editExisting" v-on:click="cancelEdit">Odustani od izmene</button>
-
     </div>
     `,
     mounted(){
@@ -143,6 +240,9 @@ Vue.component("center",{
                 if(this.$router.app.login!="MENAGER"){
                     router.push(`/403`);
                 }
+                this.loggedUserType = this.$router.app.login;
+				this.loggedUserName = this.$router.app.username;
+				this.userLogedIn = true;
             }
         });
 
@@ -202,6 +302,47 @@ Vue.component("center",{
         
     },
     methods:{
+        routeToHome(){
+			router.push(`/`);
+		},
+		routeToLogin(){
+			router.push(`/login`);
+		},
+		routeToRegister(){
+			router.push(`/register`);
+		},
+		routeToRegisterCoach(){
+			router.push(`/register/coach`);
+		},
+		routeToRegisterManager(){
+			router.push(`/register/manager`);
+		},
+		routeToProfile(){
+			router.push(`/profile`);
+		},
+		routeToProfilesPanel(){
+			router.push(`/admin/profiles`);
+		},
+		routeToManagerCenter(){
+			router.push(`/manager/center`);
+		},
+		routeToAddCenter(){
+			router.push(`/admin/addCenter`);
+		},
+		routeToBuyMembership(){
+			router.push(`/customer/buyMembership`);
+		},
+		routeToMembershipOffers(){
+			router.push(`/admin/offers`);
+		},
+		logout(){
+			this.loggedUserType = "";
+			this.loggedUserName ="";
+			this.$router.app.login ="";
+			this.$router.app.username="";
+			this.userLogedIn = false;
+			axios.get('rest/logout');
+		},
         typeToString: function(type){
             switch(type){
                 case "GYM":
@@ -223,7 +364,7 @@ Vue.component("center",{
             return hours[0] +" : "+ hours[1];
         },
         emptyFieldsCheck:function(){
-            if(this.newTraining.title==null || this.newTraining.title=='' || this.newTraining.imagePath == null || this.newTraining.imagePath == '' || this.newTraining.coachId == null || this.newTraining.coachId == ''){
+            if(this.newTraining.title==null || this.newTraining.title=='' || this.image == null || this.image == '' || this.newTraining.coachId == null || this.newTraining.coachId == '' || this.newTraining.durationMins == 0 || this.newTraining.durationMins == null){
                 this.error= "Nisu sva obavezna polja popunjena";
                 return false;
             }
@@ -272,7 +413,7 @@ Vue.component("center",{
             this.$refs.imgUpload.value = null;
         },
         addTraining: function(){
-            if(this.emptyFieldsCheck){
+            if(this.emptyFieldsCheck()){
                 this.newTraining.centerId = this.center.centerId;
                 this.newTraining.imagePath = this.image.split(",")[1];
                 axios.post("rest/addTraining",this.newTraining).then(
@@ -310,7 +451,7 @@ Vue.component("center",{
         },
         loadEditTraining:function(training){
             this.flipEditFlag();
-            this.editTraining = training;
+            this.editTraining = structuredClone(training);
         },
         trainingTypeToString: function(type){
             switch(type){
