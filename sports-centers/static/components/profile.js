@@ -126,7 +126,7 @@ Vue.component("profile",{
             <div v-if="this.$router.app.login=='CUSTOMER'">
                 <p>Cena clanarine: {{customer.membershipCost}}</p>
                 <p>Poeni lojalnosti(bodovi): {{customer.loyalityPoints}}</p>
-                <p v-if="customer.type">Tip kupca: {{customer.type}}</p>
+                <p v-if="customer.type">Tip kupca: {{customer.type.type}}</p>
                 <p v-if="!customer.type">Tip kupca: -</p>
             </div>
             <div class= "pt-1 pb-1" v-if="this.$router.app.login=='CUSTOMER' || this.$router.app.login=='COACH'">

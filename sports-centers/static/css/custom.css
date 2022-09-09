@@ -10,6 +10,12 @@ body{
 .background-Green{
     background-color:#86BF88;
 }
+.background-Red{
+    background-color:rgb(255, 128, 128);
+}
+.background-Yellow{
+    background-color:rgb(255, 245, 160);
+}
 .image-button-small{
     width: 3.5rem;
     height: auto;
