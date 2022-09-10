@@ -20,6 +20,8 @@ import beans.Training;
 import beans.User;
 import util.LocalDateAdapterDeserializer;
 import util.LocalDateAdapterSerializer;
+import util.ExclusionStrategies.CoachExclusionStrategy;
+import util.ExclusionStrategies.SportsCenterExclusionStrategy;
 
 public class TrainingRepository implements RepositoryBase<Training> {
 	private HashMap<String,Training> trainingList;

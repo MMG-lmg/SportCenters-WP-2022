@@ -1,12 +1,4 @@
 {
-  "sus": {
-    "userName": "sus",
-    "password": "1234",
-    "name": "1234",
-    "gender": "MALE",
-    "dateOfBirth": "2022-07-11",
-    "role": "MENAGER"
-  },
   "superMenadjer": {
     "userName": "superMenadjer",
     "password": "1234",
@@ -15,10 +7,34 @@
     "dateOfBirth": "2022-06-30",
     "role": "MENAGER"
   },
+  "milky": {
+    "userName": "milky",
+    "password": "gotMilk",
+    "name": "Milkica",
+    "gender": "FEMALE",
+    "dateOfBirth": "2022-06-22",
+    "role": "CUSTOMER"
+  },
+  "men2": {
+    "userName": "men2",
+    "password": "1234",
+    "name": "menadzerko",
+    "gender": "MALE",
+    "dateOfBirth": "2022-06-27",
+    "role": "MENAGER"
+  },
+  "sus": {
+    "userName": "sus",
+    "password": "1234",
+    "name": "1234",
+    "gender": "MALE",
+    "dateOfBirth": "2022-07-11",
+    "role": "MENAGER"
+  },
   "perica94": {
     "userName": "perica94",
     "password": "vic",
-    "name": "Petar",
+    "name": "Petar Petrovicc",
     "gender": "MALE",
     "dateOfBirth": "1994-01-01",
     "role": "CUSTOMER"
@@ -30,6 +46,14 @@
     "gender": "FEMALE",
     "dateOfBirth": "2000-12-04",
     "role": "COACH"
+  },
+  "123124": {
+    "userName": "123124",
+    "password": "1234",
+    "name": "SSSSSSS",
+    "gender": "MALE",
+    "dateOfBirth": "2021-03-15",
+    "role": "MENAGER"
   },
   "sus2": {
     "userName": "sus2",
@@ -78,21 +102,5 @@
     "gender": "MALE",
     "dateOfBirth": "2022-06-27",
     "role": "COACH"
-  },
-  "milky": {
-    "userName": "milky",
-    "password": "gotMilk",
-    "name": "Milkica",
-    "gender": "FEMALE",
-    "dateOfBirth": "2022-06-22",
-    "role": "CUSTOMER"
-  },
-  "men2": {
-    "userName": "men2",
-    "password": "1234",
-    "name": "men",
-    "gender": "FEMALE",
-    "dateOfBirth": "2022-06-27",
-    "role": "MENAGER"
   }
 }

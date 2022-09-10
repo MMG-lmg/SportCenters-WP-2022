@@ -1,4 +1,4 @@
-package repository;
+package util.ExclusionStrategies;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;

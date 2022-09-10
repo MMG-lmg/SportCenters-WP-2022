@@ -7,15 +7,24 @@ Vue.component("login",{
     },
     template:`
         <div>
-            <h3>Prijava</h3>
-            <form>
-                <label for="username">Korisnicko ime:</label><br>
-                <input type="text" v-model="credentials.username" name="username"><br>
-                <label for="password">Lozinka:</label><br>
-                <input type="password" v-model="credentials.password" name="password">
-                <button v-on:click="login">Prijava</button>
-            </form>
-            <p>{{error}}</p>
+            <div class="d-flex flex-column align-items-center justify-content-center mt-5">
+                <h3>Prijava</h3>
+                <form>
+                    <div class=" input-group mt-2">	
+						<span class="input-group-text">Korisnicko ime:</span>
+						<input class="form-control" ref="titleField" type="text" v-model="credentials.username" name="username"></input>
+                    </div>
+                    <div class=" input-group mt-2">	
+						<span class="input-group-text">Lozinka:</span>
+						<input class="form-control" ref="titleField" type="password" v-model="credentials.password" name="password"></input>
+                    </div>
+                    <button class="btn btn-primary button-green mt-2" v-on:click="login">Prijava</button>
+                </form>
+                <div v-if="error" class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
+                    <p>{{error}}</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
         </div>
     `,
     mounted() {
@@ -29,15 +38,16 @@ Vue.component("login",{
                 .then(res => {
                     if(res.data ==="FAILIURE"){
                         this.error ="Korisnicko ime ili lozinka nisu ispravni.";
+                        setTimeout(() => {  this.error="" }, 5000);
                     }
                     else{
-                        //this.storeData(userType = res.data.split(",")[1]);
                         router.push(`/`);
                     }
                 });
             }
             else{
                 this.error ="Potrebno je popuniti oba polja";
+                setTimeout(() => {  this.error="" }, 5000);
             }
             
         },

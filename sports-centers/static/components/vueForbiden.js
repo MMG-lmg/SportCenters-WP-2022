@@ -6,9 +6,13 @@ Vue.component("vueForbiden",{
     },
     template:`
         <div>
-            <h1>Pristup stranici nije dozvoljen</h1>
-            <button v-on:click="routeToHome">Pocetna</button>
-            <button v-on:click="routeToLogin">Prijava</button>
+            <div class="d-flex flex-column align-items-center justify-content-center mt-5">
+                <h2>Pristup stranici nije dozvoljen</h2>
+                <div class="d-flex flex-row align-items-center justify-content-center">
+                    <button class="btn btn-primary button-green m-2" v-on:click="routeToHome">Pocetna</button>
+                    <button class="btn btn-primary button-green m-2" v-on:click="routeToLogin">Prijava</button>
+                </div>
+            </div>
         </div>
     `,
     mounted(){

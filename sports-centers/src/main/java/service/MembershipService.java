@@ -65,6 +65,10 @@ public class MembershipService implements InterfaceBase<Membership>{
 			item.setPrice(discountedPrice);
 			customerService.updateCustomerPrice(upToDateCustomer.getUserName(), discountedPrice);
 		}
+		else {
+			customerService.updateCustomerPrice(upToDateCustomer.getUserName(), item.getPrice());
+		}
+		
 		repo.create(id, item);
 	}
 

@@ -10,6 +10,7 @@ import beans.CustomerType;
 import beans.SportsCenter;
 import repository.CustomerRepository;
 import util.CustomerTypeSorter;
+import util.ImageBase64Converter;
 
 public class CustomerService implements InterfaceBase<Customer>{
 
@@ -24,7 +25,13 @@ public class CustomerService implements InterfaceBase<Customer>{
 	}
 	@Override
 	public Customer getById(String id) {
-		return repo.getById(id);
+		Customer customer = repo.getById(id);
+		if(customer.getVisitedCenters()!=null) {
+			for(SportsCenter center : customer.getVisitedCenters()) {
+				center.setLogoPath(ImageBase64Converter.convert(center.getLogoPath()));
+			}
+		}
+		return customer;
 	}
 
 	@Override

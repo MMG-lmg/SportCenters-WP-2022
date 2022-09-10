@@ -4,13 +4,17 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
+import beans.Customer;
+import beans.SportsCenter;
 import beans.TrainingHistory;
 import repository.TrainingHistoryRepository;
 import util.IdGenerator;
 
 public class TrainingHistoryService implements InterfaceBase<TrainingHistory>{
 	private TrainingHistoryRepository repo;
+	private CustomerService customerService;
 	
 	public TrainingHistoryService() {
 		repo = new TrainingHistoryRepository();
@@ -70,8 +74,30 @@ public class TrainingHistoryService implements InterfaceBase<TrainingHistory>{
 		String id = generateId();
 		item.setHistoryId(id);
 		repo.create(id, item);
+		Customer customer =item.getCustomer();
+		SportsCenter center = item.getTraining().getCenter();
+		this.customerService = new CustomerService();
+		if(customer.getVisitedCenters()!=null) {
+			if(!customer.getVisitedCenters().contains(center)){
+				this.addVisitedCenter(customer, center);
+			}
+		}
+		else {
+			this.addVisitedCenterEmpty(customer, center);
+		}
 	}
-
+	private void addVisitedCenter(Customer customer, SportsCenter center) {
+		List<SportsCenter> list = customer.getVisitedCenters();
+		list.add(center);
+		customer.setVisitedCenters(list);
+		this.customerService.update(customer.getUserName(), customer);
+	}
+	private void addVisitedCenterEmpty(Customer customer, SportsCenter center) {
+		List<SportsCenter> list = new ArrayList<SportsCenter>();
+		list.add(center);
+		customer.setVisitedCenters(list);
+		this.customerService.update(customer.getUserName(), customer);
+	}
 	@Override
 	public void delete(String id) {
 		repo.delete(id);

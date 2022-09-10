@@ -42,11 +42,7 @@ public class ManagerController {
 	public static void getAll() {
 		get("rest/getManagers", (req,res) ->{
 			res.type("application/json");
-			Collection<ManagerDTO> DtoList = new ArrayList<ManagerDTO>();
-			for(Manager manager : service.getAll()) {
-				DtoList.add(ManagerDTO.convertObject(manager));
-			}
-			return gson.toJson(DtoList);
+			return gson.toJson(service.getAll());
 		});
 	}
 	public static void getManager() {
@@ -54,8 +50,7 @@ public class ManagerController {
 			res.type("application/json");
 			Manager manager = service.getById(req.queryParams("username"));
 			if(manager!=null) {
-				ManagerDTO dto = ManagerDTO.convertObject(manager);
-				return gson.toJson(dto);
+				return gson.toJson(manager);
 			}
 			return "FAILIURE";
 		});

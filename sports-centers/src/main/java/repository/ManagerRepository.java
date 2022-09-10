@@ -15,6 +15,8 @@ import com.google.gson.reflect.TypeToken;
 import beans.Manager;
 import beans.SportsCenter;
 import beans.User;
+import util.ExclusionStrategies.SportsCenterExclusionStrategy;
+import util.ExclusionStrategies.UserExclusionStrategy;
 
 public class ManagerRepository implements RepositoryBase<Manager>{
 	private UserRepository userRepo;
@@ -34,11 +36,15 @@ public class ManagerRepository implements RepositoryBase<Manager>{
 	}
 	@Override
 	public Collection<Manager> getAll() {
+		readData();
+		syncData();
 		return managerList.values();
 	}
 
 	@Override
 	public Manager getById(String id) {
+		readData();
+		syncData();
 		return managerList.get(id);
 	}
 

@@ -46,11 +46,12 @@ public class SportsCenterService implements InterfaceBase<SportsCenter> {
 		}
 		return centerTitles;
 	}
-	@Override
-	public void create(SportsCenter item) {
+	
+	public String createCenter(SportsCenter item) {
 		String id = generateId();
 		item.setCenterId(id);
 		repo.create(id, item);
+		return id;
 	}
 
 	@Override
@@ -127,5 +128,12 @@ public class SportsCenterService implements InterfaceBase<SportsCenter> {
 		else {
 			return false;
 		}
+	}
+	@Override
+	public void create(SportsCenter item) {
+		String id = generateId();
+		item.setCenterId(id);
+		repo.create(id, item);
+		
 	}
 }

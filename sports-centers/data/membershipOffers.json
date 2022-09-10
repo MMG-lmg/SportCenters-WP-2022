@@ -6,6 +6,20 @@
     "price": 300.0,
     "numOfVisits": 4
   },
+  "8JdxbJZ3": {
+    "membershipOfferId": "8JdxbJZ3",
+    "description": "Testiranje",
+    "type": "WEEKLY",
+    "price": 1642.0,
+    "numOfVisits": 0
+  },
+  "pvJXaM8Z": {
+    "membershipOfferId": "pvJXaM8Z",
+    "description": "asdf",
+    "type": "MONTHLY",
+    "price": 64.0,
+    "numOfVisits": 15
+  },
   "26T0oFV6": {
     "membershipOfferId": "26T0oFV6",
     "description": "SUS",

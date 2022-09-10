@@ -1,6 +1,11 @@
 {
   "perica94": {
     "membershipCost": 15000.0,
+    "visitedCenters": [
+      {
+        "centerId": "JejiyAOY"
+      }
+    ],
     "loyalityPoints": -158.4,
     "userName": "perica94"
   },

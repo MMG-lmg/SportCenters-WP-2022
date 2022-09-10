@@ -5,25 +5,32 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import beans.Customer;
+import beans.SportsCenter;
 import beans.User;
+import util.ExclusionStrategies.SportsCenterExclusionStrategy;
+import util.ExclusionStrategies.UserExclusionStrategy;
 
 
 public class CustomerRepository implements RepositoryBase<Customer>{
 	private UserRepository userRepo;
+	private SportsCenterRepository sportsRepo;
 	private HashMap<String,Customer> customerList;
 	private String path = "data";
 	
 	public CustomerRepository() {
 		customerList = new HashMap<String,Customer>();
 		userRepo = new UserRepository();
+		sportsRepo = new SportsCenterRepository();
 		readData();
 		syncData();
 	}
@@ -32,13 +39,15 @@ public class CustomerRepository implements RepositoryBase<Customer>{
 	}
 	@Override
 	public Collection<Customer> getAll() {
-
+		readData();
+		syncData();
 		return customerList.values();
 	}
 
 	@Override
 	public Customer getById(String id) {
-
+		readData();
+		syncData();
 		return customerList.get(id);
 	}
 
@@ -71,7 +80,7 @@ public class CustomerRepository implements RepositoryBase<Customer>{
 		
 	}
 	private void readData() {
-		Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new UserExclusionStrategy()).create();
+		Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new UserExclusionStrategy(), new SportsCenterExclusionStrategy()).create();
 		BufferedReader in = null;
 		try {
 			File file = new File(this.path + "/consumers.json");
@@ -100,7 +109,7 @@ public class CustomerRepository implements RepositoryBase<Customer>{
 	}
 	
 	private void writeData() {
-		Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new UserExclusionStrategy()).create();
+		Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new UserExclusionStrategy(),new SportsCenterExclusionStrategy()).create();
 		BufferedWriter out = null;
 		try {
 			File file = new File(this.path + "/consumers.json");
@@ -125,6 +134,7 @@ public class CustomerRepository implements RepositoryBase<Customer>{
 	}
 	public void syncData() {
 		Collection<User> users = userRepo.getAll();
+		Collection<SportsCenter> centers = sportsRepo.getAll();
 		
 		customerList.forEach((id, customer) ->{ 
 			for(User user : users) {
@@ -132,6 +142,21 @@ public class CustomerRepository implements RepositoryBase<Customer>{
 					this.fillOutCustomer(customer,user);
 				}
 			}
+		});
+		customerList.forEach((id, customer) ->{
+			List<SportsCenter> updatedCenters = new ArrayList<SportsCenter>();
+			if(customer.getVisitedCenters()!=null) {
+				for(SportsCenter visited : customer.getVisitedCenters()) {
+					if(visited!=null) {
+						SportsCenter wholeCenter = sportsRepo.getById(visited.getCenterId());
+						if(wholeCenter!=null) {
+							updatedCenters.add(wholeCenter);
+						}
+					}
+				}
+				customer.setVisitedCenters(updatedCenters);
+			}
+			
 		});
 	}
 	private void fillOutCustomer(Customer customer, User user) {

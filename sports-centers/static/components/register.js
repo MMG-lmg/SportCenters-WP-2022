@@ -13,34 +13,52 @@ Vue.component("register",{
     },
     template:`
         <div>
-            <h3>Prijava</h3>
-            <form>
-                <label for="username">Korisnicko ime:</label><br>
-                <input type="text" v-model="customer.userName" name="username"><br>
+            <div class="d-flex flex-column align-items-center justify-content-center mt-5">
+                <h3>Prijava</h3>
+                <form>
+                    <div class=" input-group mt-2">	
+						<span class="input-group-text">Korisnicko ime:</span>
+						<input class="form-control" type="text" v-model="customer.userName" name="username"></input>
+                    </div>
 
-                <label for="name">Ime:</label><br>
-                <input type="text" v-model="customer.name" name="name"><br>
+                    <div class=" input-group mt-2">	
+						<span class="input-group-text">Ime:</span>
+						<input class="form-control" type="text" v-model="customer.name" name="name"></input>
+                    </div>
 
-                <label for="password">Lozinka:</label><br>
-                <input type="password" v-model="customer.password" name="password"><br>
+                    <div class=" input-group mt-2">	
+                        <span class="input-group-text">Lozinka:</span>
+                        <input class="form-control" type="password" v-model="customer.password" name="password"></input>
+                    </div> 
 
-                <label for="passwordCheck">Ponoviti lozinku:</label><br>
-                <input type="password" v-model="passwordCheck" name="passwordCheck"><br>
+                    <div class=" input-group mt-2">	
+                        <span class="input-group-text">Ponoviti lozinku:</span>
+                        <input class="form-control" type="password" v-model="passwordCheck" name="passwordCheck"></input>
+                    </div> 
 
-                <label for="gender">Pol:</label><br>
-                <select ref="genderCombo" v-model="customer.gender" name="gender">
-						<option value="MALE" selected>Muski</option>
-						<option value="FEMALE">Zenski</option>
-                </select><br>
-                
-                <label for="date">Datum rodjenja:</label><br>
-                <input type="date" v-model="customer.dateOfBirth" name="date"><br>
+                    <div class=" input-group mt-2">	
+                        <span class="input-group-text">Pol:</span>
+                        <select class="form-select" ref="genderCombo" v-model="customer.gender" name="gender">
+                                <option value="MALE" selected>Muski</option>
+                                <option value="FEMALE">Zenski</option>
+                        </select>
+                    </div>
 
-                <button v-on:click="register">Registracija</button>
-            </form>
-            <p>{{error}}</p>
-            <div v-if="feedbackPopup">
-                <p> Korisnik {{customer.username}} uspesno dodat</p>
+                    <div class=" input-group mt-2">	
+                        <span class="input-group-text">Datum rodjenja:</span>
+                        <input class="form-control" type="date" v-model="customer.dateOfBirth" name="date"></input>
+                    </div> 
+
+                    <button class="btn btn-primary button-green mt-2" v-on:click="register">Registracija</button>
+                </form>
+
+                <div v-if="error" class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
+                    <p>{{error}}</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <div v-if="feedbackPopup" class="alert alert-success mt-2" role="alert">
+                    <p> Korisnik {{customer.username}} uspesno dodat</p>
+                </div>
             </div>
         </div>
     `,
