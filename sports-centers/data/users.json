@@ -1,0 +1,106 @@
+{
+  "superMenadjer": {
+    "userName": "superMenadjer",
+    "password": "1234",
+    "name": "supMen",
+    "gender": "FEMALE",
+    "dateOfBirth": "2022-06-30",
+    "role": "MENAGER"
+  },
+  "milky": {
+    "userName": "milky",
+    "password": "gotMilk",
+    "name": "Milkica",
+    "gender": "FEMALE",
+    "dateOfBirth": "2022-06-22",
+    "role": "CUSTOMER"
+  },
+  "men2": {
+    "userName": "men2",
+    "password": "1234",
+    "name": "menadzerko",
+    "gender": "MALE",
+    "dateOfBirth": "2022-06-27",
+    "role": "MENAGER"
+  },
+  "sus": {
+    "userName": "sus",
+    "password": "1234",
+    "name": "1234",
+    "gender": "MALE",
+    "dateOfBirth": "2022-07-11",
+    "role": "MENAGER"
+  },
+  "perica94": {
+    "userName": "perica94",
+    "password": "vic",
+    "name": "Petar Petrovicc",
+    "gender": "MALE",
+    "dateOfBirth": "1994-01-01",
+    "role": "CUSTOMER"
+  },
+  "zoranaTrener": {
+    "userName": "zoranaTrener",
+    "password": "zoka",
+    "name": "Zorana Markovic",
+    "gender": "FEMALE",
+    "dateOfBirth": "2000-12-04",
+    "role": "COACH"
+  },
+  "123124": {
+    "userName": "123124",
+    "password": "1234",
+    "name": "SSSSSSS",
+    "gender": "MALE",
+    "dateOfBirth": "2021-03-15",
+    "role": "MENAGER"
+  },
+  "sus2": {
+    "userName": "sus2",
+    "password": "1234",
+    "name": "1234",
+    "gender": "MALE",
+    "dateOfBirth": "2022-07-12",
+    "role": "MENAGER"
+  },
+  "admin1": {
+    "userName": "admin1",
+    "password": "admin",
+    "name": "SuperAdminIzmena1",
+    "gender": "MALE",
+    "dateOfBirth": "2000-12-17",
+    "role": "ADMIN"
+  },
+  "micaMenadzer": {
+    "userName": "micaMenadzer",
+    "password": "1234",
+    "name": "Milan Markoivc",
+    "gender": "MALE",
+    "dateOfBirth": "1995-12-07",
+    "role": "MENAGER"
+  },
+  "mirkoTrener": {
+    "userName": "mirkoTrener",
+    "password": "1234",
+    "name": "mirko mirkovic",
+    "gender": "MALE",
+    "dateOfBirth": "1995-06-14",
+    "role": "COACH"
+  },
+  "djoleBiceps": {
+    "userName": "djoleBiceps",
+    "password": "djoka",
+    "name": "Djordje Djordjevic",
+    "gender": "MALE",
+    "dateOfBirth": "1998-10-20",
+    "role": "CUSTOMER"
+  },
+  "aha": {
+    "userName": "aha",
+    "password": "aha",
+    "name": "aha",
+    "gender": "MALE",
+    "dateOfBirth": "2022-06-27",
+    "role": "COACH"
+  }
+}

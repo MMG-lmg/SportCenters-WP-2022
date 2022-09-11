@@ -1,0 +1,102 @@
+{
+  "GB0jhT7s": {
+    "trainingId": "GB0jhT7s",
+    "title": "Olimpijsko plivanje",
+    "type": "PERSONAL",
+    "center": {
+      "centerId": "Ig0ZRzmo"
+    },
+    "durationMins": 69.0,
+    "coach": {
+      "userName": "aha",
+      "password": "aha",
+      "name": "aha",
+      "gender": "MALE",
+      "dateOfBirth": "2022-06-27",
+      "role": "COACH"
+    },
+    "description": "Plivanje u olimpijskom bazenu.",
+    "imagePath": "data\\img\\Olimpijsko plivanje.jpg",
+    "price": 300.0
+  },
+  "9tnBqQ3D": {
+    "trainingId": "9tnBqQ3D",
+    "title": "Skolica plivanja",
+    "type": "PERSONAL",
+    "center": {
+      "centerId": "Ig0ZRzmo"
+    },
+    "durationMins": 45.0,
+    "coach": {
+      "userName": "mirkoTrener",
+      "password": "1234",
+      "name": "mirko mirkovic",
+      "gender": "MALE",
+      "dateOfBirth": "1995-06-14",
+      "role": "COACH"
+    },
+    "description": "Skolica plivanja sa cika mirkom!",
+    "imagePath": "data\\img\\Skolica plivanja.jpg",
+    "price": 0.0
+  },
+  "73xygpML": {
+    "trainingId": "73xygpML",
+    "title": "super novi treninga",
+    "type": "PERSONAL",
+    "center": {
+      "centerId": "JejiyAOY"
+    },
+    "durationMins": 16.0,
+    "coach": {
+      "userName": "aha",
+      "password": "aha",
+      "name": "aha",
+      "gender": "MALE",
+      "dateOfBirth": "2022-06-27",
+      "role": "COACH"
+    },
+    "description": "asdfasdfasdfasdfasdf",
+    "imagePath": "data\\img\\super novi treninga.jpg",
+    "price": 0.0
+  },
+  "KaPhmuzB": {
+    "trainingId": "KaPhmuzB",
+    "title": "Nema plivanja vise",
+    "type": "GROUP",
+    "center": {
+      "centerId": "Ig0ZRzmo"
+    },
+    "durationMins": 16.0,
+    "coach": {
+      "userName": "mirkoTrener",
+      "password": "1234",
+      "name": "mirko mirkovic",
+      "gender": "MALE",
+      "dateOfBirth": "1995-06-14",
+      "role": "COACH"
+    },
+    "description": "Nema plivanja sa mirkom,\npovredio se.",
+    "imagePath": "data\\img\\Nema plivanja vise.jpg",
+    "price": 150.0
+  },
+  "iFtPuOwW": {
+    "trainingId": "iFtPuOwW",
+    "title": "igluyasfd ",
+    "type": "GROUP",
+    "center": {
+      "centerId": "JejiyAOY"
+    },
+    "durationMins": 19.0,
+    "coach": {
+      "userName": "zoranaTrener",
+      "password": "zoka",
+      "name": "Zorana Markovic",
+      "gender": "FEMALE",
+      "dateOfBirth": "2000-12-04",
+      "role": "COACH"
+    },
+    "description": "Nema kriza",
+    "imagePath": "data\\img\\igluyasfd .jpg",
+    "price": 0.0
+  }
+}

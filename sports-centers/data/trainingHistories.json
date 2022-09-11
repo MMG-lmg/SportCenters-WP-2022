@@ -1,0 +1,194 @@
+{
+  "6iZdKQ5H": {
+    "HistoryId": "6iZdKQ5H",
+    "date": "2022-08-27T19:45:00",
+    "training": {
+      "trainingId": "iFtPuOwW",
+      "price": 0.0
+    },
+    "customer": {
+      "userName": "perica94",
+      "password": "vic",
+      "name": "Petar",
+      "gender": "MALE",
+      "dateOfBirth": "1994-01-01",
+      "role": "CUSTOMER"
+    },
+    "coach": {
+      "userName": "zoranaTrener",
+      "password": "zoka",
+      "name": "Zorana Markovic",
+      "gender": "FEMALE",
+      "dateOfBirth": "2000-12-04",
+      "role": "COACH"
+    }
+  },
+  "mLriNY6a": {
+    "HistoryId": "mLriNY6a",
+    "date": "2022-09-10T14:09:00",
+    "training": {
+      "trainingId": "GB0jhT7s",
+      "price": 300.0
+    },
+    "customer": {
+      "userName": "perica94",
+      "password": "vic",
+      "name": "Petar",
+      "gender": "MALE",
+      "dateOfBirth": "1994-01-01",
+      "role": "CUSTOMER"
+    },
+    "coach": {
+      "userName": "aha",
+      "password": "aha",
+      "name": "aha",
+      "gender": "MALE",
+      "dateOfBirth": "2022-06-27",
+      "role": "COACH"
+    }
+  },
+  "Y8KYvxta": {
+    "HistoryId": "Y8KYvxta",
+    "date": "2022-09-09T10:00:00",
+    "training": {
+      "trainingId": "73xygpML",
+      "price": 0.0
+    },
+    "customer": {
+      "userName": "perica94",
+      "password": "vic",
+      "name": "Petar",
+      "gender": "MALE",
+      "dateOfBirth": "1994-01-01",
+      "role": "CUSTOMER"
+    },
+    "coach": {
+      "userName": "aha",
+      "password": "aha",
+      "name": "aha",
+      "gender": "MALE",
+      "dateOfBirth": "2022-06-27",
+      "role": "COACH"
+    }
+  },
+  "zYtKgAvN": {
+    "HistoryId": "zYtKgAvN",
+    "date": "2022-09-05T12:48:00",
+    "training": {
+      "trainingId": "KaPhmuzB",
+      "price": 150.0
+    },
+    "customer": {
+      "userName": "perica94",
+      "password": "vic",
+      "name": "Petar",
+      "gender": "MALE",
+      "dateOfBirth": "1994-01-01",
+      "role": "CUSTOMER"
+    },
+    "coach": {
+      "userName": "mirkoTrener",
+      "password": "1234",
+      "name": "mirko mirkovic",
+      "gender": "MALE",
+      "dateOfBirth": "1995-06-14",
+      "role": "COACH"
+    }
+  },
+  "yp8va4Cu": {
+    "HistoryId": "yp8va4Cu",
+    "date": "2022-04-20T09:55:00",
+    "training": {
+      "trainingId": "9tnBqQ3D",
+      "price": 0.0
+    },
+    "customer": {
+      "userName": "perica94",
+      "password": "vic",
+      "name": "Petar",
+      "gender": "MALE",
+      "dateOfBirth": "1994-01-01",
+      "role": "CUSTOMER"
+    },
+    "coach": {
+      "userName": "mirkoTrener",
+      "password": "1234",
+      "name": "mirko mirkovic",
+      "gender": "MALE",
+      "dateOfBirth": "1995-06-14",
+      "role": "COACH"
+    }
+  },
+  "Iqm7gKMG": {
+    "HistoryId": "Iqm7gKMG",
+    "date": "2022-08-08T09:49:00",
+    "training": {
+      "trainingId": "GB0jhT7s",
+      "price": 300.0
+    },
+    "customer": {
+      "userName": "perica94",
+      "password": "vic",
+      "name": "Petar",
+      "gender": "MALE",
+      "dateOfBirth": "1994-01-01",
+      "role": "CUSTOMER"
+    },
+    "coach": {
+      "userName": "aha",
+      "password": "aha",
+      "name": "aha",
+      "gender": "MALE",
+      "dateOfBirth": "2022-06-27",
+      "role": "COACH"
+    }
+  },
+  "ZfeEhHPZ": {
+    "HistoryId": "ZfeEhHPZ",
+    "date": "2022-11-03T10:58:00",
+    "training": {
+      "trainingId": "73xygpML",
+      "price": 0.0
+    },
+    "customer": {
+      "userName": "perica94",
+      "password": "vic",
+      "name": "Petar",
+      "gender": "MALE",
+      "dateOfBirth": "1994-01-01",
+      "role": "CUSTOMER"
+    },
+    "coach": {
+      "userName": "aha",
+      "password": "aha",
+      "name": "aha",
+      "gender": "MALE",
+      "dateOfBirth": "2022-06-27",
+      "role": "COACH"
+    }
+  },
+  "ow7XAqec": {
+    "HistoryId": "ow7XAqec",
+    "date": "2022-10-20T10:56:00",
+    "training": {
+      "trainingId": "9tnBqQ3D",
+      "price": 0.0
+    },
+    "customer": {
+      "userName": "perica94",
+      "password": "vic",
+      "name": "Petar",
+      "gender": "MALE",
+      "dateOfBirth": "1994-01-01",
+      "role": "CUSTOMER"
+    },
+    "coach": {
+      "userName": "mirkoTrener",
+      "password": "1234",
+      "name": "mirko mirkovic",
+      "gender": "MALE",
+      "dateOfBirth": "1995-06-14",
+      "role": "COACH"
+    }
+  }
+}
